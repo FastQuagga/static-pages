@@ -1,0 +1,1333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280, height=800, initial-scale=1">
+  <title>Neon Manager Evolved - Match</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg0: #050915;
+      --bg1: #091224;
+      --panel: rgba(18, 28, 54, 0.74);
+      --panel-strong: rgba(18, 27, 52, 0.92);
+      --panel-soft: rgba(21, 33, 64, 0.58);
+      --stroke: rgba(118, 154, 224, 0.22);
+      --stroke-bright: rgba(46, 226, 255, 0.52);
+      --text: #eef6ff;
+      --muted: #8d9ab7;
+      --soft: #b9c6df;
+      --cyan: #20dfff;
+      --cyan2: #38f5c9;
+      --violet: #8b7aff;
+      --green: #42f2a8;
+      --amber: #ffc94d;
+      --red: #ff526f;
+      --shadow: 0 22px 70px rgba(0, 0, 0, 0.48);
+      --radius: 14px;
+      --mono: "Space Grotesk", "Inter", sans-serif;
+      --body: "Inter", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      width: 1280px;
+      height: 800px;
+      background: var(--bg0);
+    }
+
+    body {
+      width: 1280px;
+      height: 800px;
+      margin: 0;
+      overflow: hidden;
+      color: var(--text);
+      font-family: var(--body);
+      font-variant-numeric: tabular-nums;
+      background:
+        radial-gradient(circle at 10% 8%, rgba(32, 223, 255, 0.18), transparent 25%),
+        radial-gradient(circle at 83% 16%, rgba(139, 122, 255, 0.16), transparent 26%),
+        radial-gradient(circle at 64% 94%, rgba(39, 255, 185, 0.09), transparent 28%),
+        linear-gradient(135deg, #06101f 0%, #060914 44%, #0d0d24 100%);
+    }
+
+    .stage {
+      position: relative;
+      width: 1280px;
+      height: 800px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .stage::before,
+    .stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .stage::before {
+      background:
+        linear-gradient(rgba(104, 149, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(104, 149, 255, 0.045) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(circle at 52% 46%, black, transparent 72%);
+    }
+
+    .stage::after {
+      background:
+        radial-gradient(ellipse at 52% 50%, rgba(32, 223, 255, 0.06), transparent 44%),
+        linear-gradient(180deg, transparent 0%, rgba(4, 7, 18, 0.72) 100%);
+    }
+
+    .sprite {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    svg.icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      flex: 0 0 auto;
+    }
+
+    .glass {
+      background:
+        linear-gradient(180deg, rgba(30, 43, 77, 0.82), rgba(12, 19, 39, 0.78)),
+        radial-gradient(circle at 10% 0%, rgba(46, 226, 255, 0.08), transparent 46%);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar {
+      position: absolute;
+      left: 16px;
+      top: 16px;
+      right: 16px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 10;
+    }
+
+    .top-left,
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .resource,
+    .league-pill,
+    .toggle,
+    .gear {
+      height: 42px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      border: 1px solid rgba(113, 152, 224, 0.22);
+      background: linear-gradient(180deg, rgba(20, 31, 58, 0.88), rgba(12, 20, 39, 0.88));
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .resource {
+      gap: 10px;
+      padding: 0 14px;
+      color: #d8e6ff;
+      min-width: 126px;
+    }
+
+    .resource .icon {
+      color: #9db2d7;
+    }
+
+    .resource.fans {
+      min-width: 100px;
+    }
+
+    .resource-value {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: #7ccfff;
+      letter-spacing: 0;
+    }
+
+    .income-badge {
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #adffd9;
+      background: linear-gradient(180deg, rgba(16, 138, 101, 0.55), rgba(11, 79, 64, 0.68));
+      border: 1px solid rgba(66, 242, 168, 0.44);
+      box-shadow: 0 0 16px rgba(66, 242, 168, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .league-pill {
+      gap: 10px;
+      padding: 0 16px;
+      min-width: 184px;
+    }
+
+    .league-pill .icon {
+      color: var(--amber);
+    }
+
+    .league-name {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: #f3f6ff;
+    }
+
+    .toggle {
+      width: 78px;
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .toggle-cell,
+    .gear {
+      width: 36px;
+      justify-content: center;
+      color: #93a3c4;
+    }
+
+    .toggle-cell {
+      height: 34px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+    }
+
+    .toggle-cell.active {
+      color: #ffd184;
+      background:
+        radial-gradient(circle at 45% 35%, rgba(255, 201, 77, 0.22), transparent 52%),
+        linear-gradient(180deg, rgba(32, 81, 137, 0.82), rgba(19, 42, 78, 0.74));
+      border: 1px solid rgba(46, 226, 255, 0.24);
+      box-shadow: 0 0 18px rgba(32, 223, 255, 0.14);
+    }
+
+    .gear {
+      padding: 0;
+    }
+
+    .sidebar {
+      position: absolute;
+      left: 16px;
+      top: 74px;
+      width: 200px;
+      height: 274px;
+      padding: 10px;
+      border-radius: 14px;
+    }
+
+    .nav-item {
+      height: 46px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      border-radius: 10px;
+      color: #e4ebfa;
+      font-size: 14px;
+      font-weight: 800;
+      position: relative;
+    }
+
+    .nav-item + .nav-item {
+      margin-top: 6px;
+    }
+
+    .nav-item .icon {
+      color: #93a9d6;
+    }
+
+    .nav-item.active {
+      color: #ecfbff;
+      background:
+        linear-gradient(90deg, rgba(30, 224, 255, 0.20), rgba(61, 129, 255, 0.12)),
+        rgba(28, 61, 92, 0.46);
+      border: 1px solid rgba(32, 223, 255, 0.48);
+      box-shadow: 0 0 26px rgba(32, 223, 255, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-item.active .icon {
+      color: var(--cyan);
+    }
+
+    .nav-label {
+      flex: 1;
+    }
+
+    .nav-badge {
+      min-width: 34px;
+      height: 20px;
+      padding: 0 7px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      font-size: 11px;
+      color: #bac7df;
+      background: rgba(119, 141, 185, 0.18);
+      border: 1px solid rgba(166, 190, 241, 0.12);
+    }
+
+    .match-panel {
+      position: absolute;
+      left: 232px;
+      top: 74px;
+      width: 554px;
+      height: 641px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .match-panel::before {
+      content: "";
+      position: absolute;
+      left: 118px;
+      top: -80px;
+      width: 320px;
+      height: 160px;
+      background: radial-gradient(ellipse, rgba(32, 223, 255, 0.18), transparent 68%);
+      pointer-events: none;
+    }
+
+    .score-hero {
+      position: relative;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .score-hero::before {
+      content: "";
+      position: absolute;
+      left: 92px;
+      right: 92px;
+      top: 7px;
+      bottom: 4px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(32, 223, 255, 0.36), transparent 54%),
+        linear-gradient(90deg, transparent, rgba(32, 223, 255, 0.11), transparent);
+      filter: blur(10px);
+      opacity: 0.9;
+    }
+
+    .score-block {
+      position: relative;
+      display: grid;
+      grid-template-columns: 96px 46px 96px;
+      align-items: center;
+      justify-items: center;
+      gap: 10px;
+    }
+
+    .team-score {
+      display: grid;
+      justify-items: center;
+      gap: 4px;
+    }
+
+    .team-label {
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #9fb0ce;
+    }
+
+    .team-label.you {
+      color: var(--cyan);
+      text-shadow: 0 0 16px rgba(32, 223, 255, 0.7);
+    }
+
+    .score-number {
+      font-family: var(--mono);
+      font-size: 54px;
+      line-height: 0.88;
+      font-weight: 700;
+      color: #eaf8ff;
+      text-shadow: 0 0 18px rgba(32, 223, 255, 0.56), 0 0 36px rgba(139, 122, 255, 0.28);
+    }
+
+    .score-number.home {
+      color: var(--cyan);
+    }
+
+    .score-number.away {
+      color: #cfd8ed;
+    }
+
+    .versus {
+      align-self: center;
+      margin-top: 20px;
+      height: 28px;
+      min-width: 44px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #9baccc;
+      background: rgba(12, 19, 38, 0.84);
+      border: 1px solid rgba(133, 167, 232, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .pitch-shell {
+      position: relative;
+      height: 356px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(117, 146, 206, 0.20);
+      background:
+        radial-gradient(circle at 50% 20%, rgba(32, 223, 255, 0.07), transparent 42%),
+        linear-gradient(180deg, rgba(6, 11, 21, 0.86), rgba(5, 10, 18, 0.98));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .pitch-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(32, 223, 255, 0.05), transparent 18%, transparent 82%, rgba(139, 122, 255, 0.05)),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 22%);
+      pointer-events: none;
+    }
+
+    .pitch {
+      position: absolute;
+      left: 18px;
+      top: 22px;
+      width: 482px;
+      height: 314px;
+      overflow: visible;
+      filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.34));
+    }
+
+    .goal-badge {
+      position: absolute;
+      right: 26px;
+      top: 22px;
+      width: 130px;
+      height: 48px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: 24px;
+      font-weight: 700;
+      color: #031220;
+      background:
+        linear-gradient(90deg, #38f5c9 0%, #20dfff 45%, #8b7aff 100%);
+      border: 1px solid rgba(255, 255, 255, 0.54);
+      box-shadow: 0 0 30px rgba(32, 223, 255, 0.42), 0 0 58px rgba(139, 122, 255, 0.24);
+      z-index: 3;
+    }
+
+    .goal-badge::before,
+    .goal-badge::after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+      box-shadow: 0 0 14px rgba(32, 223, 255, 0.8);
+      transform: skewX(-24deg);
+    }
+
+    .goal-badge::before {
+      left: -72px;
+      top: 16px;
+      width: 92px;
+    }
+
+    .goal-badge::after {
+      right: -58px;
+      bottom: 12px;
+      width: 78px;
+    }
+
+    .particle {
+      position: absolute;
+      z-index: 4;
+      height: 26px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #bbffdf;
+      background: rgba(11, 88, 71, 0.58);
+      border: 1px solid rgba(66, 242, 168, 0.36);
+      box-shadow: 0 0 20px rgba(66, 242, 168, 0.24);
+    }
+
+    .particle.p1 {
+      left: 72px;
+      top: 82px;
+    }
+
+    .particle.p2 {
+      left: 264px;
+      top: 112px;
+      opacity: 0.82;
+      transform: scale(0.9);
+    }
+
+    .particle.p3 {
+      right: 92px;
+      top: 156px;
+      opacity: 0.72;
+      transform: scale(0.84);
+    }
+
+    .match-meta {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 12px;
+    }
+
+    .clock {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: #f2f7ff;
+    }
+
+    .clock .icon {
+      width: 18px;
+      height: 18px;
+      color: #8fa7d5;
+    }
+
+    .odds {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .odd {
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #a7b5d2;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      background: rgba(18, 28, 55, 0.84);
+      border: 1px solid rgba(130, 160, 225, 0.18);
+    }
+
+    .odd strong {
+      font-family: var(--mono);
+      font-size: 16px;
+      color: #e9f3ff;
+      letter-spacing: 0;
+    }
+
+    .odd.win {
+      border-color: rgba(32, 223, 255, 0.48);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .odd.win strong {
+      color: var(--cyan);
+    }
+
+    .odd.lose strong {
+      color: #ffb07f;
+    }
+
+    .match-economy {
+      height: 34px;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #98a8c4;
+    }
+
+    .reward {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--amber);
+      text-shadow: 0 0 18px rgba(255, 201, 77, 0.26);
+    }
+
+    .progress-row {
+      height: 44px;
+      padding-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      column-gap: 16px;
+      align-items: start;
+      color: #aab8d1;
+      font-size: 12px;
+      border-bottom: 1px solid rgba(125, 150, 204, 0.14);
+    }
+
+    .bar {
+      grid-column: 1 / -1;
+      width: 100%;
+      height: 7px;
+      margin-top: 7px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(95, 114, 156, 0.18);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.38);
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 20%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), #7fd5ff);
+      box-shadow: 0 0 18px rgba(32, 223, 255, 0.36);
+    }
+
+    .drops {
+      height: 104px;
+      padding-top: 10px;
+    }
+
+    .drops-head {
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #8d9abb;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    .drops-head span:last-child {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+      color: #727f9f;
+    }
+
+    .drop-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .drop-card {
+      height: 54px;
+      border-radius: 10px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(32, 223, 255, 0.48), rgba(139, 122, 255, 0.48), rgba(66, 242, 168, 0.26));
+      box-shadow: 0 14px 24px rgba(0, 0, 0, 0.22);
+    }
+
+    .drop-inner {
+      height: 100%;
+      border-radius: 9px;
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      background: linear-gradient(180deg, rgba(21, 30, 58, 0.96), rgba(12, 19, 37, 0.96));
+    }
+
+    .mono-chip {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #06111e;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      box-shadow: 0 0 16px rgba(32, 223, 255, 0.28);
+    }
+
+    .drop-title {
+      font-size: 12px;
+      font-weight: 900;
+      color: #eff6ff;
+    }
+
+    .drop-tier {
+      margin-top: 2px;
+      display: inline-flex;
+      height: 18px;
+      align-items: center;
+      padding: 0 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #b4c0d8;
+      background: rgba(133, 151, 192, 0.14);
+      border: 1px solid rgba(169, 190, 239, 0.12);
+    }
+
+    .drop-stat {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: #8be9ff;
+      white-space: nowrap;
+    }
+
+    .right-col {
+      position: absolute;
+      left: 802px;
+      top: 74px;
+      width: 462px;
+      height: 641px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section {
+      border-radius: 14px;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .stats {
+      height: 286px;
+    }
+
+    .upgrades {
+      height: 339px;
+    }
+
+    .section-title {
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #9caac8;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #8c99b5;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend i {
+      width: 10px;
+      height: 4px;
+      border-radius: 999px;
+      display: inline-block;
+      background: var(--cyan);
+      box-shadow: 0 0 10px rgba(32, 223, 255, 0.6);
+    }
+
+    .legend span:last-child i {
+      background: #687493;
+      box-shadow: none;
+    }
+
+    .stat-list {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      row-gap: 6px;
+      align-items: center;
+    }
+
+    .stat-name {
+      font-size: 12px;
+      font-weight: 800;
+      color: #e5edf9;
+    }
+
+    .stat-value {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .stat-value span {
+      color: #7d88a4;
+      font-weight: 600;
+    }
+
+    .stat-bar {
+      grid-column: 1 / -1;
+      position: relative;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(104, 117, 153, 0.18);
+      overflow: hidden;
+    }
+
+    .stat-bar::before,
+    .stat-bar::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: var(--w);
+      border-radius: inherit;
+    }
+
+    .stat-bar::before {
+      left: 0;
+      background: linear-gradient(90deg, var(--cyan), #8be9ff);
+      box-shadow: 0 0 14px rgba(32, 223, 255, 0.42);
+    }
+
+    .stat-bar::after {
+      left: var(--avg);
+      width: 2px;
+      background: #8792ad;
+      box-shadow: 0 0 0 1px rgba(5, 8, 17, 0.7);
+    }
+
+    .upgrade-list {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .upgrade-card {
+      min-height: 73px;
+      border-radius: 10px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(118, 154, 224, 0.26), rgba(32, 223, 255, 0.18), rgba(139, 122, 255, 0.2));
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
+    }
+
+    .upgrade-inner {
+      height: 100%;
+      min-height: 71px;
+      border-radius: 9px;
+      display: grid;
+      grid-template-columns: 36px 1fr 80px;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 12px;
+      background:
+        radial-gradient(circle at 100% 50%, rgba(32, 223, 255, 0.10), transparent 38%),
+        linear-gradient(180deg, rgba(20, 31, 59, 0.96), rgba(13, 20, 39, 0.96));
+    }
+
+    .upgrade-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--cyan);
+      background: rgba(32, 223, 255, 0.10);
+      border: 1px solid rgba(32, 223, 255, 0.20);
+    }
+
+    .upgrade-icon .icon {
+      width: 19px;
+      height: 19px;
+    }
+
+    .upgrade-title-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .upgrade-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #f0f6ff;
+    }
+
+    .level {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cyan);
+      white-space: nowrap;
+    }
+
+    .upgrade-copy {
+      margin-top: 2px;
+      font-size: 12px;
+      line-height: 1.25;
+      color: #aebad2;
+    }
+
+    .upgrade-effect {
+      margin-top: 4px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .buy {
+      justify-self: end;
+      width: 78px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #07111c;
+      background: linear-gradient(135deg, var(--cyan), #7ccfff 48%, var(--violet));
+      box-shadow: 0 0 22px rgba(32, 223, 255, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.38);
+    }
+
+    .bottom-accent {
+      position: absolute;
+      left: 232px;
+      right: 16px;
+      bottom: 28px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(32, 223, 255, 0.30), rgba(139, 122, 255, 0.22), transparent);
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <svg class="sprite" aria-hidden="true">
+      <symbol id="icon-money" viewBox="0 0 24 24">
+        <path d="M12 3v18M16 7.5c-.9-1-2.3-1.5-4.1-1.5-2.2 0-3.8 1-3.8 2.6 0 1.7 1.5 2.3 4.2 2.7 2.5.4 3.9 1.1 3.9 2.9 0 1.9-1.8 3.1-4.2 3.1-1.9 0-3.6-.6-4.8-1.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icon-fans" viewBox="0 0 24 24">
+        <path d="M8.2 11.2a3.4 3.4 0 1 0 0-6.8 3.4 3.4 0 0 0 0 6.8ZM15.8 11.2a3.4 3.4 0 1 0 0-6.8 3.4 3.4 0 0 0 0 6.8ZM3.4 19.6c.4-3.3 2.1-5 4.8-5 2.5 0 4.1 1.5 4.7 4.4M11.1 19.6c.4-3.3 2.1-5 4.7-5 2.7 0 4.4 1.7 4.8 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icon-trophy" viewBox="0 0 24 24">
+        <path d="M8 4h8v3.4c0 3-1.6 5.1-4 5.1S8 10.4 8 7.4V4Z" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M8 6H4.8c0 3 .9 5 3.9 5.4M16 6h3.2c0 3-.9 5-3.9 5.4M12 12.6V17M8.7 20h6.6M10 17h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icon-soccer" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="m12 7.2 3.2 2.3-1.2 3.8h-4l-1.2-3.8L12 7.2ZM9.9 13.3 7 15.4M14.1 13.3l2.9 2.1M8.8 9.5 7.5 6.8M15.2 9.5l1.3-2.7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="icon-basket" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M4.2 12h15.6M12 3.4c1.4 2.4 2.1 5.2 2.1 8.6s-.7 6.2-2.1 8.6M12 3.4C10.6 5.8 9.9 8.6 9.9 12s.7 6.2 2.1 8.6M6.2 6.4c2.1 2 4.1 3 5.8 3s3.7-1 5.8-3M6.2 17.6c2.1-2 4.1-3 5.8-3s3.7 1 5.8 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icon-gear" viewBox="0 0 24 24">
+        <path d="M10.2 3.7h3.6l.6 2.4 2.1.9 2.1-1.3 2.5 2.6-1.3 2.1.8 2.1 2.4.6v3.6l-2.4.6-.8 2.1 1.3 2.1-2.5 2.6-2.1-1.3-2.1.9-.6 2.4h-3.6l-.6-2.4-2.1-.9-2.1 1.3-2.5-2.6 1.3-2.1-.8-2.1-2.4-.6v-3.6l2.4-.6.8-2.1-1.3-2.1 2.5-2.6 2.1 1.3 2.1-.9.6-2.4Z" transform="scale(.76) translate(3.8 3.8)" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      </symbol>
+      <symbol id="icon-field" viewBox="0 0 24 24">
+        <rect x="4" y="5" width="16" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M12 5v14M4 12h16M12 9.2a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      </symbol>
+      <symbol id="icon-target" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <circle cx="12" cy="12" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+        <path d="M12 3.8V1.8M12 22.2v-2M3.8 12h-2M22.2 12h-2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icon-team" viewBox="0 0 24 24">
+        <path d="M4 7.2h6l1.4 2H20v8.6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7.2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        <path d="M8 14.7h8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icon-market" viewBox="0 0 24 24">
+        <path d="M5 6h2.4l1.5 8.3h8.4l1.7-5.8H8.1M9.7 19.2h.1M17 19.2h.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="9.7" cy="19.2" r="1.2" fill="currentColor"/>
+        <circle cx="17" cy="19.2" r="1.2" fill="currentColor"/>
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M12 7.2v5.1l3.5 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icon-attack" viewBox="0 0 24 24">
+        <path d="M4 15.8 14.8 5l4.2.1-.1 4.2L8.2 20H4v-4.2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        <path d="m13.6 6.2 4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icon-shield" viewBox="0 0 24 24">
+        <path d="M12 3.5 19 6v5.4c0 4.6-2.5 7.6-7 9.1-4.5-1.5-7-4.5-7-9.1V6l7-2.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        <path d="M12 7.5v8.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icon-stadium" viewBox="0 0 24 24">
+        <path d="M4 14.5c0-4 3.6-7.1 8-7.1s8 3.1 8 7.1v3.2H4v-3.2Z" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M7 14.1c1.2-1.5 2.9-2.3 5-2.3s3.8.8 5 2.3M7.5 7.2 6.2 4.5M16.5 7.2l1.3-2.7M12 7.4V4.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icon-bonus" viewBox="0 0 24 24">
+        <path d="M12 3.8 14.4 9l5.6.7-4.1 3.8 1.1 5.5-5-2.7-5 2.7 1.1-5.5L4 9.7 9.6 9 12 3.8Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      </symbol>
+    </svg>
+
+    <header class="topbar">
+      <div class="top-left">
+        <div class="resource">
+          <svg class="icon"><use href="#icon-money"></use></svg>
+          <span class="resource-value">$ 703</span>
+          <span class="income-badge">+$1/s</span>
+        </div>
+        <div class="resource fans">
+          <svg class="icon"><use href="#icon-fans"></use></svg>
+          <span class="resource-value">18</span>
+        </div>
+        <div class="league-pill">
+          <svg class="icon"><use href="#icon-trophy"></use></svg>
+          <span class="league-name">Local League</span>
+        </div>
+      </div>
+      <div class="top-right">
+        <div class="toggle" aria-label="Sport toggle">
+          <div class="toggle-cell active" aria-label="Soccer active">
+            <svg class="icon"><use href="#icon-soccer"></use></svg>
+          </div>
+          <div class="toggle-cell" aria-label="Basketball inactive">
+            <svg class="icon"><use href="#icon-basket"></use></svg>
+          </div>
+        </div>
+        <div class="gear" aria-label="Settings">
+          <svg class="icon"><use href="#icon-gear"></use></svg>
+        </div>
+      </div>
+    </header>
+
+    <nav class="sidebar glass">
+      <div class="nav-item active">
+        <svg class="icon"><use href="#icon-field"></use></svg>
+        <span class="nav-label">Match</span>
+      </div>
+      <div class="nav-item">
+        <svg class="icon"><use href="#icon-trophy"></use></svg>
+        <span class="nav-label">Standings</span>
+        <span class="nav-badge">2/10</span>
+      </div>
+      <div class="nav-item">
+        <svg class="icon"><use href="#icon-target"></use></svg>
+        <span class="nav-label">Objectives</span>
+      </div>
+      <div class="nav-item">
+        <svg class="icon"><use href="#icon-team"></use></svg>
+        <span class="nav-label">Team</span>
+        <span class="nav-badge">2</span>
+      </div>
+      <div class="nav-item">
+        <svg class="icon"><use href="#icon-market"></use></svg>
+        <span class="nav-label">Market</span>
+      </div>
+    </nav>
+
+    <main class="match-panel glass">
+      <section class="score-hero" aria-label="Score">
+        <div class="score-block">
+          <div class="team-score">
+            <div class="team-label you">You</div>
+            <div class="score-number home">17</div>
+          </div>
+          <div class="versus">vs</div>
+          <div class="team-score">
+            <div class="team-label">Rival</div>
+            <div class="score-number away">11</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pitch-shell" aria-label="Match field">
+        <div class="goal-badge">GOAL</div>
+        <div class="particle p1">+$25</div>
+        <div class="particle p2">+$25</div>
+        <div class="particle p3">+$25</div>
+        <svg class="pitch" viewBox="0 0 720 430" aria-label="Soccer field with players">
+          <defs>
+            <linearGradient id="fieldGrass" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#285c3c"/>
+              <stop offset="0.45" stop-color="#1d7841"/>
+              <stop offset="1" stop-color="#166133"/>
+            </linearGradient>
+            <linearGradient id="stripe" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="rgba(255,255,255,0.09)"/>
+              <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+            <radialGradient id="homeKit" cx="35%" cy="30%">
+              <stop offset="0" stop-color="#dffbff"/>
+              <stop offset="0.22" stop-color="#58e8ff"/>
+              <stop offset="1" stop-color="#1574d2"/>
+            </radialGradient>
+            <radialGradient id="awayKit" cx="35%" cy="30%">
+              <stop offset="0" stop-color="#ffe5e7"/>
+              <stop offset="0.24" stop-color="#ff697c"/>
+              <stop offset="1" stop-color="#c82348"/>
+            </radialGradient>
+            <radialGradient id="ball" cx="35%" cy="32%">
+              <stop offset="0" stop-color="#fff8bd"/>
+              <stop offset="0.48" stop-color="#ffc94d"/>
+              <stop offset="1" stop-color="#f06f2b"/>
+            </radialGradient>
+            <filter id="playerGlow" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur stdDeviation="3.5" result="glow"/>
+              <feMerge>
+                <feMergeNode in="glow"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <path d="M112 382 608 382 532 64 188 64Z" fill="#08111d" opacity="0.48"/>
+          <path d="M102 374 618 374 530 54 190 54Z" fill="url(#fieldGrass)" stroke="rgba(229,255,244,0.72)" stroke-width="2.2"/>
+          <path d="M121 306 599 306 583 250 137 250Z" fill="rgba(255,255,255,0.055)"/>
+          <path d="M137 250 583 250 568 195 152 195Z" fill="rgba(0,0,0,0.045)"/>
+          <path d="M152 195 568 195 553 141 167 141Z" fill="rgba(255,255,255,0.052)"/>
+          <path d="M167 141 553 141 538 88 182 88Z" fill="rgba(0,0,0,0.04)"/>
+          <path d="M123 306h474M153 195h414" stroke="rgba(231,255,248,0.70)" stroke-width="2"/>
+          <ellipse cx="360" cy="250" rx="43" ry="58" fill="none" stroke="rgba(231,255,248,0.72)" stroke-width="2.2"/>
+          <circle cx="360" cy="250" r="3.4" fill="rgba(231,255,248,0.88)"/>
+          <path d="M316 54h88v-10h-88Z" fill="rgba(218,234,255,0.84)" opacity="0.78"/>
+          <path d="M275 374h170v12H275Z" fill="#ffd23c" opacity="0.9"/>
+          <path d="M275 386h170" stroke="rgba(255,221,71,0.9)" stroke-width="10" filter="url(#playerGlow)" opacity="0.55"/>
+          <g filter="url(#playerGlow)">
+            <ellipse cx="300" cy="221" rx="15" ry="9" fill="url(#homeKit)" stroke="#dffbff" stroke-width="1.2"/>
+            <ellipse cx="336" cy="246" rx="16" ry="9" fill="url(#homeKit)" stroke="#dffbff" stroke-width="1.2"/>
+            <ellipse cx="381" cy="276" rx="17" ry="10" fill="url(#homeKit)" stroke="#dffbff" stroke-width="1.2"/>
+            <ellipse cx="424" cy="247" rx="16" ry="9" fill="url(#homeKit)" stroke="#dffbff" stroke-width="1.2"/>
+            <ellipse cx="458" cy="217" rx="15" ry="9" fill="url(#homeKit)" stroke="#dffbff" stroke-width="1.2"/>
+            <ellipse cx="362" cy="205" rx="14" ry="8" fill="url(#homeKit)" stroke="#dffbff" stroke-width="1.2"/>
+            <ellipse cx="365" cy="248" rx="14" ry="8" fill="url(#homeKit)" stroke="#dffbff" stroke-width="1.2"/>
+          </g>
+          <g filter="url(#playerGlow)">
+            <ellipse cx="300" cy="250" rx="15" ry="9" fill="url(#awayKit)" stroke="#ffe2e6" stroke-width="1.2"/>
+            <ellipse cx="336" cy="220" rx="15" ry="9" fill="url(#awayKit)" stroke="#ffe2e6" stroke-width="1.2"/>
+            <ellipse cx="382" cy="188" rx="14" ry="8" fill="url(#awayKit)" stroke="#ffe2e6" stroke-width="1.2"/>
+            <ellipse cx="432" cy="198" rx="15" ry="9" fill="url(#awayKit)" stroke="#ffe2e6" stroke-width="1.2"/>
+            <ellipse cx="468" cy="224" rx="15" ry="9" fill="url(#awayKit)" stroke="#ffe2e6" stroke-width="1.2"/>
+            <ellipse cx="350" cy="278" rx="16" ry="9" fill="url(#awayKit)" stroke="#ffe2e6" stroke-width="1.2"/>
+            <ellipse cx="398" cy="252" rx="16" ry="9" fill="url(#awayKit)" stroke="#ffe2e6" stroke-width="1.2"/>
+          </g>
+          <circle cx="357" cy="248" r="7.2" fill="url(#ball)" stroke="#fff2ae" stroke-width="1.4" filter="url(#playerGlow)"/>
+        </svg>
+      </section>
+
+      <section class="match-meta">
+        <div class="clock">
+          <svg class="icon"><use href="#icon-clock"></use></svg>
+          <span>H2</span>
+          <span>0:17</span>
+        </div>
+        <div class="odds">
+          <div class="odd win">Win <strong>66%</strong></div>
+          <div class="odd">Draw <strong>3%</strong></div>
+          <div class="odd lose">Lose <strong>31%</strong></div>
+        </div>
+      </section>
+
+      <section class="match-economy">
+        <span>Local League</span>
+        <span class="reward">Match Reward: $85</span>
+      </section>
+
+      <section class="progress-row">
+        <span>Local League</span>
+        <span>2 / 10 wins</span>
+        <div class="bar"><div class="bar-fill"></div></div>
+      </section>
+
+      <section class="drops">
+        <div class="drops-head">
+          <span>Recent Drops</span>
+          <span>last 3 - see Team for all</span>
+        </div>
+        <div class="drop-strip">
+          <div class="drop-card">
+            <div class="drop-inner">
+              <div class="mono-chip">S</div>
+              <div>
+                <div class="drop-title">Striker</div>
+                <div class="drop-tier">Common</div>
+              </div>
+              <div class="drop-stat">+0.64% Team Power</div>
+            </div>
+          </div>
+          <div class="drop-card">
+            <div class="drop-inner">
+              <div class="mono-chip">G</div>
+              <div>
+                <div class="drop-title">Guard</div>
+                <div class="drop-tier">Common</div>
+              </div>
+              <div class="drop-stat">+0.61% Team Power</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="right-col">
+      <section class="section stats glass">
+        <div class="section-title">
+          <span>Team Stats</span>
+          <div class="legend">
+            <span><i></i>You</span>
+            <span><i></i>League avg</span>
+          </div>
+        </div>
+        <div class="stat-list">
+          <div class="stat-row">
+            <div class="stat-name">Team Power</div>
+            <div class="stat-value">+6% <span>vs +3%</span></div>
+            <div class="stat-bar" style="--w: 28%; --avg: 14%;"></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-name">Rival Suppression</div>
+            <div class="stat-value">0% <span>vs +2%</span></div>
+            <div class="stat-bar" style="--w: 2%; --avg: 11%;"></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-name">Match Reward</div>
+            <div class="stat-value">+0% <span>vs +5%</span></div>
+            <div class="stat-bar" style="--w: 2%; --avg: 22%;"></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-name">Goal Reward</div>
+            <div class="stat-value">0% <span>vs 0%</span></div>
+            <div class="stat-bar" style="--w: 2%; --avg: 2%;"></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-name">Match Speed</div>
+            <div class="stat-value">4.0x <span>vs +10%</span></div>
+            <div class="stat-bar" style="--w: 40%; --avg: 10%;"></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-name">Fan Multiplier</div>
+            <div class="stat-value">0% <span>vs +20%</span></div>
+            <div class="stat-bar" style="--w: 2%; --avg: 28%;"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section upgrades glass">
+        <div class="section-title">
+          <span>Upgrades</span>
+        </div>
+        <div class="upgrade-list">
+          <div class="upgrade-card">
+            <div class="upgrade-inner">
+              <div class="upgrade-icon"><svg class="icon"><use href="#icon-attack"></use></svg></div>
+              <div>
+                <div class="upgrade-title-line">
+                  <div class="upgrade-title">Attack</div>
+                  <div class="level">Lv 0</div>
+                </div>
+                <div class="upgrade-copy">Boost team power. Score more goals.</div>
+                <div class="upgrade-effect">team power +3%</div>
+              </div>
+              <div class="buy">$18</div>
+            </div>
+          </div>
+          <div class="upgrade-card">
+            <div class="upgrade-inner">
+              <div class="upgrade-icon"><svg class="icon"><use href="#icon-shield"></use></svg></div>
+              <div>
+                <div class="upgrade-title-line">
+                  <div class="upgrade-title">Defense</div>
+                  <div class="level">Lv 0</div>
+                </div>
+                <div class="upgrade-copy">Weaken rival. Concede less.</div>
+                <div class="upgrade-effect">rival power -2%</div>
+              </div>
+              <div class="buy">$18</div>
+            </div>
+          </div>
+          <div class="upgrade-card">
+            <div class="upgrade-inner">
+              <div class="upgrade-icon"><svg class="icon"><use href="#icon-stadium"></use></svg></div>
+              <div>
+                <div class="upgrade-title-line">
+                  <div class="upgrade-title">Stadium</div>
+                  <div class="level">Lv 0</div>
+                </div>
+                <div class="upgrade-copy">Passive income: gate revenue.</div>
+                <div class="upgrade-effect">+$1/sec</div>
+              </div>
+              <div class="buy">$25</div>
+            </div>
+          </div>
+          <div class="upgrade-card">
+            <div class="upgrade-inner">
+              <div class="upgrade-icon"><svg class="icon"><use href="#icon-bonus"></use></svg></div>
+              <div>
+                <div class="upgrade-title-line">
+                  <div class="upgrade-title">Goal Bonus</div>
+                  <div class="level">Lv 0</div>
+                </div>
+                <div class="upgrade-copy">More cash per goal.</div>
+                <div class="upgrade-effect">goal reward +$5</div>
+              </div>
+              <div class="buy">$30</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <div class="bottom-accent"></div>
+  </div>
+</body>
+</html>

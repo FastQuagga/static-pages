@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280, initial-scale=1.0">
+  <title>Sports Idle Match - Retro Arcade Variant B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #02030a;
+      --cabinet: #070b19;
+      --navy: #10172b;
+      --panel: #151d35;
+      --panel-hi: #223056;
+      --panel-lo: #080d1c;
+      --line: #40507c;
+      --white: #f5f5df;
+      --muted: #98a6c8;
+      --cyan: #15d8ff;
+      --blue: #2579ff;
+      --red: #ff3a44;
+      --amber: #ffbf29;
+      --orange: #ff702d;
+      --green: #15e379;
+      --purple: #9b60ff;
+      --shadow: #000515;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 1280px;
+      height: 800px;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    body {
+      position: relative;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 50% 106%, rgba(155, 96, 255, 0.16), transparent 30%),
+        linear-gradient(180deg, #080d18 0%, #060914 52%, #03050c 100%);
+      font-family: "VT323", monospace;
+      letter-spacing: 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.035) 50%, rgba(0, 0, 0, 0.08) 50%),
+        radial-gradient(circle at center, transparent 55%, rgba(0, 0, 0, 0.28) 100%);
+      background-size: 100% 4px, 100% 100%;
+      mix-blend-mode: screen;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 21;
+      border: 10px solid rgba(0, 0, 0, 0.18);
+      box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.62);
+    }
+
+    .screen {
+      position: relative;
+      width: 1280px;
+      height: 800px;
+      overflow: hidden;
+      padding: 16px;
+      background:
+        linear-gradient(90deg, rgba(21, 216, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(21, 216, 255, 0.025) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    .pixel,
+    .brand,
+    .score-digit,
+    .led-label,
+    .panel-title,
+    .odds-chip,
+    .button-price,
+    .nav-badge {
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .bevel {
+      background: var(--panel);
+      border: 4px solid var(--line);
+      border-top-color: #5b6da1;
+      border-left-color: #5b6da1;
+      border-right-color: #0b1124;
+      border-bottom-color: #0b1124;
+      box-shadow:
+        6px 6px 0 var(--shadow),
+        inset 3px 3px 0 rgba(255, 255, 255, 0.06),
+        inset -3px -3px 0 rgba(0, 0, 0, 0.35);
+    }
+
+    .topbar {
+      position: absolute;
+      left: 16px;
+      top: 16px;
+      width: 1248px;
+      height: 48px;
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .top-cell {
+      height: 42px;
+      min-width: 126px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #111a33;
+      border: 3px solid #2a3962;
+      border-top-color: #4d5e91;
+      border-left-color: #4d5e91;
+      border-right-color: #070c18;
+      border-bottom-color: #070c18;
+      box-shadow: 4px 4px 0 #02040a, inset 2px 2px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .top-cell.money {
+      min-width: 154px;
+    }
+
+    .top-cell.fans {
+      min-width: 100px;
+    }
+
+    .top-cell.league {
+      min-width: 210px;
+    }
+
+    .resource-value {
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      font-size: 14px;
+      color: #7bd6ff;
+      text-shadow: 2px 2px 0 #00192a;
+    }
+
+    .income-badge {
+      padding: 4px 7px 5px;
+      color: var(--white);
+      background: #07815d;
+      border: 2px solid #20e49a;
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.18), 2px 2px 0 #03150f;
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      font-size: 8px;
+    }
+
+    .sport-controls {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+      height: 42px;
+    }
+
+    .sport-toggle,
+    .settings {
+      width: 76px;
+      height: 42px;
+      position: relative;
+      background: #121b33;
+      border: 3px solid #2b3860;
+      border-top-color: #53669c;
+      border-left-color: #53669c;
+      border-right-color: #070c18;
+      border-bottom-color: #070c18;
+      box-shadow: 4px 4px 0 #02040a, inset 2px 2px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .sport-toggle.active {
+      background: #16345d;
+      border-top-color: #20d7ff;
+      border-left-color: #20d7ff;
+      box-shadow: 0 0 18px rgba(21, 216, 255, 0.45), 4px 4px 0 #02040a;
+    }
+
+    .settings {
+      width: 42px;
+    }
+
+    .soccer-icon,
+    .ball-icon {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 18px;
+      height: 18px;
+      background: #f5f5df;
+      border: 3px solid #111;
+      box-shadow:
+        5px 0 0 #111,
+        -5px 0 0 #111,
+        0 5px 0 #111,
+        0 -5px 0 #111;
+    }
+
+    .sport-label {
+      position: absolute;
+      left: 34px;
+      top: 14px;
+      color: #aeb9d8;
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      font-size: 6px;
+      line-height: 1;
+    }
+
+    .sport-toggle.active .sport-label {
+      color: var(--cyan);
+      text-shadow: 0 0 8px rgba(21, 216, 255, 0.9);
+    }
+
+    .ball-icon {
+      border-radius: 50%;
+      background:
+        linear-gradient(90deg, transparent 42%, #17120f 42%, #17120f 56%, transparent 56%),
+        linear-gradient(0deg, transparent 42%, #17120f 42%, #17120f 56%, transparent 56%),
+        #e56e22;
+      border-color: #30160d;
+      box-shadow: none;
+    }
+
+    .settings::before,
+    .settings::after {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 16px;
+      height: 16px;
+      background: #b4bfd8;
+      box-shadow:
+        0 -6px 0 #b4bfd8,
+        0 6px 0 #b4bfd8,
+        -6px 0 0 #b4bfd8,
+        6px 0 0 #b4bfd8;
+    }
+
+    .settings::after {
+      left: 15px;
+      top: 15px;
+      width: 6px;
+      height: 6px;
+      background: #151d35;
+      box-shadow: none;
+    }
+
+    .currency-icon {
+      width: 14px;
+      color: var(--white);
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    .fans-icon {
+      position: relative;
+      width: 22px;
+      height: 18px;
+    }
+
+    .fans-icon::before,
+    .fans-icon::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 9px;
+      height: 10px;
+      background: #7485a8;
+      box-shadow: 0 -7px 0 #7485a8;
+    }
+
+    .fans-icon::before {
+      left: 2px;
+    }
+
+    .fans-icon::after {
+      right: 2px;
+      background: #a2afd0;
+      box-shadow: 0 -7px 0 #a2afd0;
+    }
+
+    .cup-icon {
+      position: relative;
+      width: 20px;
+      height: 22px;
+    }
+
+    .cup-icon::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 2px;
+      width: 10px;
+      height: 12px;
+      background: var(--amber);
+      box-shadow:
+        -5px 2px 0 #9e640d,
+        5px 2px 0 #9e640d,
+        0 12px 0 #f28d20,
+        -3px 16px 0 #f28d20,
+        3px 16px 0 #f28d20;
+    }
+
+    .left-nav {
+      position: absolute;
+      left: 16px;
+      top: 74px;
+      width: 200px;
+      height: 274px;
+      padding: 10px;
+    }
+
+    .nav-item {
+      height: 47px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 10px;
+      margin-bottom: 7px;
+      color: var(--white);
+      font-size: 23px;
+      font-weight: 700;
+      text-shadow: 2px 2px 0 #000;
+      border: 3px solid transparent;
+    }
+
+    .nav-item.active {
+      color: var(--cyan);
+      background: #17365b;
+      border-color: #0a182a;
+      border-top-color: #2df0ff;
+      border-left-color: #2df0ff;
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.08), 3px 3px 0 #040711;
+    }
+
+    .nav-label {
+      flex: 1;
+      line-height: 1;
+    }
+
+    .nav-badge {
+      min-width: 36px;
+      height: 18px;
+      padding-top: 4px;
+      text-align: center;
+      color: #bec8e7;
+      background: #2a344f;
+      font-size: 8px;
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-badge.small {
+      min-width: 18px;
+    }
+
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      position: relative;
+      flex: 0 0 24px;
+    }
+
+    .nav-icon.match {
+      background: #1b8f4b;
+      border: 3px solid #f5f5df;
+      box-shadow: inset 0 8px 0 #146b37;
+    }
+
+    .nav-icon.match::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: -4px;
+      width: 3px;
+      height: 26px;
+      background: var(--white);
+    }
+
+    .nav-icon.standings::before {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 12px;
+      height: 12px;
+      background: var(--amber);
+      box-shadow:
+        -5px 2px 0 #9e640d,
+        5px 2px 0 #9e640d,
+        0 12px 0 #f28d20,
+        -4px 17px 0 #f28d20,
+        4px 17px 0 #f28d20;
+    }
+
+    .nav-icon.objectives {
+      border: 3px solid var(--red);
+      background: #f5f5df;
+      box-shadow: inset 0 0 0 4px #10172b, inset 0 0 0 7px var(--red);
+    }
+
+    .nav-icon.objectives::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      width: 4px;
+      height: 4px;
+      background: var(--cyan);
+    }
+
+    .nav-icon.team {
+      background: #c89149;
+      border: 3px solid #ffd288;
+      box-shadow: inset 0 7px 0 #8f5a25;
+    }
+
+    .nav-icon.team::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: -5px;
+      width: 12px;
+      height: 6px;
+      border: 3px solid #ffd288;
+      border-bottom: 0;
+    }
+
+    .nav-icon.market::before {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 6px;
+      width: 17px;
+      height: 10px;
+      background: #687695;
+      box-shadow:
+        3px 3px 0 #404b67,
+        -2px -4px 0 #687695;
+    }
+
+    .nav-icon.market::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 19px;
+      width: 4px;
+      height: 4px;
+      background: #aeb9d2;
+      box-shadow: 12px 0 0 #aeb9d2;
+    }
+
+    .main-panel {
+      position: absolute;
+      left: 232px;
+      top: 74px;
+      width: 554px;
+      height: 640px;
+      padding: 14px 16px;
+    }
+
+    .scoreboard {
+      position: relative;
+      width: 522px;
+      height: 128px;
+      padding: 10px 18px;
+      background:
+        radial-gradient(circle, rgba(255, 191, 41, 0.2) 1px, transparent 2px),
+        linear-gradient(180deg, #050606 0%, #12100b 100%);
+      background-size: 8px 8px, 100% 100%;
+      border: 4px solid #0e1221;
+      border-top-color: #3e496d;
+      border-left-color: #3e496d;
+      border-right-color: #000;
+      border-bottom-color: #000;
+      box-shadow:
+        0 0 28px rgba(255, 112, 45, 0.12),
+        5px 5px 0 #02040a,
+        inset 0 0 20px rgba(255, 191, 41, 0.1);
+    }
+
+    .led-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+
+    .led-label {
+      font-size: 9px;
+      color: #ffef99;
+      text-shadow: 0 0 8px #ff702d;
+    }
+
+    .timer-box {
+      padding: 7px 10px;
+      color: var(--cyan);
+      background: #101624;
+      border: 2px solid #40507c;
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.04), 2px 2px 0 #000;
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      font-size: 10px;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 1fr 48px 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .team-score {
+      position: relative;
+      min-width: 0;
+    }
+
+    .team-score.away {
+      text-align: right;
+    }
+
+    .team-name {
+      display: block;
+      margin-bottom: 7px;
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      font-size: 10px;
+      color: var(--cyan);
+      text-shadow: 0 0 10px rgba(21, 216, 255, 0.85);
+    }
+
+    .away .team-name {
+      color: var(--red);
+      text-shadow: 0 0 10px rgba(255, 58, 68, 0.85);
+    }
+
+    .score-digit {
+      display: inline-block;
+      font-size: 42px;
+      line-height: 1;
+      color: var(--amber);
+      text-shadow:
+        0 0 8px var(--amber),
+        0 0 18px #ff702d,
+        4px 4px 0 #361504;
+    }
+
+    .versus {
+      width: 48px;
+      height: 38px;
+      padding-top: 12px;
+      text-align: center;
+      color: var(--white);
+      background: #17191f;
+      border: 2px solid #343846;
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.05);
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      font-size: 9px;
+    }
+
+    .goal-burst {
+      position: absolute;
+      right: 16px;
+      top: 41px;
+      width: 112px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      color: #fff2a1;
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      font-size: 16px;
+      text-shadow:
+        3px 0 0 var(--red),
+        -3px 0 0 var(--cyan),
+        0 0 14px var(--amber);
+      transform: rotate(-5deg);
+      z-index: 2;
+    }
+
+    .goal-burst::before {
+      content: "";
+      position: absolute;
+      inset: -7px -12px;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, transparent 44%, var(--red) 44%, var(--red) 56%, transparent 56%),
+        linear-gradient(0deg, transparent 44%, var(--amber) 44%, var(--amber) 56%, transparent 56%),
+        #2a1340;
+      border: 3px solid var(--white);
+      box-shadow: 4px 4px 0 #000;
+      clip-path: polygon(0 38%, 14% 33%, 10% 6%, 32% 22%, 45% 0, 54% 22%, 80% 8%, 74% 35%, 100% 39%, 78% 54%, 94% 84%, 62% 70%, 51% 100%, 40% 70%, 8% 86%, 22% 56%);
+    }
+
+    .field-wrap {
+      position: relative;
+      width: 522px;
+      height: 276px;
+      margin-top: 10px;
+      padding: 10px;
+      background: #05080f;
+      border: 4px solid #0e1221;
+      border-top-color: #3e496d;
+      border-left-color: #3e496d;
+      border-right-color: #000;
+      border-bottom-color: #000;
+      box-shadow: 5px 5px 0 #02040a, inset 0 0 26px rgba(21, 216, 255, 0.08);
+    }
+
+    .field {
+      position: relative;
+      width: 494px;
+      height: 248px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg,
+          #1c8a42 0 12.5%,
+          #167a39 12.5% 25%,
+          #1e9246 25% 37.5%,
+          #167a39 37.5% 50%,
+          #1e9246 50% 62.5%,
+          #167a39 62.5% 75%,
+          #1d8b42 75% 87.5%,
+          #136b33 87.5% 100%);
+      border: 5px solid #eaf6e4;
+      box-shadow:
+        inset 0 0 0 3px #0b4d25,
+        inset 0 0 44px rgba(0, 0, 0, 0.42),
+        0 0 18px rgba(21, 227, 121, 0.2);
+      image-rendering: pixelated;
+    }
+
+    .field::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 5px;
+      background: #eaf6e4;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    .field::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 72px;
+      height: 72px;
+      margin-left: -36px;
+      margin-top: -36px;
+      border: 5px solid #eaf6e4;
+      box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.12);
+    }
+
+    .penalty.top,
+    .penalty.bottom,
+    .goal-mouth.top,
+    .goal-mouth.bottom {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid #eaf6e4;
+      z-index: 1;
+    }
+
+    .penalty.top {
+      top: -5px;
+      width: 126px;
+      height: 48px;
+      border-top: 0;
+    }
+
+    .penalty.bottom {
+      bottom: -5px;
+      width: 126px;
+      height: 48px;
+      border-bottom: 0;
+    }
+
+    .goal-mouth.top,
+    .goal-mouth.bottom {
+      width: 76px;
+      height: 16px;
+      background: #dce6ef;
+      border-color: #8c9bad;
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.35);
+    }
+
+    .goal-mouth.top {
+      top: -18px;
+    }
+
+    .goal-mouth.bottom {
+      bottom: -18px;
+    }
+
+    .net-flash {
+      position: absolute;
+      left: 50%;
+      bottom: -18px;
+      width: 112px;
+      height: 18px;
+      transform: translateX(-50%);
+      background: var(--amber);
+      box-shadow: 0 0 18px var(--amber), 0 0 32px #ff702d;
+      z-index: 3;
+    }
+
+    .player {
+      position: absolute;
+      width: 24px;
+      height: 28px;
+      z-index: 4;
+      filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.45));
+    }
+
+    .player::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 0;
+      width: 10px;
+      height: 8px;
+      background: #ffd39a;
+      box-shadow:
+        0 -2px 0 #8d5630,
+        -3px 8px 0 #f5f5df,
+        13px 8px 0 #f5f5df;
+    }
+
+    .player::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 8px;
+      width: 16px;
+      height: 14px;
+      background: var(--kit);
+      border: 3px solid var(--trim);
+      box-shadow:
+        3px 14px 0 var(--shorts),
+        10px 14px 0 var(--shorts);
+    }
+
+    .home {
+      --kit: #2579ff;
+      --trim: #a8e8ff;
+      --shorts: #0c3f9c;
+    }
+
+    .away {
+      --kit: #ff3a44;
+      --trim: #ffd5cf;
+      --shorts: #94171f;
+    }
+
+    .h1 { left: 232px; top: 184px; }
+    .h2 { left: 184px; top: 146px; }
+    .h3 { left: 284px; top: 142px; }
+    .h4 { left: 214px; top: 108px; }
+    .h5 { left: 142px; top: 94px; }
+    .h6 { left: 318px; top: 92px; }
+    .h7 { left: 248px; top: 62px; }
+
+    .a1 { left: 244px; top: 136px; }
+    .a2 { left: 204px; top: 118px; }
+    .a3 { left: 304px; top: 118px; }
+    .a4 { left: 172px; top: 90px; }
+    .a5 { left: 344px; top: 84px; }
+    .a6 { left: 214px; top: 58px; }
+    .a7 { left: 308px; top: 50px; }
+
+    .ball {
+      position: absolute;
+      left: 265px;
+      top: 124px;
+      width: 13px;
+      height: 13px;
+      z-index: 6;
+      background: #f5f5df;
+      border: 2px solid #222633;
+      box-shadow:
+        4px 0 0 #222633,
+        -4px 0 0 #222633,
+        0 4px 0 #222633,
+        0 -4px 0 #222633,
+        5px 5px 0 rgba(0, 0, 0, 0.28);
+    }
+
+    .match-meta {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 5px 12px;
+      margin-top: 10px;
+      align-items: start;
+    }
+
+    .odds-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 0;
+    }
+
+    .odds-chip {
+      height: 28px;
+      min-width: 100px;
+      padding: 7px 8px 0;
+      color: var(--muted);
+      background: #111a33;
+      border: 2px solid #3d4c78;
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.05), 3px 3px 0 #02040a;
+      font-size: 8px;
+      text-align: center;
+    }
+
+    .odds-chip strong {
+      color: var(--cyan);
+      font-size: 10px;
+    }
+
+    .odds-chip.draw strong {
+      color: var(--white);
+    }
+
+    .odds-chip.lose strong {
+      color: var(--red);
+    }
+
+    .reward {
+      min-width: 150px;
+      padding-top: 4px;
+      color: var(--amber);
+      font-size: 24px;
+      text-align: right;
+      text-shadow: 2px 2px 0 #000;
+    }
+
+    .league-progress {
+      grid-column: 1 / 3;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 5px 12px;
+      color: #bdc8e6;
+      font-size: 18px;
+    }
+
+    .progress-track {
+      grid-column: 1 / 3;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 4px;
+      height: 14px;
+      padding: 3px;
+      background: #080d1b;
+      border: 2px solid #283653;
+      box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.45);
+    }
+
+    .progress-track .seg {
+      background: #26324d;
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .progress-track .seg.fill {
+      background: var(--cyan);
+      box-shadow: 0 0 8px rgba(21, 216, 255, 0.8);
+    }
+
+    .drops-strip {
+      margin-top: 8px;
+      padding: 7px 9px;
+      background: #11182b;
+      border: 3px solid #303e62;
+      border-top-color: #566894;
+      border-left-color: #566894;
+      border-right-color: #060b17;
+      border-bottom-color: #060b17;
+      box-shadow: 4px 4px 0 #02040a;
+    }
+
+    .drops-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      color: #aab5d0;
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      font-size: 8px;
+    }
+
+    .drop-row {
+      height: 22px;
+      display: grid;
+      grid-template-columns: 80px 92px 1fr;
+      align-items: center;
+      margin-top: 4px;
+      padding: 0 7px;
+      color: var(--white);
+      background: #171f36;
+      border: 2px solid #465476;
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.05);
+      font-size: 18px;
+    }
+
+    .rarity {
+      color: var(--amber);
+    }
+
+    .drop-power {
+      color: #aee8ff;
+      text-align: right;
+    }
+
+    .right-column {
+      position: absolute;
+      left: 802px;
+      top: 74px;
+      width: 462px;
+      height: 640px;
+      display: grid;
+      grid-template-rows: 286px 1fr;
+      gap: 16px;
+    }
+
+    .stats-panel,
+    .upgrades-panel {
+      padding: 16px;
+    }
+
+    .panel-title {
+      margin-bottom: 15px;
+      color: #aeb9d8;
+      font-size: 9px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 10px;
+      color: #9aa8ca;
+      font-size: 18px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 6px;
+      background: var(--cyan);
+      box-shadow: 0 0 8px rgba(21, 216, 255, 0.8);
+    }
+
+    .legend-dot.avg {
+      background: #69728c;
+      box-shadow: none;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: 154px 1fr 100px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 19px;
+    }
+
+    .stat-name {
+      color: var(--white);
+      text-shadow: 2px 2px 0 #000;
+    }
+
+    .stat-values {
+      color: var(--cyan);
+      text-align: right;
+      font-size: 18px;
+    }
+
+    .stat-values span {
+      color: #8290b0;
+    }
+
+    .bar {
+      position: relative;
+      height: 13px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 3px;
+      padding: 3px;
+      background: #070b17;
+      border: 2px solid #252f4a;
+      box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.55);
+    }
+
+    .bar i {
+      display: block;
+      background: #202942;
+    }
+
+    .bar .on {
+      background: var(--cyan);
+      box-shadow: 0 0 8px rgba(21, 216, 255, 0.85);
+    }
+
+    .bar .avg {
+      background: #707a91;
+    }
+
+    .upgrade-card {
+      height: 63px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 7px 10px;
+      background: #151d35;
+      border: 3px solid #303f64;
+      border-top-color: #5d6f9d;
+      border-left-color: #5d6f9d;
+      border-right-color: #060b16;
+      border-bottom-color: #060b16;
+      box-shadow: 4px 4px 0 #02040a, inset 2px 2px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .upgrade-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 3px;
+      color: var(--white);
+      font-size: 21px;
+      font-weight: 700;
+      text-shadow: 2px 2px 0 #000;
+    }
+
+    .upgrade-icon {
+      width: 22px;
+      height: 22px;
+      position: relative;
+      background: var(--icon);
+      border: 3px solid var(--white);
+      box-shadow: 3px 3px 0 #000;
+    }
+
+    .attack-icon {
+      --icon: var(--red);
+      clip-path: polygon(50% 0, 100% 46%, 70% 46%, 70% 100%, 30% 100%, 30% 46%, 0 46%);
+    }
+
+    .defense-icon {
+      --icon: var(--blue);
+      clip-path: polygon(50% 0, 100% 18%, 88% 76%, 50% 100%, 12% 76%, 0 18%);
+    }
+
+    .stadium-icon {
+      --icon: var(--green);
+    }
+
+    .stadium-icon::before {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 4px;
+      width: 10px;
+      height: 8px;
+      background: #10172b;
+    }
+
+    .bonus-icon {
+      --icon: var(--amber);
+      clip-path: polygon(50% 0, 62% 34%, 100% 34%, 70% 54%, 82% 100%, 50% 72%, 18% 100%, 30% 54%, 0 34%, 38% 34%);
+    }
+
+    .upgrade-desc {
+      color: #afbad6;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .upgrade-effect {
+      margin-top: 2px;
+      color: var(--cyan);
+      font-size: 15px;
+    }
+
+    .upgrade-side {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .level {
+      color: var(--cyan);
+      font-size: 18px;
+    }
+
+    .button-price {
+      width: 80px;
+      height: 36px;
+      padding-top: 11px;
+      text-align: center;
+      color: #0a1020;
+      background: var(--amber);
+      border: 3px solid #ffe07a;
+      border-right-color: #7b480e;
+      border-bottom-color: #7b480e;
+      box-shadow: 4px 4px 0 #02040a, inset 2px 2px 0 rgba(255, 255, 255, 0.25);
+      font-size: 10px;
+    }
+
+    .button-price.cyan {
+      background: var(--cyan);
+      border-top-color: #b9f6ff;
+      border-left-color: #b9f6ff;
+      border-right-color: #075f73;
+      border-bottom-color: #075f73;
+    }
+
+    .cabinet-footer {
+      position: absolute;
+      left: 16px;
+      bottom: 15px;
+      width: 1248px;
+      height: 56px;
+      background: #070b18;
+      border-top: 4px solid #17213e;
+      box-shadow: inset 0 10px 0 rgba(255, 255, 255, 0.025);
+    }
+
+    .coin-slot {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 44px;
+      height: 44px;
+      background: #11182b;
+      border: 3px solid #425276;
+      border-top-color: #6d7da7;
+      border-left-color: #6d7da7;
+      border-right-color: #02040a;
+      border-bottom-color: #02040a;
+      box-shadow: 4px 4px 0 #02040a;
+    }
+
+    .coin-slot::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: 11px;
+      width: 16px;
+      height: 20px;
+      background: #070b17;
+      border: 2px solid #aeb9d5;
+      box-shadow: inset 0 7px 0 #2e3a5b;
+    }
+  </style>
+</head>
+<body>
+  <main class="screen" aria-label="Retro arcade match screen mockup">
+    <header class="topbar">
+      <div class="top-cell money">
+        <span class="currency-icon">$</span>
+        <span class="resource-value">703</span>
+        <span class="income-badge">+$1/s</span>
+      </div>
+      <div class="top-cell fans">
+        <span class="fans-icon" aria-hidden="true"></span>
+        <span class="resource-value">18</span>
+      </div>
+      <div class="top-cell league">
+        <span class="cup-icon" aria-hidden="true"></span>
+        <span class="brand">Local League</span>
+      </div>
+      <div class="sport-controls" aria-label="Sport and settings controls">
+        <div class="sport-toggle active" title="Soccer active" aria-label="Soccer active">
+          <span class="soccer-icon" aria-hidden="true"></span>
+          <span class="sport-label">SOCCER</span>
+        </div>
+        <div class="sport-toggle" title="Basketball inactive" aria-label="Basketball inactive">
+          <span class="ball-icon" aria-hidden="true"></span>
+          <span class="sport-label">HOOPS</span>
+        </div>
+        <div class="settings" title="Settings" aria-label="Settings"></div>
+      </div>
+    </header>
+
+    <nav class="left-nav bevel" aria-label="Main navigation">
+      <div class="nav-item active">
+        <span class="nav-icon match" aria-hidden="true"></span>
+        <span class="nav-label">Match</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon standings" aria-hidden="true"></span>
+        <span class="nav-label">Standings</span>
+        <span class="nav-badge">2/10</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon objectives" aria-hidden="true"></span>
+        <span class="nav-label">Objectives</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon team" aria-hidden="true"></span>
+        <span class="nav-label">Team</span>
+        <span class="nav-badge small">2</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon market" aria-hidden="true"></span>
+        <span class="nav-label">Market</span>
+      </div>
+    </nav>
+
+    <section class="main-panel bevel" aria-label="Match">
+      <div class="scoreboard" aria-label="Arcade scoreboard">
+        <div class="led-top">
+          <span class="led-label">LIVE MATCH</span>
+          <span class="timer-box">H2&nbsp;&nbsp;0:17</span>
+          <span class="led-label">JAM CAM</span>
+        </div>
+        <div class="score-row">
+          <div class="team-score">
+            <span class="team-name">YOU</span>
+            <span class="score-digit">17</span>
+          </div>
+          <div class="versus">VS</div>
+          <div class="team-score away">
+            <span class="team-name">RIVAL</span>
+            <span class="score-digit">11</span>
+          </div>
+        </div>
+        <div class="goal-burst">GOAL!</div>
+      </div>
+
+      <div class="field-wrap">
+        <div class="field" aria-label="Top-down pixel soccer pitch with players">
+          <div class="penalty top"></div>
+          <div class="penalty bottom"></div>
+          <div class="goal-mouth top"></div>
+          <div class="goal-mouth bottom"></div>
+          <div class="net-flash"></div>
+
+          <span class="player home h1"></span>
+          <span class="player home h2"></span>
+          <span class="player home h3"></span>
+          <span class="player home h4"></span>
+          <span class="player home h5"></span>
+          <span class="player home h6"></span>
+          <span class="player home h7"></span>
+
+          <span class="player away a1"></span>
+          <span class="player away a2"></span>
+          <span class="player away a3"></span>
+          <span class="player away a4"></span>
+          <span class="player away a5"></span>
+          <span class="player away a6"></span>
+          <span class="player away a7"></span>
+
+          <span class="ball" aria-label="Ball"></span>
+        </div>
+      </div>
+
+      <div class="match-meta">
+        <div class="odds-row" aria-label="Outcome odds">
+          <div class="odds-chip">WIN <strong>66%</strong></div>
+          <div class="odds-chip draw">DRAW <strong>3%</strong></div>
+          <div class="odds-chip lose">LOSE <strong>31%</strong></div>
+        </div>
+        <div class="reward">Match Reward: $85</div>
+
+        <div class="league-progress">
+          <span>Local League</span>
+          <span>2 / 10 wins</span>
+          <div class="progress-track" aria-label="League progress 2 of 10 wins">
+            <span class="seg fill"></span>
+            <span class="seg fill"></span>
+            <span class="seg"></span>
+            <span class="seg"></span>
+            <span class="seg"></span>
+            <span class="seg"></span>
+            <span class="seg"></span>
+            <span class="seg"></span>
+            <span class="seg"></span>
+            <span class="seg"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drops-strip" aria-label="Recent drops">
+        <div class="drops-head">
+          <span>RECENT DROPS</span>
+          <span>last 3 - see Team for all</span>
+        </div>
+        <div class="drop-row">
+          <span>Striker</span>
+          <span class="rarity">Common</span>
+          <span class="drop-power">+0.64% Team Power</span>
+        </div>
+        <div class="drop-row">
+          <span>Guard</span>
+          <span class="rarity">Common</span>
+          <span class="drop-power">+0.61% Team Power</span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="right-column" aria-label="Team stats and upgrades">
+      <section class="stats-panel bevel">
+        <div class="panel-title">TEAM STATS</div>
+        <div class="legend">
+          <span class="legend-item"><i class="legend-dot"></i> You</span>
+          <span class="legend-item"><i class="legend-dot avg"></i> League avg</span>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-name">Team Power</div>
+          <div class="bar">
+            <i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="stat-values">+6% <span>vs +3%</span></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-name">Rival Suppression</div>
+          <div class="bar">
+            <i class="avg"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="stat-values">0% <span>vs +2%</span></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-name">Match Reward</div>
+          <div class="bar">
+            <i class="avg"></i><i class="avg"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="stat-values">+0% <span>vs +5%</span></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-name">Goal Reward</div>
+          <div class="bar">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="stat-values">0% <span>vs 0%</span></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-name">Match Speed</div>
+          <div class="bar">
+            <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="avg"></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="stat-values">4.0x <span>vs +10%</span></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-name">Fan Multiplier</div>
+          <div class="bar">
+            <i class="avg"></i><i class="avg"></i><i class="avg"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="stat-values">0% <span>vs +20%</span></div>
+        </div>
+      </section>
+
+      <section class="upgrades-panel bevel">
+        <div class="panel-title">UPGRADES</div>
+
+        <div class="upgrade-card">
+          <div>
+            <div class="upgrade-name"><span class="upgrade-icon attack-icon"></span>Attack</div>
+            <div class="upgrade-desc">Boost team power. Score more goals.</div>
+            <div class="upgrade-effect">+3% team power</div>
+          </div>
+          <div class="upgrade-side">
+            <span class="level">Lv 0</span>
+            <span class="button-price cyan">$18</span>
+          </div>
+        </div>
+
+        <div class="upgrade-card">
+          <div>
+            <div class="upgrade-name"><span class="upgrade-icon defense-icon"></span>Defense</div>
+            <div class="upgrade-desc">Weaken rival. Concede less.</div>
+            <div class="upgrade-effect">-2% rival power</div>
+          </div>
+          <div class="upgrade-side">
+            <span class="level">Lv 0</span>
+            <span class="button-price cyan">$18</span>
+          </div>
+        </div>
+
+        <div class="upgrade-card">
+          <div>
+            <div class="upgrade-name"><span class="upgrade-icon stadium-icon"></span>Stadium</div>
+            <div class="upgrade-desc">Passive income: gate revenue.</div>
+            <div class="upgrade-effect">+$1/sec</div>
+          </div>
+          <div class="upgrade-side">
+            <span class="level">Lv 0</span>
+            <span class="button-price">$25</span>
+          </div>
+        </div>
+
+        <div class="upgrade-card">
+          <div>
+            <div class="upgrade-name"><span class="upgrade-icon bonus-icon"></span>Goal Bonus</div>
+            <div class="upgrade-desc">More cash per goal.</div>
+            <div class="upgrade-effect">+$5 goal reward</div>
+          </div>
+          <div class="upgrade-side">
+            <span class="level">Lv 0</span>
+            <span class="button-price">$30</span>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <footer class="cabinet-footer" aria-hidden="true">
+      <div class="coin-slot"></div>
+    </footer>
+  </main>
+</body>
+</html>

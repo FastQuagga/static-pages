@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Visual directions — сравнение мокапов (2026-06-10)</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; padding: 32px; background: #0b0e16; color: #e8ecf8;
+         font: 14px/1.5 -apple-system, "Segoe UI", sans-serif; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  p.sub { color: #8a96b4; margin: 0 0 28px; }
+  h2 { font-size: 15px; margin: 36px 0 12px; color: #9fb0d8;
+       text-transform: uppercase; letter-spacing: 0.08em; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .cell { background: #131a2a; border: 1px solid #243047; border-radius: 10px;
+          padding: 12px; }
+  .cell a { color: inherit; text-decoration: none; }
+  .cell img { width: 100%; border-radius: 6px; display: block;
+              border: 1px solid #1c2740; }
+  .cell .cap { margin-top: 10px; font-weight: 600; }
+  .cell .hint { color: #8a96b4; font-size: 12px; }
+  .single { max-width: 640px; }
+  .note { color: #8a96b4; font-size: 12px; margin-top: 6px; }
+</style>
+</head>
+<body>
+  <h1>Арт-направления Match-экрана — сравнение</h1>
+  <p class="sub">2026-06-10 · клик по картинке открывает живой HTML-мокап (1280×800) ·
+     A = Broadcast/TV · B = Retro Arcade · C = Neon Manager Evolved</p>
+
+  <h2>Текущая игра (реф)</h2>
+  <div class="row">
+    <div class="cell single">
+      <img src="refs/idle-08-match-live.png" alt="Текущий Match-экран">
+      <div class="cap">Как сейчас</div>
+      <div class="hint">styles-idle.css + styles-idle-theme.css</div>
+    </div>
+  </div>
+
+  <h2>Мокапы Claude</h2>
+  <div class="row">
+    <div class="cell">
+      <a href="claude/variant-a-broadcast.html" target="_blank">
+        <img src="claude/mock-claude-a.png" alt="Claude A Broadcast">
+        <div class="cap">A · Broadcast / Sports TV</div>
+      </a>
+      <div class="hint">scorebug, тикер, стадион, Barlow Condensed</div>
+    </div>
+    <div class="cell">
+      <a href="claude/variant-b-retro.html" target="_blank">
+        <img src="claude/mock-claude-b.png" alt="Claude B Retro">
+        <div class="cap">B · Retro Arcade / Pixel</div>
+      </a>
+      <div class="hint">LED-табло, пиксельное поле, CRT</div>
+    </div>
+    <div class="cell">
+      <a href="claude/variant-c-neon.html" target="_blank">
+        <img src="claude/mock-claude-c.png" alt="Claude C Neon">
+        <div class="cap">C · Neon Manager Evolved</div>
+      </a>
+      <div class="hint">эволюция текущей темы, SVG-иконки, score-hero</div>
+    </div>
+  </div>
+
+  <h2>Мокапы Codex CLI (те же брифы + скрины игры как рефы)</h2>
+  <div class="row">
+    <div class="cell">
+      <a href="codex/variant-a-broadcast.html" target="_blank">
+        <img src="codex/mock-codex-a.png" alt="Codex A Broadcast">
+        <div class="cap">A · Broadcast / Sports TV</div>
+      </a>
+    </div>
+    <div class="cell">
+      <a href="codex/variant-b-retro.html" target="_blank">
+        <img src="codex/mock-codex-b.png" alt="Codex B Retro">
+        <div class="cap">B · Retro Arcade / Pixel</div>
+      </a>
+    </div>
+    <div class="cell">
+      <a href="codex/variant-c-neon.html" target="_blank">
+        <img src="codex/mock-codex-c.png" alt="Codex C Neon">
+        <div class="cap">C · Neon Manager Evolved</div>
+      </a>
+    </div>
+  </div>
+
+  <p class="note">Sports Empire Idle · мокапы арт-направлений Match-экрана · 2026-06-10</p>
+</body>
+</html>
