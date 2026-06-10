@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mini Screen — Variant B — Retro Arcade PiP Widget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RETRO ARCADE / PIXEL — Mini Screen (always-on-top PiP "TV")
+   Spec sheet 1280x800:
+   - desktop context + taskbar, widget docked bottom-right
+   - two x2 blow-ups of the TV face (Live / GOAL event)
+   Native widget: 330x210 case, 294x162 screen (288x156 content)
+   ============================================================ */
+:root{
+  --bg0:#0a0d1f; --bg1:#151b38; --bg2:#1d2549;
+  --bevL:#46538c; --bevD:#05070f;
+  --cyan:#35e0ff;
+  --blue:#3a6dff;  --blueD:#1f3fa8;
+  --red:#ff4242;   --redD:#aa1d33;
+  --amber:#ffb423; --amberD:#ff7a00;
+  --green:#3dff7c; --greenD:#1d9e4b;
+  --gold:#ffd83d;  --goldD:#c79420;
+  --white:#f2f4e9; --gray:#9aa3c7; --steel:#aab3d0;
+  --chalk:#eef3e4;
+  --grassA:#2f9e41; --grassB:#38b14e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#000}
+body{
+  width:1280px;height:800px;margin:0;overflow:hidden;position:relative;
+  font-family:'VT323',monospace;color:var(--white);
+  background:#0b0e1a;
+}
+.ps{font-family:'Press Start 2P',monospace}
+svg{display:block}
+
+/* ============================================================
+   DESKTOP WALLPAPER (generic dark, no OS branding)
+   ============================================================ */
+#wall{
+  position:absolute;left:0;right:0;top:0;bottom:48px;
+  background:
+    radial-gradient(720px 430px at 78% 12%, rgba(58,109,255,.10), transparent 65%),
+    radial-gradient(640px 430px at 10% 84%, rgba(122,80,255,.09), transparent 65%),
+    radial-gradient(540px 340px at 42% 48%, rgba(53,224,255,.04), transparent 60%),
+    linear-gradient(165deg,#191d32 0%,#121527 45%,#0b0e1a 100%);
+}
+#wall::after{ /* faint texture + vignette */
+  content:"";position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.008) 0 2px, transparent 2px 4px),
+    radial-gradient(ellipse 90% 80% at 50% 45%, transparent 55%, rgba(3,4,10,.45) 100%);
+}
+
+/* ============================================================
+   TASKBAR (generic, dark)
+   ============================================================ */
+#taskbar{
+  position:absolute;left:0;right:0;bottom:0;height:48px;
+  display:flex;align-items:center;gap:8px;padding:0 14px;
+  background:rgba(13,16,30,.94);
+  border-top:1px solid rgba(255,255,255,.07);
+  box-shadow:0 -8px 22px rgba(0,0,0,.4);
+}
+.tb-start{width:36px;height:34px;display:flex;align-items:center;justify-content:center;
+  border-radius:6px;background:rgba(255,255,255,.04)}
+.tb-sep{width:1px;height:22px;background:rgba(255,255,255,.09)}
+.tb-app{width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  border-radius:6px;background:rgba(255,255,255,.03);position:relative}
+.tb-app.active{background:rgba(53,224,255,.09)}
+.tb-app.active::after{content:"";position:absolute;left:50%;bottom:1px;width:16px;height:2px;
+  margin-left:-8px;background:var(--cyan);box-shadow:0 0 6px rgba(53,224,255,.8)}
+.tb-flex{flex:1}
+.tb-tray{display:flex;align-items:center;gap:10px;padding:0 6px;opacity:.85}
+.tb-clock{font-size:18px;color:var(--steel);letter-spacing:1px;padding:0 4px}
+
+/* ============================================================
+   SPEC-SHEET CHROME (title, annotations, notes, connector)
+   ============================================================ */
+.sheet-title{position:absolute;left:14px;top:12px;display:flex;align-items:center;gap:10px}
+.sheet-title .sq{width:8px;height:8px;background:var(--cyan);box-shadow:0 0 6px rgba(53,224,255,.8)}
+.sheet-title .t1{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--white);letter-spacing:1px}
+.sheet-title .t2{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--cyan);
+  text-shadow:0 0 6px rgba(53,224,255,.5);letter-spacing:1px}
+.sheet-meta{position:absolute;right:24px;top:14px;font-size:15px;color:#5b648c;letter-spacing:1px}
+.ann{position:absolute;display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.ann .lbl{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--cyan);
+  text-shadow:0 0 6px rgba(53,224,255,.55);letter-spacing:1px}
+.ann .sub{font-size:14px;color:#5b648c;letter-spacing:1px}
+
+.notes{
+  position:absolute;left:12px;top:522px;width:436px;
+  background:rgba(13,18,40,.88);
+  border:4px solid;border-color:var(--bevL) var(--bevD) var(--bevD) var(--bevL);
+  box-shadow:0 0 0 2px #000, 0 10px 24px rgba(0,0,0,.45);
+}
+.notes .nh{display:flex;align-items:center;gap:8px;padding:8px 10px 6px;
+  background:#0d1228;border-bottom:3px solid #000;
+  font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:1px;color:var(--cyan);
+  text-shadow:0 0 6px rgba(53,224,255,.55)}
+.notes .nh .sq{width:5px;height:5px;background:var(--cyan);box-shadow:0 0 5px rgba(53,224,255,.8)}
+.notes ul{list-style:none;padding:8px 12px 10px}
+.notes li{display:flex;align-items:baseline;gap:8px;font-size:15px;line-height:1.6;
+  color:#8a93b5;letter-spacing:1px}
+.notes li i{flex:0 0 4px;width:4px;height:4px;background:var(--cyan);position:relative;top:-3px}
+
+.conn{position:absolute;left:466px;top:602px;width:450px;border-top:2px dashed #39426b}
+.conn::before,.conn::after{content:"";position:absolute;top:-4px;width:6px;height:6px;background:var(--cyan);
+  box-shadow:0 0 6px rgba(53,224,255,.7)}
+.conn::before{left:-2px}
+.conn::after{right:-2px}
+.connlbl{position:absolute;left:540px;top:578px;width:300px;text-align:center;
+  font-family:'Press Start 2P',monospace;font-size:7px;color:#8a93b5;letter-spacing:1px}
+
+/* ============================================================
+   ZOOM PLATES (x2 blow-ups, integer scale = crisp pixels)
+   ============================================================ */
+.zoom{position:absolute;width:620px;height:416px}
+.zoom .zin{width:310px;height:208px;transform:scale(2);transform-origin:0 0}
+
+/* ============================================================
+   TV WIDGET — case
+   ============================================================ */
+.tv{
+  position:absolute;width:330px;height:210px;
+  background:linear-gradient(180deg,#222a52 0%,#161c3a 55%,#101430 100%);
+  border:4px solid;border-color:var(--bevL) var(--bevD) var(--bevD) var(--bevL);
+  box-shadow:0 0 0 2px #000, 0 18px 44px rgba(0,0,0,.66), 0 0 30px rgba(53,224,255,.10);
+  padding:6px 14px 4px;
+}
+.face{ /* x2 plates: front-face crop (screen + control strip) */
+  width:310px;height:208px;
+  background:linear-gradient(180deg,#222a52 0%,#161c3a 55%,#101430 100%);
+  border:4px solid;border-color:var(--bevL) var(--bevD) var(--bevD) var(--bevL);
+  box-shadow:0 0 0 2px #000, 0 8px 18px rgba(0,0,0,.5);
+  padding:4px;
+}
+/* antenna — stepped pixel V */
+.ant{position:absolute;top:-24px;left:50%;margin-left:-42px}
+
+/* ============================================================
+   TV WIDGET — screen 294x162 (content 288x156)
+   ============================================================ */
+.scr{
+  position:relative;width:294px;height:162px;overflow:hidden;
+  background:#05070f;
+  border:3px solid;border-color:#000 #353d63 #353d63 #000;
+}
+/* CRT inside the glass */
+.scr .sl{position:absolute;inset:0;z-index:8;pointer-events:none;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px)}
+.scr .gl{position:absolute;inset:0;z-index:9;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 32%, rgba(120,210,255,.05), transparent 62%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 60%, rgba(2,3,12,.5) 100%),
+    linear-gradient(115deg, rgba(255,255,255,.055) 0 12%, transparent 12.5%)}
+
+/* ----- LED dot-matrix scoreboard 288x38 ----- */
+.led{
+  position:relative;height:38px;display:flex;align-items:center;justify-content:center;gap:10px;
+  background:#050503;border-bottom:2px solid #000;
+}
+.led::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(transparent 34%, rgba(0,0,0,.55) 40%);background-size:2px 2px}
+.led::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 130% at 50% 0%, rgba(255,160,30,.08), transparent 70%)}
+.lnm{font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:1px}
+.lnm.you{color:var(--cyan);text-shadow:0 0 6px rgba(53,224,255,.9)}
+.lnm.riv{color:var(--red);text-shadow:0 0 6px rgba(255,66,66,.9)}
+.lsc{font-family:'Press Start 2P',monospace;font-size:16px;line-height:1;color:var(--amber);
+  text-shadow:0 0 6px rgba(255,160,20,.95),0 0 18px rgba(255,110,0,.55)}
+.lmid{display:flex;flex-direction:column;align-items:center;gap:3px}
+.lmid b{font-family:'Press Start 2P',monospace;font-weight:normal;font-size:6px;color:#ff5050;
+  text-shadow:0 0 5px rgba(255,60,60,.9)}
+.lmid em{font-family:'Press Start 2P',monospace;font-style:normal;font-size:9px;color:#ff5050;
+  text-shadow:0 0 6px rgba(255,60,60,.9)}
+.lv-ind{position:absolute;top:4px;left:5px;display:flex;align-items:center;gap:3px;
+  font-family:'Press Start 2P',monospace;font-size:6px;color:#ff5050;letter-spacing:1px;
+  text-shadow:0 0 5px rgba(255,60,60,.8);animation:blink 1s steps(2,start) infinite}
+.lv-ind i{width:4px;height:4px;background:#ff5050;box-shadow:0 0 6px rgba(255,60,60,.9)}
+.lsc.flash{animation:goalflash .55s steps(1) infinite}
+
+/* ----- crowd strip 288x16 ----- */
+.crowd{position:relative;height:16px;overflow:hidden;background:var(--bg0)}
+.crowd::after{ /* terrace row shading */
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(0deg, transparent 0 6px, rgba(0,0,0,.30) 6px 8px)}
+.cflash{position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:repeating-linear-gradient(0deg, rgba(255,216,61,.5) 0 4px, transparent 4px 8px);
+  animation:cflashk .5s steps(2,start) infinite}
+
+/* ----- pitch 288x84 ----- */
+.pitch{
+  position:relative;height:84px;overflow:hidden;
+  background:repeating-linear-gradient(90deg, var(--grassA) 0 24px, var(--grassB) 24px 48px);
+  border:2px solid var(--chalk);
+}
+.pmid{position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--chalk)}
+.pcir{position:absolute;left:50%;top:50%;width:32px;height:32px;margin:-16px 0 0 -16px;
+  border:2px solid var(--chalk);border-radius:50%}
+.pspot{position:absolute;left:50%;top:50%;width:3px;height:3px;margin:-1px 0 0 -1px;background:var(--chalk)}
+.pbox{position:absolute;top:50%;transform:translateY(-50%);width:26px;height:44px;border:2px solid var(--chalk)}
+.pbox.l{left:-2px;border-left:none}
+.pbox.r{right:-2px;border-right:none}
+.pgoal{position:absolute;top:50%;transform:translateY(-50%);width:3px;height:18px;background:var(--chalk)}
+.pgoal.l{left:0}
+.pgoal.r{right:0}
+
+/* chunky mini player sprite : 4x6 grid, 3px pixels (12x18) */
+.mu{position:absolute;width:12px;height:18px;z-index:4}
+.mu::before{content:"";position:absolute;left:1px;top:17px;width:10px;height:3px;background:rgba(0,30,0,.4)}
+.mu i{position:absolute;left:0;top:0;width:3px;height:3px;background:transparent;
+  box-shadow:
+    3px 0 var(--hr), 6px 0 var(--hr),
+    3px 3px var(--sk), 6px 3px var(--sk),
+    0 6px var(--j), 3px 6px var(--j), 6px 6px var(--j), 9px 6px var(--j),
+    0 9px var(--sk), 3px 9px var(--jd), 6px 9px var(--jd), 9px 9px var(--sk),
+    3px 12px var(--sh), 6px 12px var(--sh),
+    3px 15px var(--bt), 6px 15px var(--bt);}
+.mu{--sk:#f0c08a;--hr:#3b2a1e;--sh:#f2f4e9;--bt:#15110c}
+.mu.b{--j:var(--blue);--jd:var(--blueD)}
+.mu.r{--j:var(--red);--jd:var(--redD);--hr:#1c140e}
+.mu.gkb{--j:#35e0ff;--jd:#1487a5;--sh:#15110c}
+.mu.gkr{--j:#ffb423;--jd:#b06f00;--sh:#15110c}
+/* pixel ball 6x6 */
+.mb{position:absolute;width:6px;height:6px;z-index:4}
+.mb::before{content:"";position:absolute;left:1px;top:6px;width:5px;height:2px;background:rgba(0,30,0,.45)}
+.mb i{position:absolute;left:0;top:0;width:3px;height:3px;background:#fff;
+  box-shadow:3px 0 #fff, 0 3px #fff, 3px 3px #c8d0dc}
+
+/* GOAL banner (event state) */
+.gband{
+  position:absolute;left:0;right:0;top:76px;z-index:6;
+  display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 0;
+  background:rgba(5,5,8,.68);
+  border-top:2px solid var(--gold);border-bottom:2px solid var(--gold);
+}
+.gtxt{font-family:'Press Start 2P',monospace;font-size:14px;letter-spacing:2px;color:var(--gold);
+  text-shadow:2px 0 0 #000,-2px 0 0 #000,0 2px 0 #000,0 -2px 0 #000,3px 3px 0 var(--redD);
+  animation:goalflash .55s steps(1) infinite}
+.sparkle{animation:sparkleflip .55s steps(1) infinite}
+.sparkle.s2{animation-delay:.27s}
+.gtint{position:absolute;inset:0;z-index:7;pointer-events:none;background:rgba(255,216,61,.07);
+  animation:blink .55s steps(2,start) infinite}
+
+/* ----- money row 288x18 ----- */
+.mrow{height:18px;display:flex;align-items:center;gap:5px;padding:0 6px;
+  background:#070a18;border-top:2px solid #000}
+.cash{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--amber);
+  text-shadow:0 0 5px rgba(255,180,35,.9)}
+.inc{font-family:'Press Start 2P',monospace;font-size:5px;color:#04120a;background:var(--green);
+  padding:2px 3px 1px;border:1px solid;border-color:#a8ffc8 #0f5e2e #0f5e2e #a8ffc8}
+.lg{margin-left:auto;font-size:13px;color:var(--cyan);letter-spacing:1px}
+.lg b{font-weight:normal;color:var(--white)}
+.rw{margin-left:auto;font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold);
+  text-shadow:0 0 6px rgba(255,216,61,.8);animation:blink .9s steps(2,start) infinite}
+
+/* ----- bezel control strip 294x30 ----- */
+.ctrl{height:30px;display:flex;align-items:center;gap:5px;padding:0 2px}
+.pwr{width:5px;height:5px;background:var(--green);box-shadow:0 0 6px rgba(61,255,124,.9)}
+.brand{font-size:12px;color:#5b648c;letter-spacing:2px;margin-left:3px}
+.cbtn{
+  width:24px;height:20px;display:flex;align-items:center;justify-content:center;
+  background:var(--bg2);
+  border:2px solid;border-color:var(--bevL) var(--bevD) var(--bevD) var(--bevL);
+  box-shadow:0 0 0 1px #000;
+}
+.cbtn:first-of-type{margin-left:auto}
+.cbtn.t{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--amber);
+  text-shadow:0 0 5px rgba(255,180,35,.8)}
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes blink{0%{opacity:1}50%{opacity:.12}100%{opacity:1}}
+@keyframes goalflash{0%{color:var(--gold)}50%{color:#ffffff}100%{color:var(--gold)}}
+@keyframes sparkleflip{0%{transform:scale(1)}50%{transform:scale(.55)}100%{transform:scale(1)}}
+@keyframes hypeblink{0%,44%{opacity:0}45%,90%{opacity:.85}91%,100%{opacity:0}}
+@keyframes cflashk{0%,49%{opacity:0}50%,100%{opacity:.9}}
+.hype{opacity:0;animation:hypeblink 1.1s linear infinite}
+.hype.h2{animation-delay:.55s}
+</style>
+</head>
+<body>
+
+<!-- crowd noise tiles (shared pattern defs) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="cbA" width="64" height="16" patternUnits="userSpaceOnUse"><rect width="64" height="16" fill="#3a6dff"/><rect x="0" y="0" width="8" height="4" fill="#1f3fa8"/><rect x="8" y="0" width="4" height="4" fill="#0a0d1f"/><rect x="12" y="0" width="12" height="4" fill="#1f3fa8"/><rect x="28" y="0" width="8" height="4" fill="#1f3fa8"/><rect x="36" y="0" width="4" height="4" fill="#7e9bff"/><rect x="52" y="0" width="4" height="4" fill="#7e9bff"/><rect x="56" y="0" width="4" height="4" fill="#1f3fa8"/><rect x="0" y="4" width="8" height="4" fill="#0a0d1f"/><rect x="8" y="4" width="8" height="4" fill="#1f3fa8"/><rect x="24" y="4" width="4" height="4" fill="#1f3fa8"/><rect x="44" y="4" width="4" height="4" fill="#1f3fa8"/><rect x="52" y="4" width="4" height="4" fill="#0a0d1f"/><rect x="56" y="4" width="8" height="4" fill="#1f3fa8"/><rect x="0" y="8" width="12" height="4" fill="#1f3fa8"/><rect x="16" y="8" width="12" height="4" fill="#0a0d1f"/><rect x="28" y="8" width="4" height="4" fill="#7e9bff"/><rect x="48" y="8" width="4" height="4" fill="#7e9bff"/><rect x="56" y="8" width="4" height="4" fill="#0a0d1f"/><rect x="0" y="12" width="8" height="4" fill="#0a0d1f"/><rect x="16" y="12" width="4" height="4" fill="#0a0d1f"/><rect x="20" y="12" width="4" height="4" fill="#1f3fa8"/><rect x="24" y="12" width="4" height="4" fill="#0a0d1f"/><rect x="36" y="12" width="4" height="4" fill="#1f3fa8"/><rect x="40" y="12" width="4" height="4" fill="#7e9bff"/><rect x="56" y="12" width="4" height="4" fill="#0a0d1f"/><rect x="60" y="12" width="4" height="4" fill="#7e9bff"/></pattern>
+    <pattern id="cbB" width="64" height="16" patternUnits="userSpaceOnUse"><rect width="64" height="16" fill="#3a6dff"/><rect x="0" y="0" width="12" height="4" fill="#0a0d1f"/><rect x="16" y="0" width="4" height="4" fill="#1f3fa8"/><rect x="24" y="0" width="4" height="4" fill="#1f3fa8"/><rect x="44" y="0" width="4" height="4" fill="#1f3fa8"/><rect x="56" y="0" width="4" height="4" fill="#7e9bff"/><rect x="0" y="4" width="4" height="4" fill="#1f3fa8"/><rect x="4" y="4" width="4" height="4" fill="#7e9bff"/><rect x="16" y="4" width="4" height="4" fill="#7e9bff"/><rect x="20" y="4" width="12" height="4" fill="#1f3fa8"/><rect x="32" y="4" width="4" height="4" fill="#0a0d1f"/><rect x="40" y="4" width="4" height="4" fill="#7e9bff"/><rect x="48" y="4" width="8" height="4" fill="#1f3fa8"/><rect x="0" y="8" width="4" height="4" fill="#1f3fa8"/><rect x="4" y="8" width="4" height="4" fill="#7e9bff"/><rect x="8" y="8" width="4" height="4" fill="#1f3fa8"/><rect x="16" y="8" width="4" height="4" fill="#1f3fa8"/><rect x="32" y="8" width="4" height="4" fill="#7e9bff"/><rect x="56" y="8" width="4" height="4" fill="#1f3fa8"/><rect x="60" y="8" width="4" height="4" fill="#7e9bff"/><rect x="16" y="12" width="4" height="4" fill="#7e9bff"/><rect x="20" y="12" width="4" height="4" fill="#1f3fa8"/><rect x="32" y="12" width="12" height="4" fill="#7e9bff"/><rect x="48" y="12" width="4" height="4" fill="#1f3fa8"/><rect x="52" y="12" width="4" height="4" fill="#0a0d1f"/><rect x="56" y="12" width="4" height="4" fill="#1f3fa8"/><rect x="60" y="12" width="4" height="4" fill="#0a0d1f"/></pattern>
+    <pattern id="crA" width="64" height="16" patternUnits="userSpaceOnUse"><rect width="64" height="16" fill="#ff4242"/><rect x="0" y="0" width="4" height="4" fill="#aa1d33"/><rect x="8" y="0" width="4" height="4" fill="#aa1d33"/><rect x="12" y="0" width="4" height="4" fill="#0a0d1f"/><rect x="16" y="0" width="4" height="4" fill="#ff8b97"/><rect x="20" y="0" width="8" height="4" fill="#aa1d33"/><rect x="32" y="0" width="4" height="4" fill="#aa1d33"/><rect x="40" y="0" width="8" height="4" fill="#aa1d33"/><rect x="56" y="0" width="4" height="4" fill="#ff8b97"/><rect x="0" y="4" width="8" height="4" fill="#0a0d1f"/><rect x="8" y="4" width="4" height="4" fill="#ff8b97"/><rect x="28" y="4" width="8" height="4" fill="#ff8b97"/><rect x="36" y="4" width="12" height="4" fill="#aa1d33"/><rect x="52" y="4" width="4" height="4" fill="#aa1d33"/><rect x="4" y="8" width="4" height="4" fill="#aa1d33"/><rect x="8" y="8" width="4" height="4" fill="#0a0d1f"/><rect x="16" y="8" width="4" height="4" fill="#aa1d33"/><rect x="32" y="8" width="4" height="4" fill="#0a0d1f"/><rect x="36" y="8" width="4" height="4" fill="#ff8b97"/><rect x="40" y="8" width="4" height="4" fill="#0a0d1f"/><rect x="48" y="8" width="4" height="4" fill="#ff8b97"/><rect x="52" y="8" width="8" height="4" fill="#aa1d33"/><rect x="60" y="8" width="4" height="4" fill="#0a0d1f"/><rect x="0" y="12" width="4" height="4" fill="#aa1d33"/><rect x="8" y="12" width="4" height="4" fill="#ff8b97"/><rect x="12" y="12" width="4" height="4" fill="#aa1d33"/><rect x="20" y="12" width="4" height="4" fill="#aa1d33"/><rect x="32" y="12" width="4" height="4" fill="#aa1d33"/><rect x="40" y="12" width="4" height="4" fill="#aa1d33"/><rect x="48" y="12" width="4" height="4" fill="#aa1d33"/><rect x="60" y="12" width="4" height="4" fill="#0a0d1f"/></pattern>
+    <pattern id="crB" width="64" height="16" patternUnits="userSpaceOnUse"><rect width="64" height="16" fill="#ff4242"/><rect x="4" y="0" width="4" height="4" fill="#aa1d33"/><rect x="12" y="0" width="4" height="4" fill="#ff8b97"/><rect x="20" y="0" width="4" height="4" fill="#aa1d33"/><rect x="24" y="0" width="4" height="4" fill="#0a0d1f"/><rect x="32" y="0" width="4" height="4" fill="#0a0d1f"/><rect x="36" y="0" width="4" height="4" fill="#ff8b97"/><rect x="40" y="0" width="12" height="4" fill="#aa1d33"/><rect x="56" y="0" width="4" height="4" fill="#0a0d1f"/><rect x="0" y="4" width="8" height="4" fill="#0a0d1f"/><rect x="16" y="4" width="4" height="4" fill="#aa1d33"/><rect x="20" y="4" width="4" height="4" fill="#ff8b97"/><rect x="28" y="4" width="4" height="4" fill="#aa1d33"/><rect x="36" y="4" width="4" height="4" fill="#ff8b97"/><rect x="40" y="4" width="4" height="4" fill="#0a0d1f"/><rect x="44" y="4" width="4" height="4" fill="#ff8b97"/><rect x="52" y="4" width="4" height="4" fill="#ff8b97"/><rect x="60" y="4" width="4" height="4" fill="#ff8b97"/><rect x="0" y="8" width="4" height="4" fill="#aa1d33"/><rect x="4" y="8" width="8" height="4" fill="#0a0d1f"/><rect x="12" y="8" width="12" height="4" fill="#ff8b97"/><rect x="24" y="8" width="4" height="4" fill="#aa1d33"/><rect x="32" y="8" width="4" height="4" fill="#0a0d1f"/><rect x="36" y="8" width="4" height="4" fill="#aa1d33"/><rect x="56" y="8" width="4" height="4" fill="#0a0d1f"/><rect x="0" y="12" width="4" height="4" fill="#0a0d1f"/><rect x="4" y="12" width="4" height="4" fill="#aa1d33"/><rect x="16" y="12" width="4" height="4" fill="#aa1d33"/><rect x="24" y="12" width="4" height="4" fill="#ff8b97"/><rect x="28" y="12" width="4" height="4" fill="#aa1d33"/><rect x="32" y="12" width="4" height="4" fill="#0a0d1f"/><rect x="36" y="12" width="8" height="4" fill="#ff8b97"/><rect x="44" y="12" width="8" height="4" fill="#0a0d1f"/><rect x="52" y="12" width="12" height="4" fill="#aa1d33"/></pattern>
+  </defs>
+</svg>
+
+<!-- ================= DESKTOP ================= -->
+<div id="wall"></div>
+
+<!-- ================= SPEC CHROME ================= -->
+<div class="sheet-title">
+  <span class="sq"></span>
+  <span class="t1">MINI SCREEN — PIP WIDGET</span>
+  <span class="t2">VARIANT B · RETRO ARCADE</span>
+</div>
+<div class="sheet-meta">SPEC SHEET 1280x800 · ALWAYS-ON-TOP "MINI-TV" · NATIVE 330x210</div>
+
+<div class="ann" style="left:14px;top:38px">
+  <span class="lbl">LIVE STATE · ×2</span>
+  <span class="sub">— screen + bezel controls, native face 310x208</span>
+</div>
+<div class="ann" style="left:650px;top:38px">
+  <span class="lbl">EVENT STATE: GOAL · ×2</span>
+  <span class="sub">— flash banner, crowd hype, reward line</span>
+</div>
+
+<!-- ================= ZOOM PLATE A : LIVE x2 ================= -->
+<div class="zoom" style="left:12px;top:58px">
+  <div class="zin">
+    <div class="face">
+      <div class="scr">
+        <div class="led">
+          <span class="lv-ind"><i></i>LIVE</span>
+          <span class="lnm you">YOU</span>
+          <span class="lsc">17</span>
+          <span class="lmid"><b>H2</b><em>0:17</em></span>
+          <span class="lsc">11</span>
+          <span class="lnm riv">RIV</span>
+        </div>
+        <div class="crowd">
+          <svg width="288" height="16" viewBox="0 0 288 16" shape-rendering="crispEdges">
+            <rect x="0"   width="48" height="16" fill="url(#cbA)"/>
+            <rect x="48"  width="48" height="16" fill="url(#crA)"/>
+            <rect x="96"  width="48" height="16" fill="url(#cbB)"/>
+            <rect x="144" width="48" height="16" fill="url(#crB)"/>
+            <rect x="192" width="48" height="16" fill="url(#cbA)"/>
+            <rect x="240" width="48" height="16" fill="url(#crB)"/>
+            <rect class="hype" x="20" y="4" width="4" height="4" fill="#f2f4e9"/>
+            <rect class="hype h2" x="132" y="8" width="4" height="4" fill="#ffd83d"/>
+            <rect class="hype" x="232" y="0" width="4" height="4" fill="#f2f4e9"/>
+          </svg>
+        </div>
+        <div class="pitch">
+          <i class="pmid"></i><i class="pcir"></i><i class="pspot"></i>
+          <i class="pbox l"></i><i class="pbox r"></i>
+          <i class="pgoal l"></i><i class="pgoal r"></i>
+          <div class="mu gkb" style="left:4px;top:30px"><i></i></div>
+          <div class="mu b" style="left:34px;top:8px"><i></i></div>
+          <div class="mu b" style="left:34px;top:52px"><i></i></div>
+          <div class="mu b" style="left:66px;top:28px"><i></i></div>
+          <div class="mu b" style="left:92px;top:6px"><i></i></div>
+          <div class="mu b" style="left:92px;top:50px"><i></i></div>
+          <div class="mu gkr" style="left:266px;top:30px"><i></i></div>
+          <div class="mu r" style="left:236px;top:8px"><i></i></div>
+          <div class="mu r" style="left:236px;top:52px"><i></i></div>
+          <div class="mu r" style="left:204px;top:28px"><i></i></div>
+          <div class="mu r" style="left:178px;top:6px"><i></i></div>
+          <div class="mu r" style="left:178px;top:50px"><i></i></div>
+          <div class="mb" style="left:139px;top:36px"><i></i></div>
+        </div>
+        <div class="mrow">
+          <svg width="10" height="10" viewBox="0 0 8 8" shape-rendering="crispEdges">
+            <path fill="#ffd83d" d="M2 0h4v1H2zM1 1h6v1H1zM0 2h8v4H0zM1 6h6v1H1zM2 7h4v1H2z"/>
+            <path fill="#7a4f12" d="M3 2h2v1H3zM2 3h1v1H2zM3 4h2v1H3zM5 5h1v1H5zM3 6h2v1H3z"/>
+          </svg>
+          <span class="cash">$703</span>
+          <span class="inc">+$1/S</span>
+          <span class="lg">LOCAL LEAGUE <b>2/10</b></span>
+        </div>
+        <i class="sl"></i><i class="gl"></i>
+      </div>
+      <div class="ctrl">
+        <i class="pwr"></i><span class="brand">MINI-MTX</span>
+        <span class="cbtn" title="Mute">
+          <svg width="20" height="16" viewBox="0 0 10 8" shape-rendering="crispEdges">
+            <path fill="#aab3d0" d="M1 3h1v2H1zM2 2h1v4H2zM3 1h1v6H3zM4 0h1v8H4z"/>
+            <path fill="#ff4242" d="M6 2h1v1H6zM8 2h1v1H8zM7 3h1v2H7zM6 5h1v1H6zM8 5h1v1H8z"/>
+          </svg>
+        </span>
+        <span class="cbtn t">X4</span>
+        <span class="cbtn" title="Expand">
+          <svg width="16" height="16" viewBox="0 0 10 10" shape-rendering="crispEdges">
+            <path fill="#aab3d0" d="M0 0h4v1H0zM0 1h1v3H0zM6 0h4v1H6zM9 1h1v3H9zM0 9h4v1H0zM0 6h1v3H0zM6 9h4v1H6zM9 6h1v3H9z"/>
+          </svg>
+        </span>
+        <span class="cbtn" title="Close">
+          <svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges">
+            <path fill="#aab3d0" d="M0 0h1v1H0zM6 0h1v1H6zM1 1h1v1H1zM5 1h1v1H5zM2 2h1v1H2zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM4 4h1v1H4zM1 5h1v1H1zM5 5h1v1H5zM0 6h1v1H0zM6 6h1v1H6z"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ZOOM PLATE B : GOAL x2 ================= -->
+<div class="zoom" style="left:648px;top:58px">
+  <div class="zin">
+    <div class="face">
+      <div class="scr">
+        <div class="led">
+          <span class="lv-ind"><i></i>LIVE</span>
+          <span class="lnm you">YOU</span>
+          <span class="lsc flash">18</span>
+          <span class="lmid"><b>H2</b><em>0:17</em></span>
+          <span class="lsc">11</span>
+          <span class="lnm riv">RIV</span>
+        </div>
+        <div class="crowd">
+          <svg width="288" height="16" viewBox="0 0 288 16" shape-rendering="crispEdges">
+            <rect x="0"   width="48" height="16" fill="url(#cbA)"/>
+            <rect x="48"  width="48" height="16" fill="url(#crA)"/>
+            <rect x="96"  width="48" height="16" fill="url(#cbB)"/>
+            <rect x="144" width="48" height="16" fill="url(#crB)"/>
+            <rect x="192" width="48" height="16" fill="url(#cbA)"/>
+            <rect x="240" width="48" height="16" fill="url(#crB)"/>
+            <rect class="hype" x="12" y="4" width="4" height="4" fill="#ffd83d"/>
+            <rect class="hype h2" x="60" y="8" width="4" height="4" fill="#f2f4e9"/>
+            <rect class="hype" x="104" y="0" width="4" height="4" fill="#f2f4e9"/>
+            <rect class="hype h2" x="156" y="12" width="4" height="4" fill="#ffd83d"/>
+            <rect class="hype" x="208" y="8" width="4" height="4" fill="#ffd83d"/>
+            <rect class="hype h2" x="260" y="4" width="4" height="4" fill="#f2f4e9"/>
+          </svg>
+          <i class="cflash"></i>
+        </div>
+        <div class="pitch">
+          <i class="pmid"></i><i class="pcir"></i><i class="pspot"></i>
+          <i class="pbox l"></i><i class="pbox r"></i>
+          <i class="pgoal l"></i><i class="pgoal r"></i>
+          <div class="mu gkb" style="left:4px;top:30px"><i></i></div>
+          <div class="mu b" style="left:34px;top:8px"><i></i></div>
+          <div class="mu b" style="left:34px;top:52px"><i></i></div>
+          <div class="mu b" style="left:66px;top:28px"><i></i></div>
+          <div class="mu b" style="left:230px;top:6px"><i></i></div>
+          <div class="mu b" style="left:248px;top:44px"><i></i></div>
+          <div class="mu gkr" style="left:266px;top:24px"><i></i></div>
+          <div class="mu r" style="left:236px;top:56px"><i></i></div>
+          <div class="mu r" style="left:210px;top:14px"><i></i></div>
+          <div class="mu r" style="left:204px;top:48px"><i></i></div>
+          <div class="mu r" style="left:178px;top:6px"><i></i></div>
+          <div class="mu r" style="left:178px;top:50px"><i></i></div>
+          <div class="mb" style="left:276px;top:38px"><i></i></div>
+        </div>
+        <div class="gband">
+          <svg class="sparkle" width="12" height="12" viewBox="0 0 8 8" shape-rendering="crispEdges">
+            <path fill="#ffd83d" d="M3 0h2v2H3zM0 3h2v2H0zM6 3h2v2H6zM3 6h2v2H3zM3 3h2v2H3z"/>
+          </svg>
+          <span class="gtxt">GOAL!</span>
+          <svg class="sparkle s2" width="12" height="12" viewBox="0 0 8 8" shape-rendering="crispEdges">
+            <path fill="#ffd83d" d="M3 0h2v2H3zM0 3h2v2H0zM6 3h2v2H6zM3 6h2v2H3zM3 3h2v2H3z"/>
+          </svg>
+        </div>
+        <i class="gtint"></i>
+        <div class="mrow">
+          <svg width="10" height="10" viewBox="0 0 8 8" shape-rendering="crispEdges">
+            <path fill="#ffd83d" d="M2 0h4v1H2zM1 1h6v1H1zM0 2h8v4H0zM1 6h6v1H1zM2 7h4v1H2z"/>
+            <path fill="#7a4f12" d="M3 2h2v1H3zM2 3h1v1H2zM3 4h2v1H3zM5 5h1v1H5zM3 6h2v1H3z"/>
+          </svg>
+          <span class="cash">$703</span>
+          <span class="inc">+$1/S</span>
+          <span class="rw">REWARD +$85</span>
+        </div>
+        <i class="sl"></i><i class="gl"></i>
+      </div>
+      <div class="ctrl">
+        <i class="pwr"></i><span class="brand">MINI-MTX</span>
+        <span class="cbtn" title="Mute">
+          <svg width="20" height="16" viewBox="0 0 10 8" shape-rendering="crispEdges">
+            <path fill="#aab3d0" d="M1 3h1v2H1zM2 2h1v4H2zM3 1h1v6H3zM4 0h1v8H4z"/>
+            <path fill="#ff4242" d="M6 2h1v1H6zM8 2h1v1H8zM7 3h1v2H7zM6 5h1v1H6zM8 5h1v1H8z"/>
+          </svg>
+        </span>
+        <span class="cbtn t">X4</span>
+        <span class="cbtn" title="Expand">
+          <svg width="16" height="16" viewBox="0 0 10 10" shape-rendering="crispEdges">
+            <path fill="#aab3d0" d="M0 0h4v1H0zM0 1h1v3H0zM6 0h4v1H6zM9 1h1v3H9zM0 9h4v1H0zM0 6h1v3H0zM6 9h4v1H6zM9 6h1v3H9z"/>
+          </svg>
+        </span>
+        <span class="cbtn" title="Close">
+          <svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges">
+            <path fill="#aab3d0" d="M0 0h1v1H0zM6 0h1v1H6zM1 1h1v1H1zM5 1h1v1H5zM2 2h1v1H2zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM4 4h1v1H4zM1 5h1v1H1zM5 5h1v1H5zM0 6h1v1H0zM6 6h1v1H6z"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SPEC NOTES ================= -->
+<div class="notes">
+  <div class="nh"><span class="sq"></span>WIDGET SPEC NOTES</div>
+  <ul>
+    <li><i></i>ALWAYS-ON-TOP · DOCKS TO TASKBAR CORNER · DRAG TO MOVE</li>
+    <li><i></i>LED SCORE = FIRST-GLANCE INFO · 16PX AMBER DIGITS</li>
+    <li><i></i>BEZEL CONTROLS: MUTE / SPEED X4 / EXPAND / CLOSE</li>
+    <li><i></i>GOAL EVENT: FLASH BANNER + CROWD HYPE + REWARD LINE (~2S)</li>
+    <li><i></i>CRT SCANLINES + PHOSPHOR GLOW · HARD 3PX PIXEL GRID</li>
+  </ul>
+</div>
+
+<div class="connlbl">IN CONTEXT · ×1 · 330x210</div>
+<i class="conn"></i>
+
+<!-- ================= WIDGET IN CONTEXT (x1) ================= -->
+<div class="tv" style="left:926px;top:526px">
+  <svg class="ant" width="84" height="24" viewBox="0 0 84 24" shape-rendering="crispEdges">
+    <rect x="18" y="0" width="5" height="5" fill="#aab3d0"/>
+    <rect x="21" y="0" width="3" height="3" fill="#5b648c"/>
+    <rect x="24" y="3" width="3" height="3" fill="#5b648c"/>
+    <rect x="27" y="6" width="3" height="3" fill="#5b648c"/>
+    <rect x="30" y="9" width="3" height="3" fill="#5b648c"/>
+    <rect x="33" y="12" width="3" height="3" fill="#5b648c"/>
+    <rect x="36" y="15" width="3" height="3" fill="#5b648c"/>
+    <rect x="61" y="0" width="5" height="5" fill="#aab3d0"/>
+    <rect x="60" y="0" width="3" height="3" fill="#5b648c"/>
+    <rect x="57" y="3" width="3" height="3" fill="#5b648c"/>
+    <rect x="54" y="6" width="3" height="3" fill="#5b648c"/>
+    <rect x="51" y="9" width="3" height="3" fill="#5b648c"/>
+    <rect x="48" y="12" width="3" height="3" fill="#5b648c"/>
+    <rect x="45" y="15" width="3" height="3" fill="#5b648c"/>
+    <rect x="34" y="18" width="16" height="2" fill="#46538c"/>
+    <rect x="32" y="20" width="20" height="4" fill="#05070f"/>
+  </svg>
+  <div class="scr">
+    <div class="led">
+      <span class="lv-ind"><i></i>LIVE</span>
+      <span class="lnm you">YOU</span>
+      <span class="lsc">17</span>
+      <span class="lmid"><b>H2</b><em>0:17</em></span>
+      <span class="lsc">11</span>
+      <span class="lnm riv">RIV</span>
+    </div>
+    <div class="crowd">
+      <svg width="288" height="16" viewBox="0 0 288 16" shape-rendering="crispEdges">
+        <rect x="0"   width="48" height="16" fill="url(#cbA)"/>
+        <rect x="48"  width="48" height="16" fill="url(#crA)"/>
+        <rect x="96"  width="48" height="16" fill="url(#cbB)"/>
+        <rect x="144" width="48" height="16" fill="url(#crB)"/>
+        <rect x="192" width="48" height="16" fill="url(#cbA)"/>
+        <rect x="240" width="48" height="16" fill="url(#crB)"/>
+        <rect class="hype" x="20" y="4" width="4" height="4" fill="#f2f4e9"/>
+        <rect class="hype h2" x="132" y="8" width="4" height="4" fill="#ffd83d"/>
+        <rect class="hype" x="232" y="0" width="4" height="4" fill="#f2f4e9"/>
+      </svg>
+    </div>
+    <div class="pitch">
+      <i class="pmid"></i><i class="pcir"></i><i class="pspot"></i>
+      <i class="pbox l"></i><i class="pbox r"></i>
+      <i class="pgoal l"></i><i class="pgoal r"></i>
+      <div class="mu gkb" style="left:4px;top:30px"><i></i></div>
+      <div class="mu b" style="left:34px;top:8px"><i></i></div>
+      <div class="mu b" style="left:34px;top:52px"><i></i></div>
+      <div class="mu b" style="left:66px;top:28px"><i></i></div>
+      <div class="mu b" style="left:92px;top:6px"><i></i></div>
+      <div class="mu b" style="left:92px;top:50px"><i></i></div>
+      <div class="mu gkr" style="left:266px;top:30px"><i></i></div>
+      <div class="mu r" style="left:236px;top:8px"><i></i></div>
+      <div class="mu r" style="left:236px;top:52px"><i></i></div>
+      <div class="mu r" style="left:204px;top:28px"><i></i></div>
+      <div class="mu r" style="left:178px;top:6px"><i></i></div>
+      <div class="mu r" style="left:178px;top:50px"><i></i></div>
+      <div class="mb" style="left:139px;top:36px"><i></i></div>
+    </div>
+    <div class="mrow">
+      <svg width="10" height="10" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path fill="#ffd83d" d="M2 0h4v1H2zM1 1h6v1H1zM0 2h8v4H0zM1 6h6v1H1zM2 7h4v1H2z"/>
+        <path fill="#7a4f12" d="M3 2h2v1H3zM2 3h1v1H2zM3 4h2v1H3zM5 5h1v1H5zM3 6h2v1H3z"/>
+      </svg>
+      <span class="cash">$703</span>
+      <span class="inc">+$1/S</span>
+      <span class="lg">LOCAL LEAGUE <b>2/10</b></span>
+    </div>
+    <i class="sl"></i><i class="gl"></i>
+  </div>
+  <div class="ctrl">
+    <i class="pwr"></i><span class="brand">MINI-MTX</span>
+    <span class="cbtn" title="Mute">
+      <svg width="20" height="16" viewBox="0 0 10 8" shape-rendering="crispEdges">
+        <path fill="#aab3d0" d="M1 3h1v2H1zM2 2h1v4H2zM3 1h1v6H3zM4 0h1v8H4z"/>
+        <path fill="#ff4242" d="M6 2h1v1H6zM8 2h1v1H8zM7 3h1v2H7zM6 5h1v1H6zM8 5h1v1H8z"/>
+      </svg>
+    </span>
+    <span class="cbtn t">X4</span>
+    <span class="cbtn" title="Expand">
+      <svg width="16" height="16" viewBox="0 0 10 10" shape-rendering="crispEdges">
+        <path fill="#aab3d0" d="M0 0h4v1H0zM0 1h1v3H0zM6 0h4v1H6zM9 1h1v3H9zM0 9h4v1H0zM0 6h1v3H0zM6 9h4v1H6zM9 6h1v3H9z"/>
+      </svg>
+    </span>
+    <span class="cbtn" title="Close">
+      <svg width="14" height="14" viewBox="0 0 7 7" shape-rendering="crispEdges">
+        <path fill="#aab3d0" d="M0 0h1v1H0zM6 0h1v1H6zM1 1h1v1H1zM5 1h1v1H5zM2 2h1v1H2zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM4 4h1v1H4zM1 5h1v1H1zM5 5h1v1H5zM0 6h1v1H0zM6 6h1v1H6z"/>
+      </svg>
+    </span>
+  </div>
+</div>
+
+<!-- ================= TASKBAR ================= -->
+<footer id="taskbar">
+  <div class="tb-start">
+    <svg width="16" height="16" viewBox="0 0 7 7" shape-rendering="crispEdges">
+      <path fill="#8a93b5" d="M0 0h3v3H0zM4 0h3v3H4zM0 4h3v3H0zM4 4h3v3H4z"/>
+    </svg>
+  </div>
+  <i class="tb-sep"></i>
+  <div class="tb-app">
+    <svg width="16" height="16" viewBox="0 0 8 8" shape-rendering="crispEdges">
+      <path fill="#3a4364" d="M1 0h5v8H1z"/>
+      <path fill="#6b7494" d="M2 2h3v1H2zM2 4h3v1H2zM2 6h2v1H2z"/>
+    </svg>
+  </div>
+  <div class="tb-app">
+    <svg width="16" height="16" viewBox="0 0 8 8" shape-rendering="crispEdges">
+      <path fill="#3a4364" d="M0 1h3v1l1 1h4v4H0z"/>
+      <path fill="#6b7494" d="M1 4h6v2H1z"/>
+    </svg>
+  </div>
+  <div class="tb-app">
+    <svg width="16" height="16" viewBox="0 0 8 8" shape-rendering="crispEdges">
+      <path fill="#3a4364" d="M0 0h8v8H0z"/>
+      <path fill="#6b7494" d="M1 2h1v1H1zM2 3h1v1H2zM1 4h1v1H1zM4 5h3v1H4z"/>
+    </svg>
+  </div>
+  <div class="tb-app active" title="Sports Idle — match running">
+    <svg width="18" height="18" viewBox="0 0 8 8" shape-rendering="crispEdges">
+      <path fill="#f2f4e9" d="M2 0h4v1H2zM1 1h6v1H1zM0 2h8v4H0zM1 6h6v1H1zM2 7h4v1H2z"/>
+      <path fill="#11131a" d="M3 3h2v2H3zM1 2h1v1H1zM6 2h1v1H6zM1 5h1v1H1zM6 5h1v1H6z"/>
+    </svg>
+  </div>
+  <div class="tb-app">
+    <svg width="16" height="16" viewBox="0 0 8 8" shape-rendering="crispEdges">
+      <path fill="#3a4364" d="M0 1h8v6H0z"/>
+      <path fill="#6b7494" d="M1 2h1v1H1zM2 3h1v1H2zM3 4h2v1H3zM5 3h1v1H5zM6 2h1v1H6z"/>
+    </svg>
+  </div>
+  <div class="tb-flex"></div>
+  <div class="tb-tray">
+    <svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges">
+      <path fill="#6b7494" d="M3 1h1v1H3zM2 2h1v1H2zM4 2h1v1H4zM1 3h1v1H1zM5 3h1v1H5z"/>
+    </svg>
+    <svg width="12" height="12" viewBox="0 0 7 7" shape-rendering="crispEdges">
+      <path fill="#6b7494" d="M0 4h1v2H0zM2 3h1v3H2zM4 2h1v4H4zM6 1h1v5H6z"/>
+    </svg>
+    <svg width="12" height="12" viewBox="0 0 8 7" shape-rendering="crispEdges">
+      <path fill="#6b7494" d="M0 2h1v3H0zM1 1h1v5H1zM2 0h1v7H2z"/>
+      <path fill="#3a4364" d="M4 2h3v3H4z"/>
+    </svg>
+  </div>
+  <i class="tb-sep"></i>
+  <div class="tb-clock">14:58</div>
+</footer>
+
+</body>
+</html>

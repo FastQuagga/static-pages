@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mini Screen — Variant A · BROADCAST / Sports TV · PiP Widget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ BROADCAST / SPORTS TV — design tokens ============ */
+:root{
+  --bg:#070b12;
+  --panel:#0f1624;
+  --panel2:#141d2e;
+  --plate:#0c1320;
+  --line:#1e2a3e;
+  --line2:#2a3a55;
+  --txt:#e9eef7;
+  --mut:#8b97ad;
+  --dim:#5d6b82;
+  --cyan:#27d9f5;
+  --cyan-soft:#9ceefb;
+  --cyan-deep:#0e9cb8;
+  --red:#ff4356;
+  --red-deep:#c2293a;
+  --gold:#f0c249;
+  --gold-deep:#b88a1d;
+  --green:#3ce078;
+  --d:'Barlow Condensed',sans-serif;
+  --b:'Inter',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  width:1280px;height:800px;margin:0;overflow:hidden;position:relative;
+  font-family:var(--b);color:var(--txt);
+  -webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(1000px 560px at 72% 12%, rgba(36,72,118,.30), transparent 65%),
+    radial-gradient(840px 640px at 10% 90%, rgba(70,48,120,.18), transparent 62%),
+    radial-gradient(640px 460px at 94% 80%, rgba(22,90,110,.16), transparent 60%),
+    repeating-linear-gradient(115deg, rgba(255,255,255,.008) 0 2px, transparent 2px 7px),
+    linear-gradient(165deg,#0b101c 0%,#070a12 55%,#05070d 100%);
+}
+svg{display:block}
+
+/* ---------- wallpaper decor (generic, no OS branding) ---------- */
+.wall{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px)}
+.orb1{width:620px;height:620px;left:44%;top:-260px;border:90px solid rgba(56,110,170,.07)}
+.orb2{width:440px;height:440px;left:-170px;top:430px;border:70px solid rgba(120,80,200,.05)}
+.orb3{width:300px;height:300px;left:78%;top:46%;border:50px solid rgba(30,140,160,.05)}
+
+/* ====================== TASKBAR (generic OS) ====================== */
+.bar{
+  position:absolute;left:0;right:0;bottom:0;height:48px;z-index:6;
+  display:flex;align-items:center;gap:8px;padding:0 14px;
+  background:linear-gradient(180deg,rgba(13,18,30,.97),rgba(7,10,17,.99));
+  border-top:1px solid rgba(150,170,205,.10);
+  box-shadow:0 -10px 30px rgba(0,0,0,.35);
+}
+.bicon{
+  width:36px;height:36px;border-radius:9px;flex:none;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  color:#6e7c95;background:transparent;border:0;
+}
+.bicon.launcher{background:rgba(255,255,255,.05);color:#94a1b8}
+.bicon.game{background:rgba(39,217,245,.10);color:var(--cyan-soft)}
+.bicon.game::after{
+  content:"";position:absolute;left:50%;bottom:1px;width:16px;height:3px;margin-left:-8px;
+  border-radius:2px;background:var(--cyan);box-shadow:0 0 8px rgba(39,217,245,.8);
+}
+.ndot{
+  position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;
+  background:var(--red);box-shadow:0 0 6px var(--red);border:1px solid #11151f;
+}
+.bar-div{width:1px;height:22px;background:rgba(150,170,205,.14);flex:none}
+.bar-right{margin-left:auto;display:flex;align-items:center;gap:13px;color:#6e7c95}
+.clock{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.clock b{font:600 12.5px/1 var(--b);color:#c4cedf;font-variant-numeric:tabular-nums}
+.clock span{font:500 9px/1 var(--b);color:#5d6b82;font-variant-numeric:tabular-nums}
+
+/* ====================== SPEC-SHEET ANNOTATIONS ====================== */
+.sheet-head{position:absolute;left:20px;top:16px;z-index:4;display:flex;align-items:center;gap:11px}
+.sh-brand{display:flex;align-items:center;gap:7px;font:italic 800 13px/1 var(--d);letter-spacing:.04em}
+.sh-flag{width:13px;height:13px;background:linear-gradient(135deg,var(--cyan),var(--cyan-deep));clip-path:polygon(0 0,100% 0,72% 100%,0 100%)}
+.sh-brand span{color:var(--cyan)}
+.sh-div{width:1px;height:15px;background:rgba(139,151,173,.25);transform:skewX(-14deg)}
+.sh-sub{font:600 9.5px/1 var(--b);letter-spacing:.2em;color:var(--dim)}
+
+.tag{
+  position:absolute;z-index:4;display:inline-flex;align-items:center;gap:7px;
+  padding:5px 9px;border:1px solid rgba(139,151,173,.32);background:rgba(9,13,21,.5);
+  color:var(--mut);font:600 9.5px/1 var(--b);letter-spacing:.15em;white-space:nowrap;
+}
+.tag i{width:5px;height:5px;border:1px solid var(--cyan);transform:rotate(45deg);flex:none}
+.lead{position:absolute;z-index:4;background:rgba(139,151,173,.35)}
+.lead.v{width:1px}
+.lead.h{height:1px}
+.lead.v::after,.lead.h::after{content:"";position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(139,151,173,.55)}
+.lead.v::after{left:-1.5px;bottom:-4px}
+.lead.h::after{right:-4px;top:-1.5px}
+
+.notes{position:absolute;left:20px;top:514px;width:560px;z-index:4;border-left:2px solid rgba(39,217,245,.45);padding-left:12px}
+.notes h6{font:700 9px/1 var(--d);letter-spacing:.26em;color:var(--mut);margin-bottom:7px}
+.notes p{font:400 10px/1.78 var(--b);color:var(--dim)}
+.notes p b{color:#94a1b8;font-weight:600}
+
+/* ====================== ZOOM WRAPPERS ====================== */
+.zoom{position:absolute;width:612px;height:378px;z-index:2}
+.zoom .tv{transform:scale(1.8);transform-origin:0 0}
+
+/* ====================== TV WIDGET (340×210) ====================== */
+.tv{
+  width:340px;height:210px;display:flex;flex-direction:column;
+  border-radius:10px;overflow:hidden;
+  background:#0a101b;border:1px solid #273550;
+  box-shadow:0 22px 50px rgba(0,0,0,.62),0 6px 18px rgba(0,0,0,.5);
+  font-family:var(--d);
+}
+.tv.ctx{
+  position:absolute;left:920px;top:534px;z-index:3;
+  box-shadow:0 26px 62px rgba(0,0,0,.72),0 8px 22px rgba(0,0,0,.55),0 0 0 1px rgba(39,217,245,.05);
+}
+
+/* drag handle */
+.tv-drag{
+  flex:none;height:12px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#131d30,#0e1626);
+}
+.tv-drag i{width:34px;height:3px;border-radius:2px;background:rgba(139,151,173,.4)}
+
+/* scorebug strip */
+.tv-bug{
+  flex:none;height:30px;display:flex;align-items:stretch;
+  background:linear-gradient(180deg,#0e1828,#0a1322);
+  border-top:1px solid #1a2438;border-bottom:1px solid #1e2a3e;
+}
+.tv-bug>*{display:flex;align-items:center}
+.b-acc{width:4px;background:linear-gradient(180deg,var(--gold),var(--gold-deep))}
+.b-team{padding:0 8px;font:800 11px/1 var(--d);letter-spacing:.1em}
+.b-team.you{background:linear-gradient(180deg,#37e2fb,#0fa9c7);color:#03222b}
+.b-team.riv{background:linear-gradient(180deg,#ff5a6b,#d12a3d);color:#2b0509}
+.b-score{
+  padding:0 7px;font:800 16px/1 var(--d);color:#f2f7ff;
+  font-variant-numeric:tabular-nums;background:linear-gradient(180deg,#15213a,#0d1626);
+}
+.b-score.glow{color:#eafdff;text-shadow:0 0 10px rgba(39,217,245,.95)}
+.b-colon{padding:0 1px;background:#0d1626;color:var(--dim);font:800 13px/1 var(--d)}
+.b-clock{gap:4px;padding:0 9px;background:#070b13;border-left:1px solid #1e2a3e}
+.b-clock span{font:700 8.5px/1 var(--d);letter-spacing:.16em;color:var(--mut)}
+.b-clock b{font:800 13px/1 var(--d);color:var(--gold);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.b-live{
+  margin-left:auto;gap:5px;padding:0 9px 0 12px;
+  background:linear-gradient(180deg,var(--red),var(--red-deep));
+  clip-path:polygon(8px 0,100% 0,100% 100%,0 100%);
+  font:800 9px/1 var(--d);letter-spacing:.2em;color:#fff;
+}
+.b-live i{width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 5px #fff;animation:pulse 1.3s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* field stage */
+.tv-field{position:relative;flex:1;min-height:0;background:#070b12}
+.tv-field>svg.fld{position:absolute;inset:0;width:100%;height:100%}
+.tv-field::before{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px);
+  mix-blend-mode:overlay;
+}
+.tv-field::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(120% 105% at 50% 40%,transparent 55%,rgba(2,5,10,.55) 100%);
+}
+
+/* hover controls rail (semi-transparent) */
+.tv-ctl{position:absolute;top:6px;right:6px;z-index:5;display:flex;flex-direction:column;gap:4px}
+.tv-ctl button{
+  width:20px;height:20px;border-radius:5px;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(6,10,17,.68);border:1px solid rgba(140,160,190,.28);color:#aeb9cc;
+}
+.tv-ctl .spd{font:800 8.5px/1 var(--d);letter-spacing:.02em;color:var(--cyan-soft)}
+.tv-ctl .cls{color:#e0939c}
+
+/* bottom ticker */
+.tv-tick{
+  flex:none;height:24px;display:flex;align-items:center;gap:6px;padding:0 8px;
+  background:linear-gradient(180deg,rgba(9,14,23,.98),#060a11);
+  border-top:1px solid #1e2a3e;
+}
+.t-money{display:flex;align-items:baseline;gap:2px;font:800 12.5px/1 var(--d);color:var(--txt);font-variant-numeric:tabular-nums}
+.t-money em{font-style:normal;color:var(--gold)}
+.t-inc{font:700 9px/1 var(--d);letter-spacing:.04em;color:var(--green)}
+.t-sep{width:4px;height:4px;background:#2a3a55;transform:rotate(45deg);flex:none}
+.t-lab{font:700 7.5px/1 var(--d);letter-spacing:.18em;color:var(--gold);white-space:nowrap}
+.t-cells{flex:1;display:flex;gap:2px;min-width:56px}
+.t-cells i{flex:1;height:6px;background:#121b2c;border:1px solid #1e2a3e;transform:skewX(-12deg)}
+.t-cells i.f{
+  background:linear-gradient(90deg,var(--gold),#ffd970);
+  border-color:rgba(240,194,73,.6);box-shadow:0 0 5px rgba(240,194,73,.35);
+}
+.t-count{font:800 10px/1 var(--d);color:var(--txt);font-variant-numeric:tabular-nums;white-space:nowrap}
+.t-count em{font-style:normal;font-weight:600;font-size:7.5px;letter-spacing:.14em;color:var(--mut);margin-left:2px}
+.t-rew{font:700 8px/1 var(--d);letter-spacing:.18em;color:var(--gold);white-space:nowrap}
+.t-rval{font:800 12.5px/1 var(--d);color:var(--green);font-variant-numeric:tabular-nums}
+
+/* GOAL event overlay */
+.flash{
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:
+    radial-gradient(70% 80% at 42% 45%,rgba(39,217,245,.16),transparent 70%),
+    linear-gradient(180deg,rgba(255,255,255,.05),transparent 42%);
+}
+.g-wrap{position:absolute;left:16px;top:36px;z-index:4;transform:rotate(-2deg)}
+.g-burst{
+  position:absolute;left:62px;top:14px;width:170px;height:170px;
+  transform:translate(-50%,-50%);
+  background:repeating-conic-gradient(from 8deg,rgba(39,217,245,.18) 0deg 5deg,transparent 5deg 13deg);
+  -webkit-mask:radial-gradient(closest-side,#000 16%,transparent 70%);
+  mask:radial-gradient(closest-side,#000 16%,transparent 70%);
+  animation:spin 26s linear infinite;
+}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.g-plate{
+  position:relative;display:inline-block;padding:2px 14px 5px;
+  background:linear-gradient(165deg,#54e7fc 0%,#19c1e2 55%,#0a90ae 100%);
+  transform:skewX(-9deg);
+  box-shadow:0 0 22px rgba(39,217,245,.5),0 6px 14px rgba(0,0,0,.5);
+}
+.g-plate b{
+  display:block;transform:skewX(9deg);
+  font:italic 800 27px/1 var(--d);letter-spacing:.02em;color:#032530;
+  text-shadow:0 1px 0 rgba(255,255,255,.35);
+}
+.g-sub{
+  position:relative;display:inline-flex;align-items:center;gap:5px;margin:-3px 0 0 9px;
+  padding:4px 8px;background:rgba(6,10,17,.92);border:1px solid #2a3a55;
+  transform:skewX(-9deg);
+  font:700 8px/1 var(--d);letter-spacing:.22em;color:var(--cyan-soft);
+}
+.g-sub i{width:4px;height:4px;background:var(--gold);transform:rotate(45deg)}
+</style>
+</head>
+<body>
+
+<!-- wallpaper decor -->
+<div class="wall">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<!-- spec-sheet header -->
+<div class="sheet-head">
+  <div class="sh-brand"><i class="sh-flag"></i><b>SPORTS</b><span>//ONE</span></div>
+  <i class="sh-div"></i>
+  <span class="sh-sub">BROADCAST / SPORTS TV · MINI SCREEN — ALWAYS-ON-TOP PiP WIDGET</span>
+</div>
+
+<!-- ================= LIVE STATE · ×2 ================= -->
+<div class="tag" style="left:18px;top:56px"><i></i>Live state · ×2</div>
+<div class="lead v" style="left:40px;top:75px;height:13px"></div>
+<div class="zoom" style="left:18px;top:88px">
+  <div class="tv">
+    <div class="tv-drag"><i></i></div>
+    <div class="tv-bug">
+      <span class="b-acc"></span>
+      <span class="b-team you">YOU</span>
+      <span class="b-score">17</span>
+      <span class="b-colon">:</span>
+      <span class="b-score">11</span>
+      <span class="b-team riv">RIV</span>
+      <span class="b-clock"><span>H2</span><b>0:17</b></span>
+      <span class="b-live"><i></i>LIVE</span>
+    </div>
+    <div class="tv-field">
+      <svg class="fld" viewBox="0 0 340 142" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="sky-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05080f"/><stop offset="1" stop-color="#0d1422"/></linearGradient>
+          <linearGradient id="pitch-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b5e33"/><stop offset="1" stop-color="#2f9453"/></linearGradient>
+          <linearGradient id="beam-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6ff" stop-opacity=".13"/><stop offset="1" stop-color="#cfe6ff" stop-opacity="0"/></linearGradient>
+          <radialGradient id="you-a" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#a4f4ff"/><stop offset=".5" stop-color="#2cd5f0"/><stop offset="1" stop-color="#0a8aa6"/></radialGradient>
+          <radialGradient id="riv-a" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#ffaab2"/><stop offset=".5" stop-color="#ff4356"/><stop offset="1" stop-color="#a51d2d"/></radialGradient>
+          <radialGradient id="plight-a" cx=".5" cy=".55" r=".65"><stop offset="0" stop-color="#ffffff" stop-opacity=".08"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+          <pattern id="crowd-a" width="14" height="8" patternUnits="userSpaceOnUse">
+            <circle cx="1.5" cy="1.5" r=".9" fill="#33415c"/><circle cx="4.5" cy="3" r=".9" fill="#26334d"/>
+            <circle cx="7.5" cy="1.8" r=".9" fill="#3d4a63"/><circle cx="10.5" cy="3.2" r=".9" fill="#2a3850"/>
+            <circle cx="2.5" cy="5.5" r=".9" fill="#2a3850"/><circle cx="6" cy="6.5" r=".9" fill="#33415c"/>
+            <circle cx="9.5" cy="5.8" r=".9" fill="#26334d"/><circle cx="12.5" cy="6.4" r=".9" fill="#3d4a63"/>
+            <circle cx="13" cy="1.4" r=".7" fill="rgba(39,217,245,.35)"/><circle cx="8" cy="4.6" r=".7" fill="rgba(255,67,86,.28)"/>
+          </pattern>
+        </defs>
+        <rect width="340" height="142" fill="url(#sky-a)"/>
+        <!-- far stand + crowd -->
+        <polygon points="44,3 296,3 274,27 66,27" fill="#0b1422"/>
+        <polygon points="44,3 296,3 274,27 66,27" fill="url(#crowd-a)" opacity=".85"/>
+        <line x1="52" y1="11" x2="288" y2="11" stroke="#060a12" stroke-width="1.2" opacity=".85"/>
+        <line x1="58" y1="19" x2="282" y2="19" stroke="#060a12" stroke-width="1.2" opacity=".85"/>
+        <line x1="44" y1="3" x2="296" y2="3" stroke="#1e2a3e" stroke-width="1"/>
+        <!-- ad board -->
+        <rect x="62" y="26.4" width="216" height="3.4" fill="#081222"/>
+        <line x1="64" y1="28.2" x2="276" y2="28.2" stroke="rgba(39,217,245,.55)" stroke-width="1" stroke-dasharray="6 10"/>
+        <!-- side crowd wedges -->
+        <polygon points="0,27 66,27 78,30 0,133" fill="#0a1320"/>
+        <polygon points="0,27 66,27 78,30 0,133" fill="url(#crowd-a)" opacity=".4"/>
+        <polygon points="340,27 274,27 262,30 340,133" fill="#0a1320"/>
+        <polygon points="340,27 274,27 262,30 340,133" fill="url(#crowd-a)" opacity=".4"/>
+        <!-- floodlight beams -->
+        <polygon points="70,0 96,0 150,60 110,60" fill="url(#beam-a)" opacity=".7"/>
+        <polygon points="244,0 270,0 230,60 190,60" fill="url(#beam-a)" opacity=".7"/>
+        <!-- pitch -->
+        <polygon points="78,30 262,30 348,142 -8,142" fill="url(#pitch-a)"/>
+        <polygon points="78,30 101,30 36.5,142 -8,142" fill="rgba(0,0,0,.09)"/>
+        <polygon points="124,30 147,30 125.5,142 81,142" fill="rgba(0,0,0,.09)"/>
+        <polygon points="170,30 193,30 214.5,142 170,142" fill="rgba(0,0,0,.09)"/>
+        <polygon points="216,30 239,30 303.5,142 259,142" fill="rgba(0,0,0,.09)"/>
+        <polygon points="78,30 262,30 348,142 -8,142" fill="url(#plight-a)"/>
+        <polygon points="78,30 262,30 348,142 -8,142" fill="none" stroke="#e8f4ec" stroke-width=".8" opacity=".55"/>
+        <line x1="45.7" y1="72" x2="294.3" y2="72" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+        <ellipse cx="170" cy="72" rx="25" ry="8" fill="none" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+        <path d="M132 30 L127.6 44 L212.4 44 L208 30" fill="none" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+        <path d="M96 142 L104.9 114 L235.1 114 L244 142" fill="none" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+        <path d="M156 30 V24.6 H184 V30" fill="rgba(223,233,245,.10)" stroke="#dfe9f5" stroke-width=".9" opacity=".8"/>
+        <circle cx="170" cy="37" r=".8" fill="#e8f4ec" opacity=".6"/>
+        <circle cx="170" cy="127" r="1.1" fill="#e8f4ec" opacity=".6"/>
+        <!-- players: RIV (red, defending far goal) -->
+        <ellipse cx="170" cy="35.8" rx="3.4" ry="1" fill="rgba(0,0,0,.38)"/><circle cx="170" cy="33" r="3" fill="url(#riv-a)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="150" cy="44.9" rx="3.5" ry="1" fill="rgba(0,0,0,.38)"/><circle cx="150" cy="42" r="3.1" fill="url(#riv-a)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="197" cy="46.9" rx="3.5" ry="1" fill="rgba(0,0,0,.38)"/><circle cx="197" cy="44" r="3.1" fill="url(#riv-a)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="128" cy="61.2" rx="3.9" ry="1.1" fill="rgba(0,0,0,.38)"/><circle cx="128" cy="58" r="3.4" fill="url(#riv-a)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="214" cy="59.2" rx="3.9" ry="1.1" fill="rgba(0,0,0,.38)"/><circle cx="214" cy="56" r="3.4" fill="url(#riv-a)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="172" cy="73.4" rx="4.1" ry="1.2" fill="rgba(0,0,0,.38)"/><circle cx="172" cy="70" r="3.6" fill="url(#riv-a)" stroke="#7e1622" stroke-width=".5"/>
+        <!-- players: YOU (cyan, attacking up) -->
+        <ellipse cx="186" cy="51.1" rx="3.8" ry="1.1" fill="rgba(0,0,0,.38)"/><circle cx="186" cy="48" r="3.3" fill="url(#you-a)" stroke="#066b84" stroke-width=".5"/>
+        <ellipse cx="206" cy="67.4" rx="4.1" ry="1.2" fill="rgba(0,0,0,.38)"/><circle cx="206" cy="64" r="3.6" fill="url(#you-a)" stroke="#066b84" stroke-width=".5"/>
+        <ellipse cx="146" cy="79.6" rx="4.3" ry="1.2" fill="rgba(0,0,0,.38)"/><circle cx="146" cy="76" r="3.8" fill="url(#you-a)" stroke="#066b84" stroke-width=".5"/>
+        <ellipse cx="118" cy="105.9" rx="4.8" ry="1.4" fill="rgba(0,0,0,.38)"/><circle cx="118" cy="102" r="4.2" fill="url(#you-a)" stroke="#066b84" stroke-width=".5"/>
+        <ellipse cx="224" cy="101.9" rx="4.8" ry="1.4" fill="rgba(0,0,0,.38)"/><circle cx="224" cy="98" r="4.2" fill="url(#you-a)" stroke="#066b84" stroke-width=".5"/>
+        <ellipse cx="170" cy="128.2" rx="5.2" ry="1.5" fill="rgba(0,0,0,.38)"/><circle cx="170" cy="124" r="4.6" fill="url(#you-a)" stroke="#066b84" stroke-width=".5"/>
+        <!-- ball -->
+        <ellipse cx="193" cy="55.4" rx="2.3" ry=".8" fill="rgba(0,0,0,.42)"/>
+        <circle cx="193" cy="53" r="2.1" fill="#f4f8fc"/>
+        <circle cx="193" cy="53" r="3.4" fill="none" stroke="rgba(244,248,252,.35)" stroke-width=".6"/>
+      </svg>
+      <div class="tv-ctl">
+        <button title="Mute"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button class="spd" title="Sim speed">×4</button>
+        <button title="Expand"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="cls" title="Close"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      </div>
+    </div>
+    <div class="tv-tick">
+      <span class="t-money"><em>$</em>703</span>
+      <span class="t-inc">+$1/s</span>
+      <i class="t-sep"></i>
+      <span class="t-lab">LOCAL LEAGUE</span>
+      <span class="t-cells"><i class="f"></i><i class="f"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="t-count">2/10<em>WINS</em></span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= EVENT STATE: GOAL · ×2 ================= -->
+<div class="tag" style="left:650px;top:56px"><i></i>Event state: GOAL · ×2</div>
+<div class="lead v" style="left:672px;top:75px;height:13px"></div>
+<div class="zoom" style="left:650px;top:88px">
+  <div class="tv">
+    <div class="tv-drag"><i></i></div>
+    <div class="tv-bug">
+      <span class="b-acc"></span>
+      <span class="b-team you">YOU</span>
+      <span class="b-score glow">18</span>
+      <span class="b-colon">:</span>
+      <span class="b-score">11</span>
+      <span class="b-team riv">RIV</span>
+      <span class="b-clock"><span>H2</span><b>0:17</b></span>
+      <span class="b-live"><i></i>LIVE</span>
+    </div>
+    <div class="tv-field">
+      <svg class="fld" viewBox="0 0 340 142" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="sky-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05080f"/><stop offset="1" stop-color="#0d1422"/></linearGradient>
+          <linearGradient id="pitch-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b5e33"/><stop offset="1" stop-color="#2f9453"/></linearGradient>
+          <linearGradient id="beam-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6ff" stop-opacity=".13"/><stop offset="1" stop-color="#cfe6ff" stop-opacity="0"/></linearGradient>
+          <radialGradient id="you-b" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#a4f4ff"/><stop offset=".5" stop-color="#2cd5f0"/><stop offset="1" stop-color="#0a8aa6"/></radialGradient>
+          <radialGradient id="riv-b" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#ffaab2"/><stop offset=".5" stop-color="#ff4356"/><stop offset="1" stop-color="#a51d2d"/></radialGradient>
+          <radialGradient id="plight-b" cx=".5" cy=".55" r=".65"><stop offset="0" stop-color="#ffffff" stop-opacity=".08"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+          <pattern id="crowd-b" width="14" height="8" patternUnits="userSpaceOnUse">
+            <circle cx="1.5" cy="1.5" r=".9" fill="#33415c"/><circle cx="4.5" cy="3" r=".9" fill="#26334d"/>
+            <circle cx="7.5" cy="1.8" r=".9" fill="#3d4a63"/><circle cx="10.5" cy="3.2" r=".9" fill="#2a3850"/>
+            <circle cx="2.5" cy="5.5" r=".9" fill="#2a3850"/><circle cx="6" cy="6.5" r=".9" fill="#33415c"/>
+            <circle cx="9.5" cy="5.8" r=".9" fill="#26334d"/><circle cx="12.5" cy="6.4" r=".9" fill="#3d4a63"/>
+            <circle cx="13" cy="1.4" r=".7" fill="rgba(39,217,245,.35)"/><circle cx="8" cy="4.6" r=".7" fill="rgba(255,67,86,.28)"/>
+          </pattern>
+        </defs>
+        <rect width="340" height="142" fill="url(#sky-b)"/>
+        <polygon points="44,3 296,3 274,27 66,27" fill="#0b1422"/>
+        <polygon points="44,3 296,3 274,27 66,27" fill="url(#crowd-b)" opacity=".85"/>
+        <line x1="52" y1="11" x2="288" y2="11" stroke="#060a12" stroke-width="1.2" opacity=".85"/>
+        <line x1="58" y1="19" x2="282" y2="19" stroke="#060a12" stroke-width="1.2" opacity=".85"/>
+        <line x1="44" y1="3" x2="296" y2="3" stroke="#1e2a3e" stroke-width="1"/>
+        <rect x="62" y="26.4" width="216" height="3.4" fill="#081222"/>
+        <line x1="64" y1="28.2" x2="276" y2="28.2" stroke="rgba(39,217,245,.55)" stroke-width="1" stroke-dasharray="6 10"/>
+        <polygon points="0,27 66,27 78,30 0,133" fill="#0a1320"/>
+        <polygon points="0,27 66,27 78,30 0,133" fill="url(#crowd-b)" opacity=".4"/>
+        <polygon points="340,27 274,27 262,30 340,133" fill="#0a1320"/>
+        <polygon points="340,27 274,27 262,30 340,133" fill="url(#crowd-b)" opacity=".4"/>
+        <polygon points="70,0 96,0 150,60 110,60" fill="url(#beam-b)" opacity=".7"/>
+        <polygon points="244,0 270,0 230,60 190,60" fill="url(#beam-b)" opacity=".7"/>
+        <polygon points="78,30 262,30 348,142 -8,142" fill="url(#pitch-b)"/>
+        <polygon points="78,30 101,30 36.5,142 -8,142" fill="rgba(0,0,0,.09)"/>
+        <polygon points="124,30 147,30 125.5,142 81,142" fill="rgba(0,0,0,.09)"/>
+        <polygon points="170,30 193,30 214.5,142 170,142" fill="rgba(0,0,0,.09)"/>
+        <polygon points="216,30 239,30 303.5,142 259,142" fill="rgba(0,0,0,.09)"/>
+        <polygon points="78,30 262,30 348,142 -8,142" fill="url(#plight-b)"/>
+        <polygon points="78,30 262,30 348,142 -8,142" fill="none" stroke="#e8f4ec" stroke-width=".8" opacity=".55"/>
+        <line x1="45.7" y1="72" x2="294.3" y2="72" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+        <ellipse cx="170" cy="72" rx="25" ry="8" fill="none" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+        <path d="M132 30 L127.6 44 L212.4 44 L208 30" fill="none" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+        <path d="M96 142 L104.9 114 L235.1 114 L244 142" fill="none" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+        <path d="M156 30 V24.6 H184 V30" fill="rgba(223,233,245,.10)" stroke="#dfe9f5" stroke-width=".9" opacity=".8"/>
+        <circle cx="170" cy="37" r=".8" fill="#e8f4ec" opacity=".6"/>
+        <circle cx="170" cy="127" r="1.1" fill="#e8f4ec" opacity=".6"/>
+        <ellipse cx="170" cy="35.8" rx="3.4" ry="1" fill="rgba(0,0,0,.38)"/><circle cx="170" cy="33" r="3" fill="url(#riv-b)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="150" cy="44.9" rx="3.5" ry="1" fill="rgba(0,0,0,.38)"/><circle cx="150" cy="42" r="3.1" fill="url(#riv-b)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="197" cy="46.9" rx="3.5" ry="1" fill="rgba(0,0,0,.38)"/><circle cx="197" cy="44" r="3.1" fill="url(#riv-b)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="128" cy="61.2" rx="3.9" ry="1.1" fill="rgba(0,0,0,.38)"/><circle cx="128" cy="58" r="3.4" fill="url(#riv-b)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="214" cy="59.2" rx="3.9" ry="1.1" fill="rgba(0,0,0,.38)"/><circle cx="214" cy="56" r="3.4" fill="url(#riv-b)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="172" cy="73.4" rx="4.1" ry="1.2" fill="rgba(0,0,0,.38)"/><circle cx="172" cy="70" r="3.6" fill="url(#riv-b)" stroke="#7e1622" stroke-width=".5"/>
+        <ellipse cx="186" cy="51.1" rx="3.8" ry="1.1" fill="rgba(0,0,0,.38)"/><circle cx="186" cy="48" r="3.3" fill="url(#you-b)" stroke="#066b84" stroke-width=".5"/>
+        <circle cx="186" cy="48" r="6.6" fill="none" stroke="rgba(39,217,245,.75)" stroke-width="1" stroke-dasharray="2 2.4"/>
+        <ellipse cx="206" cy="67.4" rx="4.1" ry="1.2" fill="rgba(0,0,0,.38)"/><circle cx="206" cy="64" r="3.6" fill="url(#you-b)" stroke="#066b84" stroke-width=".5"/>
+        <ellipse cx="146" cy="79.6" rx="4.3" ry="1.2" fill="rgba(0,0,0,.38)"/><circle cx="146" cy="76" r="3.8" fill="url(#you-b)" stroke="#066b84" stroke-width=".5"/>
+        <ellipse cx="118" cy="105.9" rx="4.8" ry="1.4" fill="rgba(0,0,0,.38)"/><circle cx="118" cy="102" r="4.2" fill="url(#you-b)" stroke="#066b84" stroke-width=".5"/>
+        <ellipse cx="224" cy="101.9" rx="4.8" ry="1.4" fill="rgba(0,0,0,.38)"/><circle cx="224" cy="98" r="4.2" fill="url(#you-b)" stroke="#066b84" stroke-width=".5"/>
+        <ellipse cx="170" cy="128.2" rx="5.2" ry="1.5" fill="rgba(0,0,0,.38)"/><circle cx="170" cy="124" r="4.6" fill="url(#you-b)" stroke="#066b84" stroke-width=".5"/>
+        <!-- ball in the net -->
+        <circle cx="176" cy="27.4" r="1.9" fill="#f4f8fc"/>
+        <circle cx="176" cy="27.4" r="3.4" fill="none" stroke="rgba(39,217,245,.6)" stroke-width=".7"/>
+      </svg>
+      <div class="flash"></div>
+      <div class="g-wrap">
+        <i class="g-burst"></i>
+        <div class="g-plate"><b>GOAL!</b></div>
+        <br>
+        <div class="g-sub"><i></i>STRIKER · 17'</div>
+      </div>
+      <div class="tv-ctl">
+        <button title="Mute"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button class="spd" title="Sim speed">×4</button>
+        <button title="Expand"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="cls" title="Close"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      </div>
+    </div>
+    <div class="tv-tick">
+      <span class="t-rew">REWARD</span>
+      <span class="t-rval">+$85</span>
+      <i class="t-sep"></i>
+      <span class="t-lab">LOCAL LEAGUE</span>
+      <span class="t-cells"><i class="f"></i><i class="f"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="t-count">2/10<em>WINS</em></span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SPEC NOTES ================= -->
+<div class="notes">
+  <h6>PIP WIDGET · NOTES</h6>
+  <p><b>Window 340×210</b> · rounded 10 px · snaps above the taskbar · always on top</p>
+  <p><b>Hover rail:</b> mute · sim speed ×4 · expand to full Match screen · close</p>
+  <p><b>Event states</b> (goal / win / promotion) flash for 3 s, then fade back to live</p>
+  <p><b>Bottom ticker:</b> cash + passive income · league progress toward promotion</p>
+</div>
+
+<!-- ================= IN-CONTEXT WIDGET (100%) ================= -->
+<div class="tag" style="right:400px;top:626px"><i></i>In context · 100% · above taskbar</div>
+<div class="lead h" style="left:884px;top:636px;width:30px"></div>
+<div class="tv ctx">
+  <div class="tv-drag"><i></i></div>
+  <div class="tv-bug">
+    <span class="b-acc"></span>
+    <span class="b-team you">YOU</span>
+    <span class="b-score">17</span>
+    <span class="b-colon">:</span>
+    <span class="b-score">11</span>
+    <span class="b-team riv">RIV</span>
+    <span class="b-clock"><span>H2</span><b>0:17</b></span>
+    <span class="b-live"><i></i>LIVE</span>
+  </div>
+  <div class="tv-field">
+    <svg class="fld" viewBox="0 0 340 142" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="sky-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05080f"/><stop offset="1" stop-color="#0d1422"/></linearGradient>
+        <linearGradient id="pitch-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b5e33"/><stop offset="1" stop-color="#2f9453"/></linearGradient>
+        <linearGradient id="beam-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6ff" stop-opacity=".13"/><stop offset="1" stop-color="#cfe6ff" stop-opacity="0"/></linearGradient>
+        <radialGradient id="you-c" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#a4f4ff"/><stop offset=".5" stop-color="#2cd5f0"/><stop offset="1" stop-color="#0a8aa6"/></radialGradient>
+        <radialGradient id="riv-c" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#ffaab2"/><stop offset=".5" stop-color="#ff4356"/><stop offset="1" stop-color="#a51d2d"/></radialGradient>
+        <radialGradient id="plight-c" cx=".5" cy=".55" r=".65"><stop offset="0" stop-color="#ffffff" stop-opacity=".08"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+        <pattern id="crowd-c" width="14" height="8" patternUnits="userSpaceOnUse">
+          <circle cx="1.5" cy="1.5" r=".9" fill="#33415c"/><circle cx="4.5" cy="3" r=".9" fill="#26334d"/>
+          <circle cx="7.5" cy="1.8" r=".9" fill="#3d4a63"/><circle cx="10.5" cy="3.2" r=".9" fill="#2a3850"/>
+          <circle cx="2.5" cy="5.5" r=".9" fill="#2a3850"/><circle cx="6" cy="6.5" r=".9" fill="#33415c"/>
+          <circle cx="9.5" cy="5.8" r=".9" fill="#26334d"/><circle cx="12.5" cy="6.4" r=".9" fill="#3d4a63"/>
+          <circle cx="13" cy="1.4" r=".7" fill="rgba(39,217,245,.35)"/><circle cx="8" cy="4.6" r=".7" fill="rgba(255,67,86,.28)"/>
+        </pattern>
+      </defs>
+      <rect width="340" height="142" fill="url(#sky-c)"/>
+      <polygon points="44,3 296,3 274,27 66,27" fill="#0b1422"/>
+      <polygon points="44,3 296,3 274,27 66,27" fill="url(#crowd-c)" opacity=".85"/>
+      <line x1="52" y1="11" x2="288" y2="11" stroke="#060a12" stroke-width="1.2" opacity=".85"/>
+      <line x1="58" y1="19" x2="282" y2="19" stroke="#060a12" stroke-width="1.2" opacity=".85"/>
+      <line x1="44" y1="3" x2="296" y2="3" stroke="#1e2a3e" stroke-width="1"/>
+      <rect x="62" y="26.4" width="216" height="3.4" fill="#081222"/>
+      <line x1="64" y1="28.2" x2="276" y2="28.2" stroke="rgba(39,217,245,.55)" stroke-width="1" stroke-dasharray="6 10"/>
+      <polygon points="0,27 66,27 78,30 0,133" fill="#0a1320"/>
+      <polygon points="0,27 66,27 78,30 0,133" fill="url(#crowd-c)" opacity=".4"/>
+      <polygon points="340,27 274,27 262,30 340,133" fill="#0a1320"/>
+      <polygon points="340,27 274,27 262,30 340,133" fill="url(#crowd-c)" opacity=".4"/>
+      <polygon points="70,0 96,0 150,60 110,60" fill="url(#beam-c)" opacity=".7"/>
+      <polygon points="244,0 270,0 230,60 190,60" fill="url(#beam-c)" opacity=".7"/>
+      <polygon points="78,30 262,30 348,142 -8,142" fill="url(#pitch-c)"/>
+      <polygon points="78,30 101,30 36.5,142 -8,142" fill="rgba(0,0,0,.09)"/>
+      <polygon points="124,30 147,30 125.5,142 81,142" fill="rgba(0,0,0,.09)"/>
+      <polygon points="170,30 193,30 214.5,142 170,142" fill="rgba(0,0,0,.09)"/>
+      <polygon points="216,30 239,30 303.5,142 259,142" fill="rgba(0,0,0,.09)"/>
+      <polygon points="78,30 262,30 348,142 -8,142" fill="url(#plight-c)"/>
+      <polygon points="78,30 262,30 348,142 -8,142" fill="none" stroke="#e8f4ec" stroke-width=".8" opacity=".55"/>
+      <line x1="45.7" y1="72" x2="294.3" y2="72" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+      <ellipse cx="170" cy="72" rx="25" ry="8" fill="none" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+      <path d="M132 30 L127.6 44 L212.4 44 L208 30" fill="none" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+      <path d="M96 142 L104.9 114 L235.1 114 L244 142" fill="none" stroke="#e8f4ec" stroke-width=".7" opacity=".5"/>
+      <path d="M156 30 V24.6 H184 V30" fill="rgba(223,233,245,.10)" stroke="#dfe9f5" stroke-width=".9" opacity=".8"/>
+      <circle cx="170" cy="37" r=".8" fill="#e8f4ec" opacity=".6"/>
+      <circle cx="170" cy="127" r="1.1" fill="#e8f4ec" opacity=".6"/>
+      <ellipse cx="170" cy="35.8" rx="3.4" ry="1" fill="rgba(0,0,0,.38)"/><circle cx="170" cy="33" r="3" fill="url(#riv-c)" stroke="#7e1622" stroke-width=".5"/>
+      <ellipse cx="150" cy="44.9" rx="3.5" ry="1" fill="rgba(0,0,0,.38)"/><circle cx="150" cy="42" r="3.1" fill="url(#riv-c)" stroke="#7e1622" stroke-width=".5"/>
+      <ellipse cx="197" cy="46.9" rx="3.5" ry="1" fill="rgba(0,0,0,.38)"/><circle cx="197" cy="44" r="3.1" fill="url(#riv-c)" stroke="#7e1622" stroke-width=".5"/>
+      <ellipse cx="128" cy="61.2" rx="3.9" ry="1.1" fill="rgba(0,0,0,.38)"/><circle cx="128" cy="58" r="3.4" fill="url(#riv-c)" stroke="#7e1622" stroke-width=".5"/>
+      <ellipse cx="214" cy="59.2" rx="3.9" ry="1.1" fill="rgba(0,0,0,.38)"/><circle cx="214" cy="56" r="3.4" fill="url(#riv-c)" stroke="#7e1622" stroke-width=".5"/>
+      <ellipse cx="172" cy="73.4" rx="4.1" ry="1.2" fill="rgba(0,0,0,.38)"/><circle cx="172" cy="70" r="3.6" fill="url(#riv-c)" stroke="#7e1622" stroke-width=".5"/>
+      <ellipse cx="186" cy="51.1" rx="3.8" ry="1.1" fill="rgba(0,0,0,.38)"/><circle cx="186" cy="48" r="3.3" fill="url(#you-c)" stroke="#066b84" stroke-width=".5"/>
+      <ellipse cx="206" cy="67.4" rx="4.1" ry="1.2" fill="rgba(0,0,0,.38)"/><circle cx="206" cy="64" r="3.6" fill="url(#you-c)" stroke="#066b84" stroke-width=".5"/>
+      <ellipse cx="146" cy="79.6" rx="4.3" ry="1.2" fill="rgba(0,0,0,.38)"/><circle cx="146" cy="76" r="3.8" fill="url(#you-c)" stroke="#066b84" stroke-width=".5"/>
+      <ellipse cx="118" cy="105.9" rx="4.8" ry="1.4" fill="rgba(0,0,0,.38)"/><circle cx="118" cy="102" r="4.2" fill="url(#you-c)" stroke="#066b84" stroke-width=".5"/>
+      <ellipse cx="224" cy="101.9" rx="4.8" ry="1.4" fill="rgba(0,0,0,.38)"/><circle cx="224" cy="98" r="4.2" fill="url(#you-c)" stroke="#066b84" stroke-width=".5"/>
+      <ellipse cx="170" cy="128.2" rx="5.2" ry="1.5" fill="rgba(0,0,0,.38)"/><circle cx="170" cy="124" r="4.6" fill="url(#you-c)" stroke="#066b84" stroke-width=".5"/>
+      <ellipse cx="193" cy="55.4" rx="2.3" ry=".8" fill="rgba(0,0,0,.42)"/>
+      <circle cx="193" cy="53" r="2.1" fill="#f4f8fc"/>
+      <circle cx="193" cy="53" r="3.4" fill="none" stroke="rgba(244,248,252,.35)" stroke-width=".6"/>
+    </svg>
+    <div class="tv-ctl">
+      <button title="Mute"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      <button class="spd" title="Sim speed">×4</button>
+      <button title="Expand"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="cls" title="Close"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+  </div>
+  <div class="tv-tick">
+    <span class="t-money"><em>$</em>703</span>
+    <span class="t-inc">+$1/s</span>
+    <i class="t-sep"></i>
+    <span class="t-lab">LOCAL LEAGUE</span>
+    <span class="t-cells"><i class="f"></i><i class="f"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="t-count">2/10<em>WINS</em></span>
+  </div>
+</div>
+
+<!-- ================= TASKBAR ================= -->
+<footer class="bar">
+  <button class="bicon launcher" title="Apps">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="2.5" cy="2.5" r="1.6"/><circle cx="8" cy="2.5" r="1.6"/><circle cx="13.5" cy="2.5" r="1.6"/><circle cx="2.5" cy="8" r="1.6"/><circle cx="8" cy="8" r="1.6"/><circle cx="13.5" cy="8" r="1.6"/><circle cx="2.5" cy="13.5" r="1.6"/><circle cx="8" cy="13.5" r="1.6"/><circle cx="13.5" cy="13.5" r="1.6"/></svg>
+  </button>
+  <span class="bar-div"></span>
+  <button class="bicon" title="Files">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 7a2 2 0 012-2h4l2 2.5h8a2 2 0 012 2V17a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+  </button>
+  <button class="bicon" title="Browser">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><ellipse cx="12" cy="12" rx="3.8" ry="8.5" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 12h17" stroke="currentColor" stroke-width="1.5"/></svg>
+  </button>
+  <button class="bicon" title="Chat">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H10l-4.5 4V16H6a2 2 0 01-2-2V6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+  </button>
+  <button class="bicon" title="Notes">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </button>
+  <button class="bicon" title="Terminal">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="15" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7 9.5l3.5 3L7 15.5M13 15.5h4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button class="bicon game" title="Sports//One — match live">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M10 9l5 2.5-5 2.5V9z" fill="currentColor"/><path d="M8.5 21h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <i class="ndot"></i>
+  </button>
+  <div class="bar-right">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 14.5l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 19.5l-1.2-1.1a1.7 1.7 0 112.4 0L12 19.5zM7.5 14.5a6.4 6.4 0 019 0M4.5 11a10.6 10.6 0 0115 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 10v4h3.5l4.5 3.5v-11L7.5 10H4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15.5 9.5a4 4 0 010 5M18 7.5a7 7 0 010 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    <svg width="20" height="14" viewBox="0 0 28 16" fill="none"><rect x="1" y="2.5" width="22" height="11" rx="2.5" stroke="currentColor" stroke-width="1.6"/><rect x="3.4" y="4.9" width="13" height="6.2" rx="1" fill="currentColor"/><path d="M25.5 6v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <div class="clock"><b>14:58</b><span>Tue 06/10</span></div>
+  </div>
+</footer>
+
+</body>
+</html>
