@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=524, initial-scale=1.0" />
+    <title>03 News Live DOM</title>
+    <link rel="stylesheet" href="./block.css" />
+  </head>
+  <body class="layout-body">
+    <button
+      class="status-slice news-ticker"
+      type="button"
+      data-component="bottom-news"
+      data-action="open-news"
+      data-news-id="team-of-week-marcus-diaz"
+    >
+      <span class="status-chip">NEWS</span>
+      <span class="news-text" data-bind="news.headline">Marcus Diaz named in Team of the Week after stellar performance.</span>
+    </button>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=255, initial-scale=1.0" />
+    <title>05 Speed Control Live DOM</title>
+    <link rel="stylesheet" href="./block.css" />
+  </head>
+  <body class="layout-body">
+    <section class="speed-control" aria-label="Управление скоростью матча" data-component="speed-control">
+      <div class="speed-copy">
+        <span class="speed-label">SPEED</span>
+        <output class="speed-value" data-bind="gameSpeed">x4</output>
+      </div>
+      <div class="button-strip" role="group" aria-label="Кнопки скорости">
+        <button class="control-button back" type="button" data-action="speed-down" aria-label="Замедлить">
+          <span aria-hidden="true"></span>
+        </button>
+        <button class="control-button pause" type="button" data-action="pause" aria-label="Пауза">
+          <span aria-hidden="true"></span>
+        </button>
+        <button class="control-button forward active" type="button" data-action="speed-up" data-speed="4" aria-label="Скорость x4">
+          <span aria-hidden="true"></span>
+        </button>
+        <button class="control-button forward muted" type="button" data-action="speed-max" data-speed="8" aria-label="Максимальная скорость">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+    </section>
+  </body>
+</html>

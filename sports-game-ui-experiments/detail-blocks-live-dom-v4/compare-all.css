@@ -1,0 +1,149 @@
+:root {
+  --bg: #03070b;
+  --panel: rgba(7, 19, 25, 0.72);
+  --line: rgba(103, 149, 164, 0.3);
+  --text: #edf4f1;
+  --muted: #98a6aa;
+  --cyan: #17d6ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 980px;
+  color: var(--text);
+  background:
+    radial-gradient(900px 420px at 20% 0%, rgba(23, 214, 255, 0.08), transparent 70%),
+    linear-gradient(180deg, #061017, var(--bg));
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.page {
+  padding: 24px 30px 52px;
+}
+
+.page-header {
+  max-width: 1180px;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.15;
+}
+
+.page-header p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.page-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.page-links a {
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(7, 19, 25, 0.72);
+  color: #8ee8ff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.block-row {
+  margin: 0 0 34px;
+  padding: 16px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.28);
+}
+
+.block-header {
+  min-width: max-content;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+.block-header > div {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.index {
+  color: var(--cyan);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.block-header h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.block-header nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.block-header code,
+.metric {
+  color: var(--cyan);
+}
+
+.metric {
+  font-size: 12px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+a {
+  color: #8ee8ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.compare-pair {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 28px;
+  align-items: start;
+  min-width: calc(var(--w) * 2 + 28px);
+}
+
+.pane h3 {
+  margin: 0 0 10px;
+  color: #c7d3d5;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+
+iframe,
+img {
+  display: block;
+  width: var(--w);
+  height: var(--h);
+  border: 0;
+  box-shadow: 0 0 0 1px var(--line), 0 18px 36px rgba(0, 0, 0, 0.38);
+}

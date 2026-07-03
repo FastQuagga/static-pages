@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=480, initial-scale=1.0" />
+    <title>04 Resource Cluster Live DOM</title>
+    <link rel="stylesheet" href="./block.css" />
+  </head>
+  <body class="layout-body">
+    <section class="resource-cluster" aria-label="Ресурсы клуба" data-component="resource-cluster">
+      <button
+        class="resource-button money-resource"
+        type="button"
+        data-resource="money"
+        aria-label="Money: 12.45 million, plus 285 thousand per second"
+      >
+        <img class="resource-icon money-icon" src="./assets/micro-crops/money.png" width="32" height="31" alt="" />
+        <span class="resource-copy">
+          <output class="resource-value" data-bind="money">$ 12.45M</output>
+          <output class="resource-rate" data-bind="money-rate">+285K /s</output>
+        </span>
+      </button>
+
+      <span class="live-divider live-divider-a" aria-hidden="true"></span>
+
+      <button
+        class="resource-button fans-resource"
+        type="button"
+        data-resource="fans"
+        aria-label="Fans: 98,734, plus 1,250 per second"
+      >
+        <img class="resource-icon fans-icon" src="./assets/micro-crops/fans.png" width="35" height="31" alt="" />
+        <span class="resource-copy">
+          <output class="resource-value" data-bind="fans">98,734</output>
+          <output class="resource-rate" data-bind="fans-rate">+1,250 /s</output>
+        </span>
+      </button>
+
+      <span class="live-divider live-divider-b" aria-hidden="true"></span>
+
+      <button
+        class="resource-button reputation-resource"
+        type="button"
+        data-resource="reputation"
+        aria-label="Reputation: 87"
+      >
+        <img class="resource-icon reputation-icon" src="./assets/micro-crops/reputation-star.png" width="39" height="38" alt="" />
+        <span class="resource-copy reputation-copy">
+          <output class="resource-value" data-bind="reputation">87</output>
+          <span class="resource-label">REPUTATION</span>
+        </span>
+      </button>
+
+      <output class="income-rate-live" data-resource="income-rate" data-bind="income-rate" aria-label="Income rate: plus 5 per second">+5 /s</output>
+    </section>
+  </body>
+</html>

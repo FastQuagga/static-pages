@@ -1,0 +1,90 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 78px;
+  height: 75px;
+  margin: 0;
+  overflow: hidden;
+  background: #01060a;
+}
+
+body {
+  color: #ececea;
+  font-family: "Avenir Next Condensed", "Arial Narrow", "Roboto Condensed", "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+.layout-body {
+  width: 78px;
+  height: 75px;
+}
+
+.crest-tile {
+  position: relative;
+  display: block;
+  width: 78px;
+  height: 75px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #1a303a;
+  border-radius: 3px;
+  color: inherit;
+  background: linear-gradient(180deg, #061118 0%, #050d12 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.55);
+  appearance: none;
+  cursor: pointer;
+}
+
+.crest-tile:focus-visible {
+  outline: 1px solid rgba(99, 212, 255, 0.8);
+  outline-offset: -3px;
+}
+
+.crest-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(117, 174, 190, 0.018) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(117, 174, 190, 0.012) 1px, transparent 1px);
+  background-size: 39px 37px;
+  opacity: 0.5;
+}
+
+.crest {
+  position: absolute;
+  left: 14px;
+  top: 10px;
+  display: block;
+  width: 50px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.exact-frame,
+.exact-frame img {
+  display: block;
+  width: 78px;
+  height: 75px;
+}
+
+.exact-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

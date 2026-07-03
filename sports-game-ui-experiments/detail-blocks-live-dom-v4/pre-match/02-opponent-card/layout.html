@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02 Opponent Card</title>
+  <link rel="stylesheet" href="block.css">
+</head>
+<body class="layout-page">
+  <article class="opponent-card" aria-label="Next opponent" data-block="opponent-card" data-opponent-id="riverside-united">
+    <header class="opponent-card__header" data-bind="card-title">NEXT OPPONENT</header>
+
+    <section class="opponent-card__main" aria-label="Opponent identity">
+      <img class="opponent-card__crest" src="assets/micro-crops/opponent-crest.png" width="56" height="70" alt="">
+      <div class="opponent-card__identity">
+        <strong data-bind="opponent-name">RIVERSIDE UNITED</strong>
+        <span data-bind="opponent-standing">7th in Pro League</span>
+      </div>
+    </section>
+
+    <section class="opponent-card__strength" aria-label="Strength comparison" data-home-strength="81" data-away-strength="74">
+      <div class="opponent-card__label">STRENGTH COMPARISON</div>
+      <div class="opponent-card__score">
+        <output class="score-home" data-bind="home-strength">81</output>
+        <span>VS</span>
+        <output class="score-away" data-bind="away-strength">74</output>
+      </div>
+      <div class="strength-bar" role="img" aria-label="81 versus 74">
+        <span class="strength-bar__home" aria-hidden="true"></span>
+        <span class="strength-bar__away" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <section class="opponent-card__form" aria-label="Form last five">
+      <div class="opponent-card__label">FORM (LAST 5)</div>
+      <div class="form-list" data-bind="opponent-form">
+        <span class="form-chip form-chip--win" data-result="win">W</span>
+        <span class="form-chip form-chip--win" data-result="win">W</span>
+        <span class="form-chip form-chip--draw" data-result="draw">D</span>
+        <span class="form-chip form-chip--loss" data-result="loss">L</span>
+        <span class="form-chip form-chip--win" data-result="win">W</span>
+      </div>
+    </section>
+
+    <section class="opponent-card__player" aria-label="Key player">
+      <div class="opponent-card__label">KEY PLAYER</div>
+      <div class="player-row">
+        <img src="assets/micro-crops/key-player-jersey.png" width="47" height="45" alt="">
+        <div>
+          <strong data-bind="key-player-name">A. HARRISON</strong>
+          <span><span data-bind="key-player-position">ST</span> | <output data-bind="key-player-overall">82</output> OVR</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="opponent-card__weakness" aria-label="Main weakness">
+      <div class="opponent-card__label">MAIN WEAKNESS</div>
+      <div class="weakness-row">
+        <img src="assets/micro-crops/weakness-shield.png" width="43" height="47" alt="">
+        <div>
+          <strong data-bind="weakness-title">WEAK DEFENSE</strong>
+          <span data-bind="weakness-description">Concedes many chances from<br>wide attacks</span>
+        </div>
+      </div>
+    </section>
+  </article>
+</body>
+</html>

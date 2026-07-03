@@ -1,0 +1,109 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 176px;
+  height: 72px;
+  margin: 0;
+  overflow: hidden;
+  background: #01060a;
+}
+
+body {
+  color: #d7d5d2;
+  font-family: "Avenir Next Condensed", "Arial Narrow", "Roboto Condensed", "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+.layout-body {
+  width: 176px;
+  height: 72px;
+}
+
+.system-cluster {
+  display: grid;
+  grid-template-columns: 58px 59px 59px;
+  width: 176px;
+  height: 72px;
+  overflow: hidden;
+  border: 1px solid #0a1d26;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #00060b 0%, #020a10 100%);
+}
+
+button {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-right: 1px solid #14262f;
+  color: inherit;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+button:last-child {
+  border-right: 0;
+}
+
+button:focus-visible {
+  z-index: 2;
+  outline: 1px solid rgba(99, 212, 255, 0.8);
+  outline-offset: -3px;
+}
+
+.icon-button img {
+  position: absolute;
+  display: block;
+  object-fit: contain;
+}
+
+.fullscreen-button img {
+  left: 17px;
+  top: 21px;
+  width: 32px;
+  height: 31px;
+}
+
+.settings-button img {
+  left: 13px;
+  top: 17px;
+  width: 35px;
+  height: 35px;
+}
+
+.language-button {
+  color: #c9c7c3;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 70px;
+  letter-spacing: 0;
+  text-align: center;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.exact-frame,
+.exact-frame img {
+  display: block;
+  width: 176px;
+  height: 72px;
+}
+
+.exact-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

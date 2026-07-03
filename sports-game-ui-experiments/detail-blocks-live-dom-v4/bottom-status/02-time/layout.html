@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=125, initial-scale=1.0" />
+    <title>02 Time Live DOM</title>
+    <link rel="stylesheet" href="./block.css" />
+  </head>
+  <body class="layout-body">
+    <section class="status-slice status-time" data-component="bottom-time" aria-label="Текущее игровое время">
+      <time class="status-row" datetime="19:45" data-game-time="19:45">
+        <img class="status-icon" src="./assets/micro-crops/icon-clock.png" width="24" height="24" alt="" />
+        <span class="status-text" data-bind="clock.time">07:45 PM</span>
+      </time>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,263 @@
+:root {
+  --page-bg: #03070b;
+  --canvas-bg: #050d12;
+  --text: #edf4f1;
+  --muted: #94a2a6;
+  --line: rgba(115, 160, 176, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 1500px;
+  color: var(--text);
+  background:
+    radial-gradient(800px 320px at 18% 0%, rgba(23, 214, 255, 0.08), transparent 70%),
+    linear-gradient(180deg, #061017, var(--page-bg));
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.page {
+  padding: 24px 30px 42px;
+}
+
+.page-header,
+.section-head {
+  max-width: 1440px;
+}
+
+.page-header h1,
+.section-head h2 {
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.page-header h1 {
+  font-size: 24px;
+}
+
+.page-header p,
+.section-head p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.page-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.page-links a {
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(7, 19, 25, 0.72);
+  color: #8ee8ff;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.page-links a:hover {
+  text-decoration: underline;
+}
+
+code {
+  color: #17d6ff;
+}
+
+.map-section {
+  margin-top: 28px;
+}
+
+.section-head {
+  margin-bottom: 12px;
+}
+
+.section-head-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1440px;
+}
+
+.section-head h2 {
+  font-size: 18px;
+}
+
+.map-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 30px;
+  padding: 6px 10px;
+  color: #c9d7da;
+  border: 1px solid rgba(115, 160, 176, 0.24);
+  border-radius: 6px;
+  background: rgba(7, 19, 25, 0.72);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.map-controls input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: #17d6ff;
+}
+
+.screen-canvas {
+  position: relative;
+  width: 1440px;
+  height: 900px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(150, 210, 225, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(150, 210, 225, 0.045) 1px, transparent 1px),
+    var(--canvas-bg);
+  background-size: 50px 50px;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.48);
+}
+
+.detail-canvas {
+  background:
+    linear-gradient(90deg, rgba(150, 210, 225, 0.055) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(150, 210, 225, 0.055) 1px, transparent 1px),
+    radial-gradient(600px 260px at 42% 42%, rgba(23, 214, 255, 0.06), transparent 70%),
+    var(--canvas-bg);
+  background-size: 50px 50px, 50px 50px, auto, auto;
+}
+
+.block {
+  position: absolute;
+  left: calc(var(--x) * 1px);
+  top: calc(var(--y) * 1px);
+  width: calc(var(--w) * 1px);
+  height: calc(var(--h) * 1px);
+  margin: 0;
+  outline: 1px solid var(--c);
+  outline-offset: -1px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.55),
+    0 0 14px color-mix(in srgb, var(--c) 34%, transparent);
+}
+
+.block img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.block iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+}
+
+.block figcaption {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: calc(100% - 2px);
+  padding: 2px 5px 3px;
+  overflow: hidden;
+  color: #061017;
+  background: var(--c);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.block:hover {
+  outline-width: 2px;
+  z-index: 20;
+}
+
+.block:hover figcaption {
+  max-width: none;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.45);
+}
+
+.map-section.hide-overlays .block {
+  outline-color: transparent;
+  box-shadow: none;
+}
+
+.map-section.hide-overlays .block figcaption {
+  display: none;
+}
+
+.topbar-block figcaption,
+.bottom-block figcaption {
+  top: auto;
+  bottom: 0;
+}
+
+.nav-block figcaption {
+  writing-mode: vertical-rl;
+  top: 8px;
+  left: auto;
+  right: 0;
+  max-height: calc(100% - 16px);
+}
+
+.assembly-canvas {
+  background:
+    radial-gradient(720px 320px at 58% 36%, rgba(21, 112, 137, 0.08), transparent 72%),
+    linear-gradient(180deg, #061017 0%, #02080d 100%);
+}
+
+.assembly-note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.assembly-note code {
+  font-size: 12px;
+}
+
+.clean-canvas {
+  background:
+    radial-gradient(720px 320px at 58% 36%, rgba(21, 112, 137, 0.08), transparent 72%),
+    linear-gradient(180deg, #061017 0%, #02080d 100%);
+}
+
+.clean-piece {
+  position: absolute;
+  left: calc(var(--x) * 1px);
+  top: calc(var(--y) * 1px);
+  width: calc(var(--w) * 1px);
+  height: calc(var(--h) * 1px);
+  margin: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+.clean-piece iframe,
+.clean-piece img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+}

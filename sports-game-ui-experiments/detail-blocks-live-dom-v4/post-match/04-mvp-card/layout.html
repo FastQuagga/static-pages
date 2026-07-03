@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=154, initial-scale=1.0" />
+    <title>MVP Card Live DOM</title>
+    <link rel="stylesheet" href="./block.css" />
+  </head>
+  <body>
+    <section class="block-root mvp-card" data-block="mvp-card" aria-label="Most valuable player">
+      <h2 data-field="title">MVP</h2>
+      <div class="mvp-head" data-role="player-summary">
+        <img src="./assets/micro-crops/mvp-portrait.png" width="48" height="60" alt="" data-asset="mvp-portrait" />
+        <div class="player-copy">
+          <strong data-field="player-name">MARCUS DIAZ</strong>
+          <span data-field="player-role">AM | 83 OVR</span>
+        </div>
+      </div>
+      <div class="mvp-rating" data-role="rating-summary">
+        <output class="rating-score" data-field="rating">8.6</output>
+        <span class="growth-copy">Growth<br /><output data-field="growth">+0.6 ▲</output></span>
+      </div>
+      <img class="sparkline" src="./assets/micro-crops/sparkline.png" width="137" height="28" alt="" data-asset="rating-sparkline" />
+    </section>
+  </body>
+</html>

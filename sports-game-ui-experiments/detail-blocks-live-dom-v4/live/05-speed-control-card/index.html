@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="block.css">
+  <title>05 Speed Control Card - Compare</title>
+</head>
+<body class="compare-page">
+  <main class="compare-shell">
+    <h1>05 Speed Control Card</h1>
+      <p class="description">
+        Страница проверки блока: слева live-DOM HTML/CSS-реконструкция, по центру exact raster baseline, справа original PNG crop.
+        Live-DOM вариант нужен для будущей интерактивности: обновления текста, чисел, кнопок и состояний.
+      </p>
+    <div class="compare-grid">
+      <section class="compare-panel">
+        <h2>layout.html</h2>
+        <iframe src="./layout.html" width="421" height="87" title="Live DOM layout"></iframe>
+      </section>
+      <section class="compare-panel">
+        <h2>layout-exact.html</h2>
+        <iframe src="./layout-exact.html" width="421" height="87" title="Exact raster layout"></iframe>
+      </section>
+      <section class="compare-panel">
+        <h2>original crop</h2>
+        <img src="./reference/original.png" width="421" height="87" alt="">
+      </section>
+    </div>
+  </main>
+</body>
+</html>

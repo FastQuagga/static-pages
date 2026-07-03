@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=406, initial-scale=1.0" />
+    <title>Next Opponent Live DOM</title>
+    <link rel="stylesheet" href="./block.css" />
+  </head>
+  <body>
+    <section class="block-root next-card" data-block="next-opponent-card" aria-label="Next opponent">
+      <h2 data-field="title">NEXT OPPONENT</h2>
+      <div class="next-identity" data-role="opponent-identity">
+        <img src="./assets/micro-crops/crest-highland.png" width="43" height="50" alt="" data-asset="opponent-crest" />
+        <div>
+          <strong data-field="opponent-name">HIGHLAND FC</strong>
+          <span data-field="opponent-rank">9th in Pro League</span>
+        </div>
+      </div>
+      <div class="next-strength" data-role="opponent-strength">
+        <span>STRENGTH</span>
+        <output data-field="strength">76</output>
+        <span class="strength-bar" role="progressbar" aria-label="Strength 76" aria-valuemin="0" aria-valuemax="100" aria-valuenow="76">
+          <i style="width: 58%"></i>
+        </span>
+      </div>
+      <div class="form-summary" data-role="opponent-form">
+        <span>FORM</span>
+        <ol class="form-chips" aria-label="Recent form">
+          <li class="win" data-field="form-1">W</li>
+          <li class="loss" data-field="form-2">L</li>
+          <li class="draw" data-field="form-3">D</li>
+          <li class="win" data-field="form-4">W</li>
+          <li class="loss" data-field="form-5">L</li>
+        </ol>
+      </div>
+    </section>
+  </body>
+</html>

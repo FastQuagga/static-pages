@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>04 Win Chance Card</title>
+  <link rel="stylesheet" href="block.css">
+</head>
+<body class="layout-page">
+  <section class="win-card" aria-label="Win chance" data-block="win-chance-card">
+    <div class="win-card__title">
+      <span data-bind="card-title">WIN CHANCE</span>
+      <button class="win-card__info" type="button" aria-label="Show win chance details" data-action="show-win-chance-info">i</button>
+    </div>
+    <div class="win-card__body">
+      <output class="win-card__value" data-bind="win-chance" for="winChanceProgress">63%</output>
+      <progress class="win-card__meter" id="winChanceProgress" value="63" max="100" data-bind="win-chance-progress">63%</progress>
+      <div class="win-card__delta">
+        <output data-bind="win-chance-delta">+7%</output>
+        <i aria-hidden="true"></i>
+      </div>
+    </div>
+    <p data-bind="win-chance-reason">Improved after tactic &amp; squad decisions</p>
+  </section>
+</body>
+</html>

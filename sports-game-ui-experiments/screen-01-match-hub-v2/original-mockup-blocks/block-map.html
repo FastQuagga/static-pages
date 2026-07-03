@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screen 01 Mockup Block Map</title>
+    <link rel="stylesheet" href="./block-map.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="page-header">
+        <h1>Screen 01 Match Hub - карта нарезки мокапа</h1>
+        <p>
+          Каждый блок ниже является отдельной PNG-картинкой, вставленной на
+          исходные координаты внутри canvas <code>1440 x 900</code>.
+        </p>
+        <nav class="page-links" aria-label="Навигация по публикации">
+          <a href="../../index.html">На главную</a>
+          <a href="../../detail-blocks-live-dom-v4/compare-all.html">Все блоки: HTML vs crop</a>
+          <a href="../../pipeline.html">Pipeline</a>
+          <a href="#clean-live-dom-screen">Clean screen</a>
+        </nav>
+      </header>
+
+      <section class="map-section">
+        <div class="section-head-row">
+          <div class="section-head">
+            <h2>Global Cut Map</h2>
+            <p>6 крупных зон экрана: topbar, left nav, три панели и bottom status bar.</p>
+          </div>
+          <label class="map-controls">
+            <input type="checkbox" data-map-toggle="global-map" checked />
+            Подсветка блоков
+          </label>
+        </div>
+
+        <div class="screen-canvas" id="global-map">
+          <figure class="block" style="--x: 10; --y: 11; --w: 1418; --h: 75; --c: #17d6ff">
+            <img src="./global/01-topbar.png" alt="Topbar block" />
+            <figcaption>01 topbar</figcaption>
+          </figure>
+          <figure class="block" style="--x: 10; --y: 98; --w: 80; --h: 703; --c: #ffcc3d">
+            <img src="./global/02-left-nav.png" alt="Left nav block" />
+            <figcaption>02 left nav</figcaption>
+          </figure>
+          <figure class="block" style="--x: 105; --y: 98; --w: 425; --h: 703; --c: #55e053">
+            <img src="./global/03-pre-match-panel.png" alt="Pre-match panel block" />
+            <figcaption>03 pre-match</figcaption>
+          </figure>
+          <figure class="block" style="--x: 542; --y: 98; --w: 445; --h: 703; --c: #ff7f2a">
+            <img src="./global/04-live-panel.png" alt="Live panel block" />
+            <figcaption>04 live</figcaption>
+          </figure>
+          <figure class="block" style="--x: 998; --y: 98; --w: 430; --h: 703; --c: #c97cff">
+            <img src="./global/05-post-match-panel.png" alt="Post-match panel block" />
+            <figcaption>05 post-match</figcaption>
+          </figure>
+          <figure class="block" style="--x: 10; --y: 821; --w: 1418; --h: 65; --c: #ff4d6d">
+            <img src="./global/06-bottom-status-bar.png" alt="Bottom status bar block" />
+            <figcaption>06 bottom status</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="map-section">
+        <div class="section-head-row">
+          <div class="section-head">
+            <h2>Detail Cut Map</h2>
+            <p>
+              Подблоки верхней панели, карточки внутри state-panels и секции нижней
+              status/action bar. Пустые места означают участки, которые не резались
+              отдельными detail-картинками.
+            </p>
+          </div>
+          <label class="map-controls">
+            <input type="checkbox" data-map-toggle="detail-map" checked />
+            Подсветка блоков
+          </label>
+        </div>
+
+        <div class="screen-canvas detail-canvas" id="detail-map">
+          <figure class="block topbar-block" style="--x: 10; --y: 11; --w: 78; --h: 75; --c: #17d6ff">
+            <img src="./detail/topbar/01-crest-tile.png" alt="Crest tile" />
+            <figcaption>topbar 01</figcaption>
+          </figure>
+          <figure class="block topbar-block" style="--x: 97; --y: 13; --w: 180; --h: 70; --c: #17d6ff">
+            <img src="./detail/topbar/02-club-identity.png" alt="Club identity" />
+            <figcaption>topbar 02</figcaption>
+          </figure>
+          <figure class="block topbar-block" style="--x: 292; --y: 12; --w: 190; --h: 72; --c: #17d6ff">
+            <img src="./detail/topbar/03-league-tile.png" alt="League tile" />
+            <figcaption>topbar 03</figcaption>
+          </figure>
+          <figure class="block topbar-block" style="--x: 494; --y: 12; --w: 480; --h: 72; --c: #17d6ff">
+            <img src="./detail/topbar/04-resource-cluster.png" alt="Resource cluster" />
+            <figcaption>topbar 04</figcaption>
+          </figure>
+          <figure class="block topbar-block" style="--x: 985; --y: 12; --w: 255; --h: 72; --c: #17d6ff">
+            <img src="./detail/topbar/05-speed-control.png" alt="Speed control" />
+            <figcaption>topbar 05</figcaption>
+          </figure>
+          <figure class="block topbar-block" style="--x: 1252; --y: 12; --w: 176; --h: 72; --c: #17d6ff">
+            <img src="./detail/topbar/06-system-cluster.png" alt="System cluster" />
+            <figcaption>topbar 06</figcaption>
+          </figure>
+
+          <figure class="block nav-block" style="--x: 10; --y: 98; --w: 80; --h: 703; --c: #ffcc3d">
+            <img src="./global/02-left-nav.png" alt="Left nav kept as one block" />
+            <figcaption>left nav</figcaption>
+          </figure>
+
+          <figure class="block pre-block" style="--x: 105; --y: 98; --w: 425; --h: 58; --c: #55e053">
+            <img src="./detail/pre-match/01-pre-header.png" alt="Pre-match header" />
+            <figcaption>pre 01</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 116; --y: 170; --w: 318; --h: 305; --c: #55e053">
+            <img src="./detail/pre-match/02-opponent-card.png" alt="Opponent card" />
+            <figcaption>pre 02 opponent</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 444; --y: 170; --w: 78; --h: 305; --c: #55e053">
+            <img src="./detail/pre-match/03-last-report-strip.png" alt="Last report strip" />
+            <figcaption>pre 03</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 116; --y: 487; --w: 405; --h: 104; --c: #55e053">
+            <img src="./detail/pre-match/04-win-chance-card.png" alt="Win chance card" />
+            <figcaption>pre 04 win chance</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 116; --y: 603; --w: 405; --h: 93; --c: #55e053">
+            <img src="./detail/pre-match/05-coach-recommendation-card.png" alt="Coach recommendation card" />
+            <figcaption>pre 05 coach</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 116; --y: 709; --w: 156; --h: 67; --c: #55e053">
+            <img src="./detail/pre-match/06-current-tactic-chip.png" alt="Current tactic chip" />
+            <figcaption>pre 06</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 285; --y: 709; --w: 236; --h: 67; --c: #55e053">
+            <img src="./detail/pre-match/07-start-match-button.png" alt="Start match button" />
+            <figcaption>pre 07 start</figcaption>
+          </figure>
+
+          <figure class="block live-block" style="--x: 542; --y: 98; --w: 445; --h: 58; --c: #ff7f2a">
+            <img src="./detail/live/01-live-header.png" alt="Live header" />
+            <figcaption>live 01</figcaption>
+          </figure>
+          <figure class="block live-block" style="--x: 554; --y: 170; --w: 421; --h: 124; --c: #ff7f2a">
+            <img src="./detail/live/02-scoreboard-card.png" alt="Scoreboard card" />
+            <figcaption>live 02 scoreboard</figcaption>
+          </figure>
+          <figure class="block live-block" style="--x: 554; --y: 307; --w: 421; --h: 267; --c: #ff7f2a">
+            <img src="./detail/live/03-match-field-card.png" alt="Match field card" />
+            <figcaption>live 03 field</figcaption>
+          </figure>
+          <figure class="block live-block" style="--x: 554; --y: 587; --w: 421; --h: 102; --c: #ff7f2a">
+            <img src="./detail/live/04-match-flow-card.png" alt="Match flow card" />
+            <figcaption>live 04 flow</figcaption>
+          </figure>
+          <figure class="block live-block" style="--x: 554; --y: 701; --w: 421; --h: 87; --c: #ff7f2a">
+            <img src="./detail/live/05-speed-control-card.png" alt="Speed control card" />
+            <figcaption>live 05 speed</figcaption>
+          </figure>
+
+          <figure class="block post-block" style="--x: 998; --y: 98; --w: 430; --h: 58; --c: #c97cff">
+            <img src="./detail/post-match/01-post-header.png" alt="Post-match header" />
+            <figcaption>post 01</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1010; --y: 168; --w: 406; --h: 113; --c: #c97cff">
+            <img src="./detail/post-match/02-result-card.png" alt="Result card" />
+            <figcaption>post 02 result</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1010; --y: 292; --w: 406; --h: 142; --c: #c97cff">
+            <img src="./detail/post-match/03-why-we-won-card.png" alt="Why we won card" />
+            <figcaption>post 03 why</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1010; --y: 444; --w: 154; --h: 179; --c: #c97cff">
+            <img src="./detail/post-match/04-mvp-card.png" alt="MVP card" />
+            <figcaption>post 04 mvp</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1168; --y: 444; --w: 248; --h: 179; --c: #c97cff">
+            <img src="./detail/post-match/05-match-pnl-card.png" alt="Match P&L card" />
+            <figcaption>post 05 pnl</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1010; --y: 634; --w: 406; --h: 95; --c: #c97cff">
+            <img src="./detail/post-match/06-next-opponent-card.png" alt="Next opponent card" />
+            <figcaption>post 06 next</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1010; --y: 739; --w: 406; --h: 50; --c: #c97cff">
+            <img src="./detail/post-match/07-continue-button.png" alt="Continue button" />
+            <figcaption>post 07 continue</figcaption>
+          </figure>
+
+          <figure class="block bottom-block" style="--x: 10; --y: 821; --w: 158; --h: 65; --c: #ff4d6d">
+            <img src="./detail/bottom-status/01-date.png" alt="Date block" />
+            <figcaption>bottom 01</figcaption>
+          </figure>
+          <figure class="block bottom-block" style="--x: 168; --y: 821; --w: 125; --h: 65; --c: #ff4d6d">
+            <img src="./detail/bottom-status/02-time.png" alt="Time block" />
+            <figcaption>bottom 02</figcaption>
+          </figure>
+          <figure class="block bottom-block" style="--x: 293; --y: 821; --w: 524; --h: 65; --c: #ff4d6d">
+            <img src="./detail/bottom-status/03-news.png" alt="News block" />
+            <figcaption>bottom 03 news</figcaption>
+          </figure>
+          <figure class="block bottom-block" style="--x: 817; --y: 821; --w: 249; --h: 65; --c: #ff4d6d">
+            <img src="./detail/bottom-status/04-status.png" alt="Status block" />
+            <figcaption>bottom 04 status</figcaption>
+          </figure>
+          <figure class="block bottom-block" style="--x: 1066; --y: 821; --w: 182; --h: 65; --c: #ff4d6d">
+            <img src="./detail/bottom-status/05-next-match.png" alt="Next match block" />
+            <figcaption>bottom 05</figcaption>
+          </figure>
+          <figure class="block bottom-block" style="--x: 1248; --y: 828; --w: 170; --h: 47; --c: #ff4d6d">
+            <img src="./detail/bottom-status/06-continue-cta.png" alt="Continue CTA block" />
+            <figcaption>bottom 06 cta</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="map-section">
+        <div class="section-head-row">
+          <div class="section-head">
+            <h2>Live-DOM Assembly Map</h2>
+            <p>
+              Собранный экран из HTML/CSS-блоков прохода <code>detail-blocks-live-dom-v4</code>.
+              Координаты совпадают с detail cut map, каждый iframe выделен той же цветной рамкой.
+            </p>
+          </div>
+          <label class="map-controls">
+            <input type="checkbox" data-map-toggle="assembly-map" checked />
+            Подсветка блоков
+          </label>
+        </div>
+
+        <div class="screen-canvas assembly-canvas" id="assembly-map" data-assembly-source>
+          <figure class="block topbar-block" style="--x: 10; --y: 11; --w: 78; --h: 75; --c: #17d6ff">
+            <iframe src="../../detail-blocks-live-dom-v4/topbar/01-crest-tile/layout.html" title="Live DOM crest tile"></iframe>
+            <figcaption>topbar 01</figcaption>
+          </figure>
+          <figure class="block topbar-block" style="--x: 97; --y: 13; --w: 180; --h: 70; --c: #17d6ff">
+            <iframe src="../../detail-blocks-live-dom-v4/topbar/02-club-identity/layout.html" title="Live DOM club identity"></iframe>
+            <figcaption>topbar 02</figcaption>
+          </figure>
+          <figure class="block topbar-block" style="--x: 292; --y: 12; --w: 190; --h: 72; --c: #17d6ff">
+            <iframe src="../../detail-blocks-live-dom-v4/topbar/03-league-tile/layout.html" title="Live DOM league tile"></iframe>
+            <figcaption>topbar 03</figcaption>
+          </figure>
+          <figure class="block topbar-block" style="--x: 494; --y: 12; --w: 480; --h: 72; --c: #17d6ff">
+            <iframe src="../../detail-blocks-live-dom-v4/topbar/04-resource-cluster/layout.html" title="Live DOM resource cluster"></iframe>
+            <figcaption>topbar 04</figcaption>
+          </figure>
+          <figure class="block topbar-block" style="--x: 985; --y: 12; --w: 255; --h: 72; --c: #17d6ff">
+            <iframe src="../../detail-blocks-live-dom-v4/topbar/05-speed-control/layout.html" title="Live DOM speed control"></iframe>
+            <figcaption>topbar 05</figcaption>
+          </figure>
+          <figure class="block topbar-block" style="--x: 1252; --y: 12; --w: 176; --h: 72; --c: #17d6ff">
+            <iframe src="../../detail-blocks-live-dom-v4/topbar/06-system-cluster/layout.html" title="Live DOM system cluster"></iframe>
+            <figcaption>topbar 06</figcaption>
+          </figure>
+
+          <figure class="block nav-block" style="--x: 10; --y: 98; --w: 80; --h: 703; --c: #ffcc3d">
+            <img src="./global/02-left-nav.png" alt="Left nav original placeholder" />
+            <figcaption>left nav crop</figcaption>
+          </figure>
+
+          <figure class="block pre-block" style="--x: 105; --y: 98; --w: 425; --h: 58; --c: #55e053">
+            <iframe src="../../detail-blocks-live-dom-v4/pre-match/01-pre-header/layout.html" title="Live DOM pre-match header"></iframe>
+            <figcaption>pre 01</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 116; --y: 170; --w: 318; --h: 305; --c: #55e053">
+            <iframe src="../../detail-blocks-live-dom-v4/pre-match/02-opponent-card/layout.html" title="Live DOM opponent card"></iframe>
+            <figcaption>pre 02 opponent</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 444; --y: 170; --w: 78; --h: 305; --c: #55e053">
+            <iframe src="../../detail-blocks-live-dom-v4/pre-match/03-last-report-strip/layout.html" title="Live DOM last report strip"></iframe>
+            <figcaption>pre 03</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 116; --y: 487; --w: 405; --h: 104; --c: #55e053">
+            <iframe src="../../detail-blocks-live-dom-v4/pre-match/04-win-chance-card/layout.html" title="Live DOM win chance card"></iframe>
+            <figcaption>pre 04 win chance</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 116; --y: 603; --w: 405; --h: 93; --c: #55e053">
+            <iframe src="../../detail-blocks-live-dom-v4/pre-match/05-coach-recommendation-card/layout.html" title="Live DOM coach recommendation card"></iframe>
+            <figcaption>pre 05 coach</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 116; --y: 709; --w: 156; --h: 67; --c: #55e053">
+            <iframe src="../../detail-blocks-live-dom-v4/pre-match/06-current-tactic-chip/layout.html" title="Live DOM current tactic chip"></iframe>
+            <figcaption>pre 06</figcaption>
+          </figure>
+          <figure class="block pre-block" style="--x: 285; --y: 709; --w: 236; --h: 67; --c: #55e053">
+            <iframe src="../../detail-blocks-live-dom-v4/pre-match/07-start-match-button/layout.html" title="Live DOM start match button"></iframe>
+            <figcaption>pre 07 start</figcaption>
+          </figure>
+
+          <figure class="block live-block" style="--x: 542; --y: 98; --w: 445; --h: 58; --c: #ff7f2a">
+            <iframe src="../../detail-blocks-live-dom-v4/live/01-live-header/layout.html" title="Live DOM live header"></iframe>
+            <figcaption>live 01</figcaption>
+          </figure>
+          <figure class="block live-block" style="--x: 554; --y: 170; --w: 421; --h: 124; --c: #ff7f2a">
+            <iframe src="../../detail-blocks-live-dom-v4/live/02-scoreboard-card/layout.html" title="Live DOM scoreboard card"></iframe>
+            <figcaption>live 02 scoreboard</figcaption>
+          </figure>
+          <figure class="block live-block" style="--x: 554; --y: 307; --w: 421; --h: 267; --c: #ff7f2a">
+            <iframe src="../../detail-blocks-live-dom-v4/live/03-match-field-card/layout.html" title="Live DOM match field card"></iframe>
+            <figcaption>live 03 field</figcaption>
+          </figure>
+          <figure class="block live-block" style="--x: 554; --y: 587; --w: 421; --h: 102; --c: #ff7f2a">
+            <iframe src="../../detail-blocks-live-dom-v4/live/04-match-flow-card/layout.html" title="Live DOM match flow card"></iframe>
+            <figcaption>live 04 flow</figcaption>
+          </figure>
+          <figure class="block live-block" style="--x: 554; --y: 701; --w: 421; --h: 87; --c: #ff7f2a">
+            <iframe src="../../detail-blocks-live-dom-v4/live/05-speed-control-card/layout.html" title="Live DOM speed control card"></iframe>
+            <figcaption>live 05 speed</figcaption>
+          </figure>
+
+          <figure class="block post-block" style="--x: 998; --y: 98; --w: 430; --h: 58; --c: #c97cff">
+            <iframe src="../../detail-blocks-live-dom-v4/post-match/01-post-header/layout.html" title="Live DOM post-match header"></iframe>
+            <figcaption>post 01</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1010; --y: 168; --w: 406; --h: 113; --c: #c97cff">
+            <iframe src="../../detail-blocks-live-dom-v4/post-match/02-result-card/layout.html" title="Live DOM result card"></iframe>
+            <figcaption>post 02 result</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1010; --y: 292; --w: 406; --h: 142; --c: #c97cff">
+            <iframe src="../../detail-blocks-live-dom-v4/post-match/03-why-we-won-card/layout.html" title="Live DOM why we won card"></iframe>
+            <figcaption>post 03 why</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1010; --y: 444; --w: 154; --h: 179; --c: #c97cff">
+            <iframe src="../../detail-blocks-live-dom-v4/post-match/04-mvp-card/layout.html" title="Live DOM MVP card"></iframe>
+            <figcaption>post 04 mvp</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1168; --y: 444; --w: 248; --h: 179; --c: #c97cff">
+            <iframe src="../../detail-blocks-live-dom-v4/post-match/05-match-pnl-card/layout.html" title="Live DOM match P&L card"></iframe>
+            <figcaption>post 05 pnl</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1010; --y: 634; --w: 406; --h: 95; --c: #c97cff">
+            <iframe src="../../detail-blocks-live-dom-v4/post-match/06-next-opponent-card/layout.html" title="Live DOM next opponent card"></iframe>
+            <figcaption>post 06 next</figcaption>
+          </figure>
+          <figure class="block post-block" style="--x: 1010; --y: 739; --w: 406; --h: 50; --c: #c97cff">
+            <iframe src="../../detail-blocks-live-dom-v4/post-match/07-continue-button/layout.html" title="Live DOM continue button"></iframe>
+            <figcaption>post 07 continue</figcaption>
+          </figure>
+
+          <figure class="block bottom-block" style="--x: 10; --y: 821; --w: 158; --h: 65; --c: #ff4d6d">
+            <iframe src="../../detail-blocks-live-dom-v4/bottom-status/01-date/layout.html" title="Live DOM date block"></iframe>
+            <figcaption>bottom 01</figcaption>
+          </figure>
+          <figure class="block bottom-block" style="--x: 168; --y: 821; --w: 125; --h: 65; --c: #ff4d6d">
+            <iframe src="../../detail-blocks-live-dom-v4/bottom-status/02-time/layout.html" title="Live DOM time block"></iframe>
+            <figcaption>bottom 02</figcaption>
+          </figure>
+          <figure class="block bottom-block" style="--x: 293; --y: 821; --w: 524; --h: 65; --c: #ff4d6d">
+            <iframe src="../../detail-blocks-live-dom-v4/bottom-status/03-news/layout.html" title="Live DOM news block"></iframe>
+            <figcaption>bottom 03 news</figcaption>
+          </figure>
+          <figure class="block bottom-block" style="--x: 817; --y: 821; --w: 249; --h: 65; --c: #ff4d6d">
+            <iframe src="../../detail-blocks-live-dom-v4/bottom-status/04-status/layout.html" title="Live DOM status block"></iframe>
+            <figcaption>bottom 04 status</figcaption>
+          </figure>
+          <figure class="block bottom-block" style="--x: 1066; --y: 821; --w: 182; --h: 65; --c: #ff4d6d">
+            <iframe src="../../detail-blocks-live-dom-v4/bottom-status/05-next-match/layout.html" title="Live DOM next match block"></iframe>
+            <figcaption>bottom 05</figcaption>
+          </figure>
+          <figure class="block bottom-block" style="--x: 1248; --y: 828; --w: 170; --h: 47; --c: #ff4d6d">
+            <iframe src="../../detail-blocks-live-dom-v4/bottom-status/06-continue-cta/layout.html" title="Live DOM continue CTA"></iframe>
+            <figcaption>bottom 06 cta</figcaption>
+          </figure>
+        </div>
+        <p class="assembly-note">
+          Примечание: левый nav не входил в набор detail-блоков v4, поэтому в этой
+          сборке он оставлен как исходный crop <code>global/02-left-nav.png</code>.
+        </p>
+      </section>
+
+      <section class="map-section">
+        <div class="section-head">
+          <h2>Clean Live-DOM Screen</h2>
+          <p>
+            Та же сборка из live-DOM блоков, но без цветных рамок, подписей,
+            hover-debug и других служебных элементов. Этот экран нужен для быстрой
+            визуальной оценки качества верстки как цельного интерфейса.
+          </p>
+        </div>
+
+        <div class="screen-canvas clean-canvas" id="clean-live-dom-screen" data-clean-assembly>
+          <noscript>Для сборки чистого экрана нужен JavaScript.</noscript>
+        </div>
+      </section>
+    </main>
+    <script>
+      for (const toggle of document.querySelectorAll("[data-map-toggle]")) {
+        const target = document.getElementById(toggle.dataset.mapToggle);
+        const section = target?.closest(".map-section");
+        const sync = () => section?.classList.toggle("hide-overlays", !toggle.checked);
+        toggle.addEventListener("change", sync);
+        sync();
+      }
+
+      const assemblySource = document.querySelector("[data-assembly-source]");
+      const cleanAssembly = document.querySelector("[data-clean-assembly]");
+      if (assemblySource && cleanAssembly) {
+        for (const block of assemblySource.querySelectorAll(".block")) {
+          const piece = document.createElement("div");
+          piece.className = "clean-piece";
+          piece.setAttribute("style", block.getAttribute("style") || "");
+
+          const frame = block.querySelector("iframe");
+          const image = block.querySelector("img");
+          if (frame) {
+            const cleanFrame = document.createElement("iframe");
+            cleanFrame.src = frame.getAttribute("src");
+            cleanFrame.title = frame.getAttribute("title") || "";
+            piece.append(cleanFrame);
+          } else if (image) {
+            const cleanImage = document.createElement("img");
+            cleanImage.src = image.getAttribute("src");
+            cleanImage.alt = image.getAttribute("alt") || "";
+            piece.append(cleanImage);
+          }
+
+          cleanAssembly.append(piece);
+        }
+      }
+    </script>
+  </body>
+</html>

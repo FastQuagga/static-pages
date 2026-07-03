@@ -1,0 +1,104 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0;
+}
+
+.layout-page,
+.exact-page {
+  width: 421px;
+  height: 267px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.field-card {
+  width: 421px;
+  height: 267px;
+  position: relative;
+  overflow: hidden;
+  background: #112716;
+}
+
+.tactical-layer {
+  position: absolute;
+  inset: 0;
+  width: 421px;
+  height: 267px;
+  display: block;
+  object-fit: cover;
+}
+
+.player-hotspot,
+.ball-hotspot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+}
+
+.ball-hotspot {
+  width: 18px;
+  height: 18px;
+}
+
+.player-hotspot:focus-visible,
+.ball-hotspot:focus-visible {
+  opacity: 1;
+  outline: 1px solid #24d8ff;
+  outline-offset: 2px;
+}
+
+.exact-frame,
+.exact-frame img {
+  width: 421px;
+  height: 267px;
+  display: block;
+}
+
+.compare-page {
+  min-width: 1340px;
+  min-height: 390px;
+  padding: 16px;
+  color: #dce8ec;
+  background: #071018;
+}
+
+.compare-shell h1 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.compare-grid {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.compare-panel h2 {
+  margin: 0 0 6px;
+  color: #8fa2ad;
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 700;
+}
+
+.compare-panel iframe,
+.compare-panel img {
+  display: block;
+  border: 1px solid #2a4552;
+  background: #02070b;
+}

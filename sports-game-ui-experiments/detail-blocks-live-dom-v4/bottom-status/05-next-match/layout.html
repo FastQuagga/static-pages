@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=182, initial-scale=1.0" />
+    <title>05 Next Match Live DOM</title>
+    <link rel="stylesheet" href="./block.css" />
+  </head>
+  <body class="layout-body">
+    <button
+      class="status-slice next-match"
+      type="button"
+      data-component="bottom-next-match"
+      data-action="open-next-match"
+      data-next-match-id="riverport-away"
+    >
+      <span class="next-label">NEXT MATCH</span>
+      <img class="status-icon" src="./assets/micro-crops/icon-calendar.png" width="24" height="24" alt="" />
+      <time class="next-time" datetime="P2D" data-bind="nextMatch.startsIn">2 days</time>
+    </button>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="block.css">
+  <title>04 Match Flow Card - Live DOM</title>
+</head>
+<body class="layout-page">
+  <section class="flow-card" data-block="match-flow-card" aria-label="Match flow">
+    <h1 class="flow-title" data-field="title">MATCH FLOW</h1>
+    <div class="chart" data-region="pressure-chart" aria-label="Match pressure timeline">
+      <div class="grid-lines" aria-hidden="true"></div>
+      <div class="bars bars-blue" data-team="newport-city" aria-hidden="true">
+        <i style="left: 5px; height: 5px;"></i>
+        <i style="left: 11px; height: 4px;"></i>
+        <i style="left: 17px; height: 7px;"></i>
+        <i style="left: 24px; height: 5px;"></i>
+        <i style="left: 31px; height: 4px;"></i>
+        <i style="left: 38px; height: 10px;"></i>
+        <i style="left: 45px; height: 6px;"></i>
+        <i style="left: 52px; height: 15px;"></i>
+        <i style="left: 59px; height: 11px;"></i>
+        <i style="left: 66px; height: 8px;"></i>
+        <i style="left: 73px; height: 7px;"></i>
+        <i style="left: 80px; height: 5px;"></i>
+        <i style="left: 87px; height: 5px;"></i>
+        <i style="left: 94px; height: 4px;"></i>
+        <i style="left: 101px; height: 5px;"></i>
+        <i style="left: 108px; height: 4px;"></i>
+        <i style="left: 115px; height: 3px;"></i>
+        <i style="left: 122px; height: 4px;"></i>
+        <i style="left: 129px; height: 3px;"></i>
+        <i style="left: 136px; height: 3px;"></i>
+        <i style="left: 143px; height: 4px;"></i>
+        <i style="left: 150px; height: 5px;"></i>
+        <i style="left: 157px; height: 4px;"></i>
+        <i style="left: 164px; height: 4px;"></i>
+        <i style="left: 171px; height: 5px;"></i>
+        <i style="left: 178px; height: 6px;"></i>
+      </div>
+      <div class="bars bars-red" data-team="riverside-utd" aria-hidden="true">
+        <i style="left: 199px; height: 6px;"></i>
+        <i style="left: 206px; height: 5px;"></i>
+        <i style="left: 213px; height: 7px;"></i>
+        <i style="left: 220px; height: 10px;"></i>
+        <i style="left: 227px; height: 6px;"></i>
+        <i style="left: 234px; height: 7px;"></i>
+        <i style="left: 241px; height: 10px;"></i>
+        <i style="left: 248px; height: 15px;"></i>
+        <i style="left: 255px; height: 18px;"></i>
+        <i style="left: 262px; height: 15px;"></i>
+        <i style="left: 269px; height: 12px;"></i>
+        <i style="left: 276px; height: 9px;"></i>
+        <i style="left: 283px; height: 13px;"></i>
+        <i style="left: 290px; height: 8px;"></i>
+        <i style="left: 297px; height: 5px;"></i>
+      </div>
+      <div class="bars bars-late" data-team="mixed" aria-hidden="true">
+        <i style="left: 308px; height: 4px;"></i>
+        <i style="left: 315px; height: 6px;"></i>
+        <i style="left: 322px; height: 5px;"></i>
+        <i style="left: 329px; height: 4px;"></i>
+        <i style="left: 336px; height: 5px;"></i>
+        <i style="left: 357px; height: 4px;"></i>
+        <i style="left: 364px; height: 4px;"></i>
+        <i style="left: 371px; height: 3px;"></i>
+        <i style="left: 378px; height: 3px;"></i>
+        <i style="left: 385px; height: 4px;"></i>
+        <i style="left: 392px; height: 3px;"></i>
+        <i style="left: 399px; height: 5px;"></i>
+      </div>
+      <button class="event-marker event-goal-left" type="button" data-event="goal" data-minute="21" aria-label="Goal at 21 minutes">
+        <img src="./assets/micro-crops/event-goal-left.png" width="18" height="18" alt="">
+      </button>
+      <button class="event-marker event-goal-mid" type="button" data-event="goal" data-minute="38" aria-label="Goal at 38 minutes">
+        <img src="./assets/micro-crops/event-goal-mid.png" width="18" height="18" alt="">
+      </button>
+      <button class="event-marker event-flag" type="button" data-event="flag" data-minute="50" aria-label="Flag event at 50 minutes">
+        <img src="./assets/micro-crops/event-flag.png" width="18" height="18" alt="">
+      </button>
+      <button class="event-marker event-goal-right" type="button" data-event="goal" data-minute="79" aria-label="Goal at 79 minutes">
+        <img src="./assets/micro-crops/event-goal-right.png" width="18" height="18" alt="">
+      </button>
+    </div>
+    <div class="ticks" data-region="minute-ticks" aria-label="Timeline minute marks">
+      <span data-minute="0">0'</span>
+      <span data-minute="15">15'</span>
+      <span data-minute="30">30'</span>
+      <span data-minute="45">45'</span>
+      <span data-minute="60">60'</span>
+      <span data-minute="75">75'</span>
+      <span data-minute="90">90'</span>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,125 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #071016;
+  color: #e9eeee;
+  font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
+}
+
+.layout-page {
+  width: 236px;
+  height: 67px;
+  overflow: hidden;
+}
+
+.compare-page {
+  width: auto;
+  height: auto;
+  min-height: 100vh;
+  overflow: auto;
+  padding: 24px;
+  background: #101820;
+}
+
+.compare {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.compare__panel h1 {
+  margin: 0 0 10px;
+  color: #8a9aa4;
+  font: 600 12px/1.2 Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+iframe,
+.reference,
+.block-exact img {
+  display: block;
+  border: 0;
+}
+
+.block-exact {
+  width: 236px;
+  height: 67px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.start-button {
+  width: 236px;
+  height: 67px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 44px;
+  padding: 0 0 0 49px;
+  border: 1px solid #d8a900;
+  border-radius: 5px;
+  background:
+    radial-gradient(circle at 50% 47%, rgba(147, 121, 51, 0.28), transparent 54%),
+    linear-gradient(180deg, #332300, #1a1403);
+  box-shadow:
+    inset 0 0 18px rgba(255, 191, 32, 0.24),
+    0 0 0 1px rgba(121, 82, 0, 0.35);
+  color: #ffe98a;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.start-button:hover {
+  border-color: #f0c526;
+  color: #fff0a3;
+  box-shadow:
+    inset 0 0 20px rgba(255, 191, 32, 0.31),
+    0 0 0 1px rgba(121, 82, 0, 0.45);
+}
+
+.start-button:focus-visible {
+  outline: 2px solid #ffe98a;
+  outline-offset: 2px;
+}
+
+.start-button span {
+  display: block;
+  text-shadow: 0 0 7px rgba(255, 196, 42, 0.7);
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.start-button i {
+  position: relative;
+  width: 35px;
+  height: 35px;
+  display: block;
+  border: 1px solid rgba(255, 203, 54, 0.55);
+  border-radius: 50%;
+  background: rgba(28, 21, 7, 0.35);
+  box-shadow: inset 0 0 10px rgba(255, 180, 20, 0.24);
+}
+
+.start-button i::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 13px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 12px solid #ffe98a;
+  filter: drop-shadow(0 0 4px rgba(255, 196, 42, 0.7));
+}

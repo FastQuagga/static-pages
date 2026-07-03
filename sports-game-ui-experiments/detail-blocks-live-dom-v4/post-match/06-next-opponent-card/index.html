@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Next Opponent Compare</title>
+    <link rel="stylesheet" href="./block.css" />
+  </head>
+  <body class="compare-page">
+    <main class="comparison-stage" data-compare="next-opponent-card">
+      <section class="preview-column">
+        <h1>Live DOM</h1>
+      <p class="description">
+        Страница проверки блока: слева live-DOM HTML/CSS-реконструкция, по центру exact raster baseline, справа original PNG crop.
+        Live-DOM вариант нужен для будущей интерактивности: обновления текста, чисел, кнопок и состояний.
+      </p>
+        <iframe src="./layout.html" title="Live DOM"></iframe>
+      </section>
+      <section class="preview-column">
+        <h1>Exact baseline</h1>
+        <iframe src="./layout-exact.html" title="Exact baseline"></iframe>
+      </section>
+      <section class="preview-column">
+        <h1>Original crop</h1>
+        <img class="reference-image" src="./reference/original.png" width="406" height="95" alt="" />
+      </section>
+    </main>
+  </body>
+</html>

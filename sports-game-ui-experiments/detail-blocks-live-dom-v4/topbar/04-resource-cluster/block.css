@@ -1,0 +1,230 @@
+:root {
+  --bg-top: #00070c;
+  --bg-bottom: #020b11;
+  --line: #122630;
+  --text: #ebe9e5;
+  --muted: #858b8f;
+  --green: #42d83e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 480px;
+  height: 72px;
+  margin: 0;
+  overflow: hidden;
+  background: #01060a;
+}
+
+body {
+  color: var(--text);
+  font-family: "Avenir Next Condensed", "Arial Narrow", "Roboto Condensed", "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+.layout-body {
+  width: 480px;
+  height: 72px;
+}
+
+.resource-cluster {
+  position: relative;
+  width: 480px;
+  height: 72px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+}
+
+.resource-cluster::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(135, 190, 205, 0.006) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(135, 190, 205, 0.005) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.18;
+}
+
+.resource-button {
+  position: absolute;
+  display: block;
+  height: 43px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.resource-button:focus-visible,
+.income-rate-live:focus-visible {
+  outline: 1px solid rgba(99, 212, 255, 0.75);
+  outline-offset: 4px;
+}
+
+.money-resource {
+  left: 20px;
+  top: 16px;
+  width: 108px;
+}
+
+.fans-resource {
+  left: 150px;
+  top: 16px;
+  width: 103px;
+}
+
+.reputation-resource {
+  left: 280px;
+  top: 15px;
+  width: 107px;
+}
+
+.resource-icon {
+  position: absolute;
+  display: block;
+  object-fit: contain;
+  mix-blend-mode: lighten;
+  pointer-events: none;
+}
+
+.money-icon {
+  left: 0;
+  top: 2px;
+  width: 32px;
+  height: 31px;
+}
+
+.fans-icon {
+  left: 0;
+  top: 3px;
+  width: 35px;
+  height: 31px;
+}
+
+.reputation-icon {
+  left: 0;
+  top: 0;
+  width: 39px;
+  height: 38px;
+}
+
+.resource-copy {
+  position: absolute;
+  left: 43px;
+  top: -2px;
+  display: block;
+  white-space: nowrap;
+}
+
+.fans-resource .resource-copy {
+  left: 44px;
+}
+
+.reputation-copy {
+  left: 70px;
+  top: 0;
+}
+
+.resource-value {
+  display: block;
+  color: var(--text);
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.resource-rate {
+  display: block;
+  margin-top: 3px;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 12px;
+  letter-spacing: 0;
+  text-shadow: 0 0 2px rgba(53, 220, 55, 0.2);
+}
+
+.resource-label {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 10px;
+  letter-spacing: 0.15px;
+}
+
+.income-rate-live {
+  position: absolute;
+  left: 411px;
+  top: 23px;
+  display: block;
+  width: 57px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #45d741;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-align: left;
+  background: transparent;
+  text-shadow: 0 0 4px rgba(53, 220, 55, 0.24);
+}
+
+.live-divider {
+  position: absolute;
+  top: 11px;
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(180deg, transparent 0%, rgba(27, 52, 63, 0.55) 16%, rgba(17, 34, 43, 0.95) 50%, rgba(27, 52, 63, 0.55) 84%, transparent 100%);
+  box-shadow: 1px 0 0 rgba(0, 0, 0, 0.55);
+}
+
+.live-divider-a {
+  left: 138px;
+}
+
+.live-divider-b {
+  left: 264px;
+  height: 48px;
+}
+
+.exact-frame,
+.exact-frame img {
+  display: block;
+  width: 480px;
+  height: 72px;
+}
+
+.exact-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

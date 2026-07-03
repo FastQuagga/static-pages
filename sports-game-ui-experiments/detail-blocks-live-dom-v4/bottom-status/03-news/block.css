@@ -1,0 +1,116 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 524px;
+  height: 65px;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+body {
+  color: #b5bdbe;
+  font-family: "Barlow Condensed", "Rajdhani", "Arial Narrow", "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+button {
+  font: inherit;
+}
+
+.layout-body {
+  width: 524px;
+  height: 65px;
+}
+
+.status-slice {
+  position: relative;
+  width: 524px;
+  height: 65px;
+  margin: 0;
+  overflow: hidden;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  background:
+    linear-gradient(180deg, rgba(9, 20, 27, 0.98) 0%, rgba(5, 15, 21, 0.98) 52%, rgba(4, 12, 17, 0.98) 100%),
+    #020609;
+  appearance: none;
+  cursor: pointer;
+}
+
+.status-slice::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-top: 1px solid rgba(117, 159, 178, 0.24);
+  border-bottom: 1px solid rgba(117, 159, 178, 0.18);
+  box-shadow:
+    inset 1px 0 0 rgba(117, 159, 178, 0.16),
+    inset -1px 0 0 rgba(117, 159, 178, 0.16),
+    inset 0 1px 0 rgba(0, 0, 0, 0.38),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.42);
+}
+
+.status-slice:focus-visible {
+  outline: 1px solid rgba(15, 210, 255, 0.8);
+  outline-offset: -3px;
+}
+
+.status-chip {
+  position: absolute;
+  left: 13px;
+  top: 14px;
+  display: grid;
+  width: 63px;
+  height: 37px;
+  place-items: center;
+  border: 1px solid rgba(117, 159, 178, 0.3);
+  border-radius: 4px;
+  color: #0fd2ff;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+
+.news-text {
+  position: absolute;
+  left: 99px;
+  top: 24px;
+  display: block;
+  width: 405px;
+  overflow: hidden;
+  color: #a8b1b3;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.exact-frame,
+.exact-frame img {
+  display: block;
+  width: 524px;
+  height: 65px;
+}
+
+.exact-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

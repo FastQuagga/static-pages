@@ -1,0 +1,200 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 255px;
+  height: 72px;
+  margin: 0;
+  overflow: hidden;
+  background: #01060a;
+}
+
+body {
+  color: #ececea;
+  font-family: "Avenir Next Condensed", "Arial Narrow", "Roboto Condensed", "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+.layout-body {
+  width: 255px;
+  height: 72px;
+}
+
+.speed-control {
+  position: relative;
+  width: 255px;
+  height: 72px;
+  overflow: hidden;
+  border: 1px solid #122630;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #061017 0%, #050c11 100%);
+}
+
+.speed-control::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 38%);
+}
+
+.speed-copy {
+  position: absolute;
+  left: 21px;
+  top: 25px;
+  display: flex;
+  align-items: baseline;
+  gap: 17px;
+  white-space: nowrap;
+}
+
+.speed-label {
+  color: #cbcaca;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19px;
+  letter-spacing: 0.9px;
+}
+
+.speed-value {
+  display: block;
+  color: #f0efed;
+  font: inherit;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.button-strip {
+  position: absolute;
+  left: 115px;
+  top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 31px);
+  width: 125px;
+  height: 32px;
+  overflow: hidden;
+  border: 1px solid #172a34;
+  border-radius: 5px;
+  background: #07131a;
+}
+
+.control-button {
+  position: relative;
+  width: 31px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-right: 1px solid #13262f;
+  color: inherit;
+  background: #07131a;
+  appearance: none;
+  cursor: pointer;
+}
+
+.control-button:last-child {
+  border-right: 0;
+}
+
+.control-button:focus-visible {
+  z-index: 2;
+  outline: 1px solid rgba(99, 212, 255, 0.8);
+  outline-offset: -3px;
+}
+
+.control-button::before,
+.control-button::after,
+.control-button span::before,
+.control-button span::after {
+  content: "";
+  position: absolute;
+  display: block;
+}
+
+.back::before,
+.back::after,
+.forward::before,
+.forward::after {
+  top: 11px;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+
+.back::before {
+  left: 10px;
+  border-right: 8px solid #566069;
+}
+
+.back::after {
+  left: 16px;
+  border-right: 8px solid #566069;
+}
+
+.forward::before {
+  left: 8px;
+  border-left: 9px solid #555d64;
+}
+
+.forward::after {
+  left: 15px;
+  border-left: 9px solid #555d64;
+}
+
+.pause span::before,
+.pause span::after {
+  top: 9px;
+  width: 4px;
+  height: 15px;
+  background: #0d86bb;
+}
+
+.pause span::before {
+  left: 11px;
+}
+
+.pause span::after {
+  left: 17px;
+}
+
+.active {
+  background: linear-gradient(180deg, #08202a 0%, #071922 100%);
+  box-shadow: inset 0 0 14px rgba(18, 186, 246, 0.12);
+}
+
+.active::before,
+.active::after {
+  border-left-color: #22c4f5;
+}
+
+.muted::before,
+.muted::after {
+  border-left-color: #39424a;
+}
+
+.exact-frame,
+.exact-frame img {
+  display: block;
+  width: 255px;
+  height: 72px;
+}
+
+.exact-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

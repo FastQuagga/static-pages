@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="block.css">
+  <title>05 Speed Control Card - Live DOM</title>
+</head>
+<body class="layout-page">
+  <section class="speed-card" data-block="speed-control-card" aria-label="Speed control">
+    <h1 class="speed-title" data-field="title">SPEED CONTROL</h1>
+    <div class="controls" role="group" aria-label="Match speed" data-control="game-speed">
+      <button class="segment pause" type="button" data-action="pause" aria-label="Pause match">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+      <button class="segment" type="button" data-action="set-speed" data-speed="1" aria-pressed="false">1x</button>
+      <button class="segment" type="button" data-action="set-speed" data-speed="2" aria-pressed="false">2x</button>
+      <button class="segment active" type="button" data-action="set-speed" data-speed="4" aria-pressed="true">4x</button>
+      <button class="segment" type="button" data-action="set-speed" data-speed="8" aria-pressed="false">8x</button>
+    </div>
+    <button class="skip" type="button" data-action="skip-match">
+      <span>SKIP MATCH</span>
+      <i aria-hidden="true"></i>
+    </button>
+  </section>
+</body>
+</html>

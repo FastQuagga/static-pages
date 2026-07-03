@@ -1,0 +1,207 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0;
+}
+
+.layout-page,
+.exact-page {
+  width: 421px;
+  height: 124px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.scoreboard-card {
+  width: 421px;
+  height: 124px;
+  overflow: hidden;
+  color: #d6dde0;
+  background:
+    radial-gradient(circle at 50% -22%, rgba(28, 67, 82, .32), transparent 44%),
+    linear-gradient(180deg, #071821 0%, #051018 100%);
+  border: 1px solid #214253;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px 0 rgba(143, 198, 213, .08),
+    inset 0 -1px 0 rgba(0, 0, 0, .55);
+}
+
+.score-row {
+  height: 52px;
+  display: grid;
+  grid-template-columns: 50px 1fr 96px 1fr 50px;
+  align-items: center;
+  padding: 3px 10px 0;
+  border-bottom: 1px solid rgba(50, 76, 86, .62);
+}
+
+.crest {
+  width: 44px;
+  height: 44px;
+  display: block;
+  object-fit: contain;
+}
+
+.crest-left {
+  justify-self: start;
+}
+
+.crest-right {
+  justify-self: end;
+}
+
+.team {
+  color: #d6d8d9;
+  font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.team-left {
+  text-align: left;
+}
+
+.team-right {
+  text-align: right;
+}
+
+.score {
+  display: block;
+  color: #f3f4f3;
+  font-size: 34px;
+  line-height: 40px;
+  font-weight: 800;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .15);
+  white-space: nowrap;
+}
+
+.meta-row {
+  height: 35px;
+  display: grid;
+  grid-template-columns: 1fr 112px 1fr;
+  align-items: center;
+  padding: 0 27px;
+  color: #a8afb3;
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(38, 68, 79, .62);
+}
+
+.meta-row > :last-child {
+  text-align: right;
+}
+
+.timer {
+  display: block;
+  color: #ffbd16;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.chance-row {
+  height: 36px;
+  display: grid;
+  grid-template-columns: 1fr 48px 99px 1fr;
+  align-items: center;
+  column-gap: 8px;
+  padding: 0 99px;
+}
+
+.chance-label {
+  color: #c4c9cb;
+  font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 800;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.chance-value {
+  display: block;
+  color: #15d8ff;
+  font-size: 18px;
+  line-height: 20px;
+  font-weight: 900;
+}
+
+.chance-progress {
+  width: 99px;
+  height: 7px;
+  overflow: hidden;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: 2px;
+  background: #172a31;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .62);
+}
+
+.chance-progress::-webkit-progress-bar {
+  background: #172a31;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .62);
+}
+
+.chance-progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #10c8f4, #33dcff);
+}
+
+.chance-progress::-moz-progress-bar {
+  background: linear-gradient(90deg, #10c8f4, #33dcff);
+}
+
+.exact-frame,
+.exact-frame img {
+  width: 421px;
+  height: 124px;
+  display: block;
+}
+
+.compare-page {
+  min-width: 1340px;
+  min-height: 240px;
+  padding: 16px;
+  color: #dce8ec;
+  background: #071018;
+}
+
+.compare-shell h1 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.compare-grid {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.compare-panel h2 {
+  margin: 0 0 6px;
+  color: #8fa2ad;
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 700;
+}
+
+.compare-panel iframe,
+.compare-panel img {
+  display: block;
+  border: 1px solid #2a4552;
+  background: #02070b;
+}

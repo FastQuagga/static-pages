@@ -1,0 +1,88 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 180px;
+  height: 70px;
+  margin: 0;
+  overflow: hidden;
+  background: #01060a;
+}
+
+body {
+  color: #ececea;
+  font-family: "Avenir Next Condensed", "Arial Narrow", "Roboto Condensed", "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+.layout-body {
+  width: 180px;
+  height: 70px;
+}
+
+.club-identity {
+  position: relative;
+  display: block;
+  width: 180px;
+  height: 70px;
+  margin: 0;
+  padding: 0 0 0 10px;
+  overflow: hidden;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  background: linear-gradient(180deg, #00060b 0%, #020a10 100%);
+  appearance: none;
+  cursor: pointer;
+}
+
+.club-identity:focus-visible {
+  outline: 1px solid rgba(99, 212, 255, 0.8);
+  outline-offset: -3px;
+}
+
+.club-name {
+  display: block;
+  color: #efefec;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 23px;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.club-motto {
+  display: block;
+  margin-top: 6px;
+  color: #a5a7a6;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.exact-frame,
+.exact-frame img {
+  display: block;
+  width: 180px;
+  height: 70px;
+}
+
+.exact-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

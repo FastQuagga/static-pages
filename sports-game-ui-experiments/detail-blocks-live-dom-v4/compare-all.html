@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Blocks Live DOM v4 - HTML vs Original</title>
+    <link rel="stylesheet" href="./compare-all.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="page-header">
+        <h1>Detail Blocks Live DOM v4: верстка vs оригинальный crop</h1>
+        <p>
+          Сравнения идут вертикально. В каждой строке слева live-DOM HTML/CSS-реконструкция,
+          справа оригинальный PNG-crop. Raster допускается только для иконок, гербов,
+          портретов и сложных декоративных элементов.
+        </p>
+        <nav class="page-links" aria-label="Навигация по публикации">
+          <a href="../index.html">На главную</a>
+          <a href="../screen-01-match-hub-v2/original-mockup-blocks/block-map.html">Карта и сборка экрана</a>
+          <a href="../pipeline.html">Pipeline</a>
+        </nav>
+      </header>
+
+      <section class="block-row" id="topbar-01-crest-tile" style="--w:78px; --h:75px">
+        <header class="block-header">
+          <div>
+            <span class="index">01</span>
+            <h2>Topbar / Crest Tile</h2>
+          </div>
+          <nav>
+            <code>78 x 75</code>
+            <span class="metric">avg 20.245 / changed 0.3788</span>
+            <a href="./topbar/01-crest-tile/index.html">single</a>
+            <a href="./topbar/01-crest-tile/layout-exact.html">exact</a>
+            <a href="./topbar/01-crest-tile/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./topbar/01-crest-tile/layout.html" width="78" height="75" title="Crest Tile HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./topbar/01-crest-tile/reference/original.png" width="78" height="75" alt="Crest Tile original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="topbar-02-club-identity" style="--w:180px; --h:70px">
+        <header class="block-header">
+          <div>
+            <span class="index">02</span>
+            <h2>Topbar / Club Identity</h2>
+          </div>
+          <nav>
+            <code>180 x 70</code>
+            <span class="metric">avg 24.204 / changed 0.2267</span>
+            <a href="./topbar/02-club-identity/index.html">single</a>
+            <a href="./topbar/02-club-identity/layout-exact.html">exact</a>
+            <a href="./topbar/02-club-identity/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./topbar/02-club-identity/layout.html" width="180" height="70" title="Club Identity HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./topbar/02-club-identity/reference/original.png" width="180" height="70" alt="Club Identity original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="topbar-03-league-tile" style="--w:190px; --h:72px">
+        <header class="block-header">
+          <div>
+            <span class="index">03</span>
+            <h2>Topbar / League Tile</h2>
+          </div>
+          <nav>
+            <code>190 x 72</code>
+            <span class="metric">avg 17.309 / changed 0.2380</span>
+            <a href="./topbar/03-league-tile/index.html">single</a>
+            <a href="./topbar/03-league-tile/layout-exact.html">exact</a>
+            <a href="./topbar/03-league-tile/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./topbar/03-league-tile/layout.html" width="190" height="72" title="League Tile HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./topbar/03-league-tile/reference/original.png" width="190" height="72" alt="League Tile original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="topbar-04-resource-cluster" style="--w:480px; --h:72px">
+        <header class="block-header">
+          <div>
+            <span class="index">04</span>
+            <h2>Topbar / Resource Cluster</h2>
+          </div>
+          <nav>
+            <code>480 x 72</code>
+            <span class="metric">avg 11.225 / changed 0.1761</span>
+            <a href="./topbar/04-resource-cluster/index.html">single</a>
+            <a href="./topbar/04-resource-cluster/layout-exact.html">exact</a>
+            <a href="./topbar/04-resource-cluster/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./topbar/04-resource-cluster/layout.html" width="480" height="72" title="Resource Cluster HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./topbar/04-resource-cluster/reference/original.png" width="480" height="72" alt="Resource Cluster original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="topbar-05-speed-control" style="--w:255px; --h:72px">
+        <header class="block-header">
+          <div>
+            <span class="index">05</span>
+            <h2>Topbar / Speed Control</h2>
+          </div>
+          <nav>
+            <code>255 x 72</code>
+            <span class="metric">avg 12.522 / changed 0.4289</span>
+            <a href="./topbar/05-speed-control/index.html">single</a>
+            <a href="./topbar/05-speed-control/layout-exact.html">exact</a>
+            <a href="./topbar/05-speed-control/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./topbar/05-speed-control/layout.html" width="255" height="72" title="Speed Control HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./topbar/05-speed-control/reference/original.png" width="255" height="72" alt="Speed Control original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="topbar-06-system-cluster" style="--w:176px; --h:72px">
+        <header class="block-header">
+          <div>
+            <span class="index">06</span>
+            <h2>Topbar / System Cluster</h2>
+          </div>
+          <nav>
+            <code>176 x 72</code>
+            <span class="metric">avg 8.406 / changed 0.1251</span>
+            <a href="./topbar/06-system-cluster/index.html">single</a>
+            <a href="./topbar/06-system-cluster/layout-exact.html">exact</a>
+            <a href="./topbar/06-system-cluster/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./topbar/06-system-cluster/layout.html" width="176" height="72" title="System Cluster HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./topbar/06-system-cluster/reference/original.png" width="176" height="72" alt="System Cluster original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="pre-match-01-pre-header" style="--w:425px; --h:58px">
+        <header class="block-header">
+          <div>
+            <span class="index">07</span>
+            <h2>Pre-Match / Pre Header</h2>
+          </div>
+          <nav>
+            <code>425 x 58</code>
+            <span class="metric">avg 10.981 / changed 0.1520</span>
+            <a href="./pre-match/01-pre-header/index.html">single</a>
+            <a href="./pre-match/01-pre-header/layout-exact.html">exact</a>
+            <a href="./pre-match/01-pre-header/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./pre-match/01-pre-header/layout.html" width="425" height="58" title="Pre Header HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./pre-match/01-pre-header/reference/original.png" width="425" height="58" alt="Pre Header original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="pre-match-02-opponent-card" style="--w:318px; --h:305px">
+        <header class="block-header">
+          <div>
+            <span class="index">08</span>
+            <h2>Pre-Match / Opponent Card</h2>
+          </div>
+          <nav>
+            <code>318 x 305</code>
+            <span class="metric">avg 19.847 / changed 0.2712</span>
+            <a href="./pre-match/02-opponent-card/index.html">single</a>
+            <a href="./pre-match/02-opponent-card/layout-exact.html">exact</a>
+            <a href="./pre-match/02-opponent-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./pre-match/02-opponent-card/layout.html" width="318" height="305" title="Opponent Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./pre-match/02-opponent-card/reference/original.png" width="318" height="305" alt="Opponent Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="pre-match-03-last-report-strip" style="--w:78px; --h:305px">
+        <header class="block-header">
+          <div>
+            <span class="index">09</span>
+            <h2>Pre-Match / Last Report Strip</h2>
+          </div>
+          <nav>
+            <code>78 x 305</code>
+            <span class="metric">avg 17.885 / changed 0.2911</span>
+            <a href="./pre-match/03-last-report-strip/index.html">single</a>
+            <a href="./pre-match/03-last-report-strip/layout-exact.html">exact</a>
+            <a href="./pre-match/03-last-report-strip/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./pre-match/03-last-report-strip/layout.html" width="78" height="305" title="Last Report Strip HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./pre-match/03-last-report-strip/reference/original.png" width="78" height="305" alt="Last Report Strip original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="pre-match-04-win-chance-card" style="--w:405px; --h:104px">
+        <header class="block-header">
+          <div>
+            <span class="index">10</span>
+            <h2>Pre-Match / Win Chance Card</h2>
+          </div>
+          <nav>
+            <code>405 x 104</code>
+            <span class="metric">avg 10.746 / changed 0.1839</span>
+            <a href="./pre-match/04-win-chance-card/index.html">single</a>
+            <a href="./pre-match/04-win-chance-card/layout-exact.html">exact</a>
+            <a href="./pre-match/04-win-chance-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./pre-match/04-win-chance-card/layout.html" width="405" height="104" title="Win Chance Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./pre-match/04-win-chance-card/reference/original.png" width="405" height="104" alt="Win Chance Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="pre-match-05-coach-recommendation-card" style="--w:405px; --h:93px">
+        <header class="block-header">
+          <div>
+            <span class="index">11</span>
+            <h2>Pre-Match / Coach Recommendation Card</h2>
+          </div>
+          <nav>
+            <code>405 x 93</code>
+            <span class="metric">avg 14.552 / changed 0.1881</span>
+            <a href="./pre-match/05-coach-recommendation-card/index.html">single</a>
+            <a href="./pre-match/05-coach-recommendation-card/layout-exact.html">exact</a>
+            <a href="./pre-match/05-coach-recommendation-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./pre-match/05-coach-recommendation-card/layout.html" width="405" height="93" title="Coach Recommendation Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./pre-match/05-coach-recommendation-card/reference/original.png" width="405" height="93" alt="Coach Recommendation Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="pre-match-06-current-tactic-chip" style="--w:156px; --h:67px">
+        <header class="block-header">
+          <div>
+            <span class="index">12</span>
+            <h2>Pre-Match / Current Tactic Chip</h2>
+          </div>
+          <nav>
+            <code>156 x 67</code>
+            <span class="metric">avg 17.744 / changed 0.2839</span>
+            <a href="./pre-match/06-current-tactic-chip/index.html">single</a>
+            <a href="./pre-match/06-current-tactic-chip/layout-exact.html">exact</a>
+            <a href="./pre-match/06-current-tactic-chip/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./pre-match/06-current-tactic-chip/layout.html" width="156" height="67" title="Current Tactic Chip HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./pre-match/06-current-tactic-chip/reference/original.png" width="156" height="67" alt="Current Tactic Chip original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="pre-match-07-start-match-button" style="--w:236px; --h:67px">
+        <header class="block-header">
+          <div>
+            <span class="index">13</span>
+            <h2>Pre-Match / Start Match Button</h2>
+          </div>
+          <nav>
+            <code>236 x 67</code>
+            <span class="metric">avg 26.547 / changed 0.6893</span>
+            <a href="./pre-match/07-start-match-button/index.html">single</a>
+            <a href="./pre-match/07-start-match-button/layout-exact.html">exact</a>
+            <a href="./pre-match/07-start-match-button/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./pre-match/07-start-match-button/layout.html" width="236" height="67" title="Start Match Button HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./pre-match/07-start-match-button/reference/original.png" width="236" height="67" alt="Start Match Button original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="live-01-live-header" style="--w:445px; --h:58px">
+        <header class="block-header">
+          <div>
+            <span class="index">14</span>
+            <h2>Live / Live Header</h2>
+          </div>
+          <nav>
+            <code>445 x 58</code>
+            <span class="metric">avg 8.629 / changed 0.1448</span>
+            <a href="./live/01-live-header/index.html">single</a>
+            <a href="./live/01-live-header/layout-exact.html">exact</a>
+            <a href="./live/01-live-header/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./live/01-live-header/layout.html" width="445" height="58" title="Live Header HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./live/01-live-header/reference/original.png" width="445" height="58" alt="Live Header original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="live-02-scoreboard-card" style="--w:421px; --h:124px">
+        <header class="block-header">
+          <div>
+            <span class="index">15</span>
+            <h2>Live / Scoreboard Card</h2>
+          </div>
+          <nav>
+            <code>421 x 124</code>
+            <span class="metric">avg 18.897 / changed 0.5453</span>
+            <a href="./live/02-scoreboard-card/index.html">single</a>
+            <a href="./live/02-scoreboard-card/layout-exact.html">exact</a>
+            <a href="./live/02-scoreboard-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./live/02-scoreboard-card/layout.html" width="421" height="124" title="Scoreboard Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./live/02-scoreboard-card/reference/original.png" width="421" height="124" alt="Scoreboard Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="live-03-match-field-card" style="--w:421px; --h:267px">
+        <header class="block-header">
+          <div>
+            <span class="index">16</span>
+            <h2>Live / Match Field Card</h2>
+          </div>
+          <nav>
+            <code>421 x 267</code>
+            <span class="metric">avg 5.047 / changed 0.0002</span>
+            <a href="./live/03-match-field-card/index.html">single</a>
+            <a href="./live/03-match-field-card/layout-exact.html">exact</a>
+            <a href="./live/03-match-field-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./live/03-match-field-card/layout.html" width="421" height="267" title="Match Field Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./live/03-match-field-card/reference/original.png" width="421" height="267" alt="Match Field Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="live-04-match-flow-card" style="--w:421px; --h:102px">
+        <header class="block-header">
+          <div>
+            <span class="index">17</span>
+            <h2>Live / Match Flow Card</h2>
+          </div>
+          <nav>
+            <code>421 x 102</code>
+            <span class="metric">avg 12.925 / changed 0.2127</span>
+            <a href="./live/04-match-flow-card/index.html">single</a>
+            <a href="./live/04-match-flow-card/layout-exact.html">exact</a>
+            <a href="./live/04-match-flow-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./live/04-match-flow-card/layout.html" width="421" height="102" title="Match Flow Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./live/04-match-flow-card/reference/original.png" width="421" height="102" alt="Match Flow Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="live-05-speed-control-card" style="--w:421px; --h:87px">
+        <header class="block-header">
+          <div>
+            <span class="index">18</span>
+            <h2>Live / Speed Control Card</h2>
+          </div>
+          <nav>
+            <code>421 x 87</code>
+            <span class="metric">avg 12.556 / changed 0.2565</span>
+            <a href="./live/05-speed-control-card/index.html">single</a>
+            <a href="./live/05-speed-control-card/layout-exact.html">exact</a>
+            <a href="./live/05-speed-control-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./live/05-speed-control-card/layout.html" width="421" height="87" title="Speed Control Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./live/05-speed-control-card/reference/original.png" width="421" height="87" alt="Speed Control Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="post-match-01-post-header" style="--w:430px; --h:58px">
+        <header class="block-header">
+          <div>
+            <span class="index">19</span>
+            <h2>Post-Match / Post Header</h2>
+          </div>
+          <nav>
+            <code>430 x 58</code>
+            <span class="metric">avg 17.593 / changed 0.2119</span>
+            <a href="./post-match/01-post-header/index.html">single</a>
+            <a href="./post-match/01-post-header/layout-exact.html">exact</a>
+            <a href="./post-match/01-post-header/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./post-match/01-post-header/layout.html" width="430" height="58" title="Post Header HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./post-match/01-post-header/reference/original.png" width="430" height="58" alt="Post Header original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="post-match-02-result-card" style="--w:406px; --h:113px">
+        <header class="block-header">
+          <div>
+            <span class="index">20</span>
+            <h2>Post-Match / Result Card</h2>
+          </div>
+          <nav>
+            <code>406 x 113</code>
+            <span class="metric">avg 16.098 / changed 0.2218</span>
+            <a href="./post-match/02-result-card/index.html">single</a>
+            <a href="./post-match/02-result-card/layout-exact.html">exact</a>
+            <a href="./post-match/02-result-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./post-match/02-result-card/layout.html" width="406" height="113" title="Result Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./post-match/02-result-card/reference/original.png" width="406" height="113" alt="Result Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="post-match-03-why-we-won-card" style="--w:406px; --h:142px">
+        <header class="block-header">
+          <div>
+            <span class="index">21</span>
+            <h2>Post-Match / Why We Won Card</h2>
+          </div>
+          <nav>
+            <code>406 x 142</code>
+            <span class="metric">avg 14.618 / changed 0.1942</span>
+            <a href="./post-match/03-why-we-won-card/index.html">single</a>
+            <a href="./post-match/03-why-we-won-card/layout-exact.html">exact</a>
+            <a href="./post-match/03-why-we-won-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./post-match/03-why-we-won-card/layout.html" width="406" height="142" title="Why We Won Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./post-match/03-why-we-won-card/reference/original.png" width="406" height="142" alt="Why We Won Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="post-match-04-mvp-card" style="--w:154px; --h:179px">
+        <header class="block-header">
+          <div>
+            <span class="index">22</span>
+            <h2>Post-Match / Mvp Card</h2>
+          </div>
+          <nav>
+            <code>154 x 179</code>
+            <span class="metric">avg 15.663 / changed 0.2347</span>
+            <a href="./post-match/04-mvp-card/index.html">single</a>
+            <a href="./post-match/04-mvp-card/layout-exact.html">exact</a>
+            <a href="./post-match/04-mvp-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./post-match/04-mvp-card/layout.html" width="154" height="179" title="Mvp Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./post-match/04-mvp-card/reference/original.png" width="154" height="179" alt="Mvp Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="post-match-05-match-pnl-card" style="--w:248px; --h:179px">
+        <header class="block-header">
+          <div>
+            <span class="index">23</span>
+            <h2>Post-Match / Match Pnl Card</h2>
+          </div>
+          <nav>
+            <code>248 x 179</code>
+            <span class="metric">avg 16.516 / changed 0.2416</span>
+            <a href="./post-match/05-match-pnl-card/index.html">single</a>
+            <a href="./post-match/05-match-pnl-card/layout-exact.html">exact</a>
+            <a href="./post-match/05-match-pnl-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./post-match/05-match-pnl-card/layout.html" width="248" height="179" title="Match Pnl Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./post-match/05-match-pnl-card/reference/original.png" width="248" height="179" alt="Match Pnl Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="post-match-06-next-opponent-card" style="--w:406px; --h:95px">
+        <header class="block-header">
+          <div>
+            <span class="index">24</span>
+            <h2>Post-Match / Next Opponent Card</h2>
+          </div>
+          <nav>
+            <code>406 x 95</code>
+            <span class="metric">avg 19.053 / changed 0.2697</span>
+            <a href="./post-match/06-next-opponent-card/index.html">single</a>
+            <a href="./post-match/06-next-opponent-card/layout-exact.html">exact</a>
+            <a href="./post-match/06-next-opponent-card/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./post-match/06-next-opponent-card/layout.html" width="406" height="95" title="Next Opponent Card HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./post-match/06-next-opponent-card/reference/original.png" width="406" height="95" alt="Next Opponent Card original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="post-match-07-continue-button" style="--w:406px; --h:50px">
+        <header class="block-header">
+          <div>
+            <span class="index">25</span>
+            <h2>Post-Match / Continue Button</h2>
+          </div>
+          <nav>
+            <code>406 x 50</code>
+            <span class="metric">avg 16.240 / changed 0.3407</span>
+            <a href="./post-match/07-continue-button/index.html">single</a>
+            <a href="./post-match/07-continue-button/layout-exact.html">exact</a>
+            <a href="./post-match/07-continue-button/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./post-match/07-continue-button/layout.html" width="406" height="50" title="Continue Button HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./post-match/07-continue-button/reference/original.png" width="406" height="50" alt="Continue Button original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="bottom-status-01-date" style="--w:158px; --h:65px">
+        <header class="block-header">
+          <div>
+            <span class="index">26</span>
+            <h2>Bottom Status / Date</h2>
+          </div>
+          <nav>
+            <code>158 x 65</code>
+            <span class="metric">avg 8.315 / changed 0.1397</span>
+            <a href="./bottom-status/01-date/index.html">single</a>
+            <a href="./bottom-status/01-date/layout-exact.html">exact</a>
+            <a href="./bottom-status/01-date/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./bottom-status/01-date/layout.html" width="158" height="65" title="Date HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./bottom-status/01-date/reference/original.png" width="158" height="65" alt="Date original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="bottom-status-02-time" style="--w:125px; --h:65px">
+        <header class="block-header">
+          <div>
+            <span class="index">27</span>
+            <h2>Bottom Status / Time</h2>
+          </div>
+          <nav>
+            <code>125 x 65</code>
+            <span class="metric">avg 8.769 / changed 0.1589</span>
+            <a href="./bottom-status/02-time/index.html">single</a>
+            <a href="./bottom-status/02-time/layout-exact.html">exact</a>
+            <a href="./bottom-status/02-time/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./bottom-status/02-time/layout.html" width="125" height="65" title="Time HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./bottom-status/02-time/reference/original.png" width="125" height="65" alt="Time original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="bottom-status-03-news" style="--w:524px; --h:65px">
+        <header class="block-header">
+          <div>
+            <span class="index">28</span>
+            <h2>Bottom Status / News</h2>
+          </div>
+          <nav>
+            <code>524 x 65</code>
+            <span class="metric">avg 9.793 / changed 0.1597</span>
+            <a href="./bottom-status/03-news/index.html">single</a>
+            <a href="./bottom-status/03-news/layout-exact.html">exact</a>
+            <a href="./bottom-status/03-news/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./bottom-status/03-news/layout.html" width="524" height="65" title="News HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./bottom-status/03-news/reference/original.png" width="524" height="65" alt="News original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="bottom-status-04-status" style="--w:249px; --h:65px">
+        <header class="block-header">
+          <div>
+            <span class="index">29</span>
+            <h2>Bottom Status / Status</h2>
+          </div>
+          <nav>
+            <code>249 x 65</code>
+            <span class="metric">avg 7.527 / changed 0.1620</span>
+            <a href="./bottom-status/04-status/index.html">single</a>
+            <a href="./bottom-status/04-status/layout-exact.html">exact</a>
+            <a href="./bottom-status/04-status/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./bottom-status/04-status/layout.html" width="249" height="65" title="Status HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./bottom-status/04-status/reference/original.png" width="249" height="65" alt="Status original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="bottom-status-05-next-match" style="--w:182px; --h:65px">
+        <header class="block-header">
+          <div>
+            <span class="index">30</span>
+            <h2>Bottom Status / Next Match</h2>
+          </div>
+          <nav>
+            <code>182 x 65</code>
+            <span class="metric">avg 7.463 / changed 0.1321</span>
+            <a href="./bottom-status/05-next-match/index.html">single</a>
+            <a href="./bottom-status/05-next-match/layout-exact.html">exact</a>
+            <a href="./bottom-status/05-next-match/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./bottom-status/05-next-match/layout.html" width="182" height="65" title="Next Match HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./bottom-status/05-next-match/reference/original.png" width="182" height="65" alt="Next Match original crop" />
+          </div>
+        </div>
+      </section>
+
+      <section class="block-row" id="bottom-status-06-continue-cta" style="--w:170px; --h:47px">
+        <header class="block-header">
+          <div>
+            <span class="index">31</span>
+            <h2>Bottom Status / Continue Cta</h2>
+          </div>
+          <nav>
+            <code>170 x 47</code>
+            <span class="metric">avg 19.767 / changed 0.3021</span>
+            <a href="./bottom-status/06-continue-cta/index.html">single</a>
+            <a href="./bottom-status/06-continue-cta/layout-exact.html">exact</a>
+            <a href="./bottom-status/06-continue-cta/spec.md">spec</a>
+          </nav>
+        </header>
+        <div class="compare-pair">
+          <div class="pane">
+            <h3>Live DOM Layout</h3>
+            <iframe src="./bottom-status/06-continue-cta/layout.html" width="170" height="47" title="Continue Cta HTML layout"></iframe>
+          </div>
+          <div class="pane">
+            <h3>Original Crop</h3>
+            <img src="./bottom-status/06-continue-cta/reference/original.png" width="170" height="47" alt="Continue Cta original crop" />
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

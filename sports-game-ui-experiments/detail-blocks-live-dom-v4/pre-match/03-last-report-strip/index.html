@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>03 Last Report Strip Compare</title>
+  <link rel="stylesheet" href="block.css">
+</head>
+<body class="compare-page">
+  <main class="compare" data-compare="03-last-report-strip">
+    <section class="compare__panel">
+      <h1>Live DOM</h1>
+      <p class="description">
+        Страница проверки блока: слева live-DOM HTML/CSS-реконструкция, по центру exact raster baseline, справа original PNG crop.
+        Live-DOM вариант нужен для будущей интерактивности: обновления текста, чисел, кнопок и состояний.
+      </p>
+      <iframe src="layout.html" width="78" height="305" title="Live DOM layout"></iframe>
+    </section>
+    <section class="compare__panel">
+      <h1>Exact Raster</h1>
+      <iframe src="layout-exact.html" width="78" height="305" title="Exact raster layout"></iframe>
+    </section>
+    <section class="compare__panel">
+      <h1>Original Crop</h1>
+      <img class="reference" src="reference/original.png" width="78" height="305" alt="Original last-report strip crop">
+    </section>
+  </main>
+</body>
+</html>

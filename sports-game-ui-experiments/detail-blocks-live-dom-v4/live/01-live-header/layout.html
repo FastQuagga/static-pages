@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="block.css">
+  <title>01 Live Header - Live DOM</title>
+</head>
+<body class="layout-page">
+  <section class="live-header" data-block="live-header" data-live-state="running" aria-label="Live match header">
+    <div class="live-copy" data-region="status-copy">
+      <output class="live-title" data-field="live-state">LIVE</output>
+      <span class="live-subtitle" data-field="match-status">Match in progress</span>
+    </div>
+    <button class="collapse-button" type="button" data-action="collapse-live-panel" aria-label="Collapse live panel" aria-expanded="true">
+      <span aria-hidden="true"></span>
+    </button>
+  </section>
+</body>
+</html>

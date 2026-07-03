@@ -1,0 +1,291 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #071016;
+  color: #e9eeee;
+  font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
+}
+
+.layout-page {
+  width: 318px;
+  height: 305px;
+  overflow: hidden;
+}
+
+.compare-page {
+  width: auto;
+  height: auto;
+  min-height: 100vh;
+  overflow: auto;
+  padding: 24px;
+  background: #101820;
+}
+
+.compare {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.compare__panel h1 {
+  margin: 0 0 10px;
+  color: #8a9aa4;
+  font: 600 12px/1.2 Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+iframe,
+.reference,
+.block-exact img {
+  display: block;
+  border: 0;
+}
+
+.block-exact {
+  width: 318px;
+  height: 305px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+output {
+  display: inline;
+}
+
+.opponent-card {
+  position: relative;
+  width: 318px;
+  height: 305px;
+  overflow: hidden;
+  border: 1px solid #1d3943;
+  border-radius: 4px;
+  background:
+    linear-gradient(180deg, rgba(9, 20, 27, 0.98), rgba(4, 14, 20, 0.98)),
+    #08131a;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.opponent-card__header,
+.opponent-card__label {
+  color: #b8bfc0;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.opponent-card__header {
+  position: absolute;
+  top: 14px;
+  left: 13px;
+}
+
+.opponent-card__main {
+  position: absolute;
+  top: 36px;
+  left: 11px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.opponent-card__crest {
+  width: 56px;
+  height: 70px;
+  object-fit: contain;
+}
+
+.opponent-card__identity strong,
+.player-row strong,
+.weakness-row strong {
+  display: block;
+  color: #edf1ef;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 15px;
+  letter-spacing: 0;
+}
+
+.opponent-card__identity strong,
+.player-row strong {
+  white-space: nowrap;
+}
+
+.opponent-card__identity span,
+.player-row span,
+.weakness-row span {
+  display: block;
+  margin-top: 6px;
+  color: #c6ccca;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  letter-spacing: 0;
+}
+
+.opponent-card__strength {
+  position: absolute;
+  top: 40px;
+  right: 14px;
+  width: 114px;
+}
+
+.opponent-card__score {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+  margin-top: 9px;
+}
+
+.opponent-card__score output {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 29px;
+  letter-spacing: 0;
+}
+
+.score-home {
+  color: #19cfff;
+}
+
+.score-away {
+  color: #f2f2ec;
+}
+
+.opponent-card__score span {
+  color: #a1aaab;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.strength-bar {
+  display: flex;
+  width: 102px;
+  height: 7px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #1a2a30;
+}
+
+.strength-bar__home {
+  width: 51px;
+  background: #17cfff;
+}
+
+.strength-bar__away {
+  flex: 1;
+  background: #ff7e21;
+}
+
+.opponent-card__form {
+  position: absolute;
+  top: 121px;
+  left: 0;
+  width: 190px;
+  height: 82px;
+  padding: 14px 13px;
+  border-top: 1px solid #1d343d;
+  border-right: 1px solid #1d343d;
+}
+
+.form-list {
+  display: flex;
+  gap: 11px;
+  margin-top: 15px;
+}
+
+.form-chip {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 2px;
+  color: #f0f4ef;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.form-chip--win {
+  background: linear-gradient(#309342, #1d7e34);
+}
+
+.form-chip--draw {
+  background: linear-gradient(#4a5c69, #32434f);
+}
+
+.form-chip--loss {
+  background: linear-gradient(#74372f, #5b241f);
+}
+
+.opponent-card__player {
+  position: absolute;
+  top: 121px;
+  right: 0;
+  width: 128px;
+  height: 82px;
+  padding: 14px 10px;
+  border-top: 1px solid #1d343d;
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.player-row img {
+  width: 47px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.player-row span {
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.opponent-card__weakness {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 318px;
+  height: 101px;
+  padding: 16px 13px;
+  border-top: 1px solid #1d343d;
+}
+
+.weakness-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 13px;
+}
+
+.weakness-row img {
+  width: 43px;
+  height: 47px;
+  object-fit: contain;
+}
+
+.weakness-row span {
+  margin-top: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 15px;
+}

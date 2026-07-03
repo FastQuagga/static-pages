@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=249, initial-scale=1.0" />
+    <title>04 Status Live DOM</title>
+    <link rel="stylesheet" href="./block.css" />
+  </head>
+  <body class="layout-body">
+    <section class="status-slice status-system" data-component="bottom-system-status" aria-label="Состояние систем">
+      <span class="status-chip">STATUS</span>
+      <span class="status-dot" aria-hidden="true"></span>
+      <output class="system-text" name="system-status" data-state="operational" data-bind="system.status">All systems operational</output>
+    </section>
+  </body>
+</html>

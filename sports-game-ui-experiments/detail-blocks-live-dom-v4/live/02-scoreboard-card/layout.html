@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="block.css">
+  <title>02 Scoreboard Card - Live DOM</title>
+</head>
+<body class="layout-page">
+  <section class="scoreboard-card" data-block="scoreboard-card" data-match-state="live" aria-label="Live scoreboard">
+    <header class="score-row" data-region="score-row">
+      <img class="crest crest-left" src="./assets/micro-crops/newport-crest.png" width="44" height="44" alt="" data-team-id="newport-city">
+      <span class="team team-left" data-field="home-team">NEWPORT CITY</span>
+      <output class="score" data-field="score" data-home-score="1" data-away-score="0">
+        <span>1</span><span aria-hidden="true"> - </span><span>0</span>
+      </output>
+      <span class="team team-right" data-field="away-team">RIVERSIDE UTD</span>
+      <img class="crest crest-right" src="./assets/micro-crops/riverside-crest.png" width="44" height="44" alt="" data-team-id="riverside-utd">
+    </header>
+    <div class="meta-row" data-region="match-meta">
+      <span data-field="period">1ST HALF</span>
+      <output class="timer" data-field="match-clock">28:47</output>
+      <span data-field="formation">4-3-3 ATTACK</span>
+    </div>
+    <div class="chance-row" data-region="win-chance">
+      <span class="chance-label">WIN CHANCE</span>
+      <output class="chance-value" data-field="win-chance-value">62%</output>
+      <progress class="chance-progress" data-field="win-chance-progress" max="100" value="62" aria-label="Newport City win chance"></progress>
+    </div>
+  </section>
+</body>
+</html>

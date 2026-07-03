@@ -1,0 +1,119 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 182px;
+  height: 65px;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+body {
+  color: #b5bdbe;
+  font-family: "Barlow Condensed", "Rajdhani", "Arial Narrow", "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+button {
+  font: inherit;
+}
+
+.layout-body {
+  width: 182px;
+  height: 65px;
+}
+
+.status-slice {
+  position: relative;
+  width: 182px;
+  height: 65px;
+  margin: 0;
+  overflow: hidden;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  background:
+    linear-gradient(180deg, rgba(9, 20, 27, 0.98) 0%, rgba(5, 15, 21, 0.98) 52%, rgba(4, 12, 17, 0.98) 100%),
+    #020609;
+  appearance: none;
+  cursor: pointer;
+}
+
+.status-slice::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-top: 1px solid rgba(117, 159, 178, 0.24);
+  border-bottom: 1px solid rgba(117, 159, 178, 0.18);
+  box-shadow:
+    inset 1px 0 0 rgba(117, 159, 178, 0.16),
+    inset -1px 0 0 rgba(117, 159, 178, 0.16),
+    inset 0 1px 0 rgba(0, 0, 0, 0.38),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.42);
+}
+
+.status-slice:focus-visible {
+  outline: 1px solid rgba(15, 210, 255, 0.8);
+  outline-offset: -3px;
+}
+
+.next-label {
+  position: absolute;
+  left: 13px;
+  top: 25px;
+  display: block;
+  color: #b7c0c2;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 15px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-icon {
+  position: absolute;
+  left: 89px;
+  top: 21px;
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.next-time {
+  position: absolute;
+  left: 123px;
+  top: 24px;
+  display: block;
+  color: #a8b1b3;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  white-space: nowrap;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.exact-frame,
+.exact-frame img {
+  display: block;
+  width: 182px;
+  height: 65px;
+}
+
+.exact-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

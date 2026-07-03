@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>03 Last Report Strip</title>
+  <link rel="stylesheet" href="block.css">
+</head>
+<body class="layout-page">
+  <aside class="report-strip" aria-label="Last report" data-block="last-report-strip">
+    <div class="report-strip__icon" aria-hidden="true">
+      <img src="assets/micro-crops/report-tactic-icon.png" width="36" height="36" alt="">
+    </div>
+    <div class="report-strip__title" data-bind="report-title">LAST REPORT</div>
+    <div class="report-strip__opponent" data-bind="report-opponent">vs Northbridge FC</div>
+    <output class="report-strip__score" data-bind="report-score">2 - 1</output>
+    <output class="report-strip__result" data-bind="report-result" data-result="win">W</output>
+    <div class="report-strip__label">Key Performer</div>
+    <div class="report-strip__name" data-bind="key-performer-name">M. DIAZ</div>
+    <output class="report-strip__rating" data-bind="key-performer-rating">8.2</output>
+    <button class="report-strip__button" type="button" data-action="open-last-report">VIEW</button>
+  </aside>
+</body>
+</html>

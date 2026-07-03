@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live-DOM Pipeline</title>
+    <link rel="stylesheet" href="./site.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <h1>Pipeline: HTML-верстка из raster mockup</h1>
+        <p>
+          Рабочий процесс для превращения PNG-мокапа в интерактивную HTML/CSS
+          верстку. Главный принцип: pixel-perfect важен, но не ценой
+          интерактивности. Изменяемые данные должны оставаться DOM-элементами.
+        </p>
+        <div class="links">
+          <a class="button-link" href="./index.html">На главную</a>
+          <a class="button-link secondary" href="./docs/live-dom-html-from-mockup-pipeline.md">Открыть markdown-версию</a>
+        </div>
+      </header>
+
+      <section class="section">
+        <h2>Цель</h2>
+        <p>
+          Нужно получать HTML/CSS-верстку, визуально близкую к raster mockup, но
+          пригодную для интеграции в игру: значения должны обновляться, кнопки
+          нажиматься, шкалы менять прогресс, а статусы получать состояния.
+        </p>
+        <ul>
+          <li>Текст, числа, CTA, таблицы и состояния остаются live-DOM.</li>
+          <li>Raster допустим для иконок, гербов, портретов, сложных glyphs и декоративных фактур.</li>
+          <li>Bitmap-heavy варианты можно использовать для диагностики, но не как финальный UI.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>1. Source of truth</h2>
+        <p>
+          Каждый блок начинается с original crop без масштабирования. Размеры
+          фиксируются через <code>sips -g pixelWidth -g pixelHeight</code>, а
+          координаты считаются от левого верхнего угла полного экрана.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>2. Семантическая декомпозиция</h2>
+        <p>
+          Блок разбирается слоями: контейнер, фон, интерактивные группы,
+          изменяемые значения, статические assets и состояния. Затем coarse block
+          дробится на semantic sub-blocks и element layer.
+        </p>
+        <ol>
+          <li><code>Coarse block</code>: крупная зона или карточка.</li>
+          <li><code>Semantic sub-blocks</code>: смысловые группы внутри блока.</li>
+          <li><code>Element layer</code>: icon, value, label, divider, CTA.</li>
+          <li><code>Raster candidate</code>: только элементы, которые можно оставить картинками.</li>
+          <li><code>Final DOM pass</code>: возвращение к live-DOM для всех изменяемых частей.</li>
+        </ol>
+      </section>
+
+      <section class="section">
+        <h2>3. Micro-crops</h2>
+        <p>
+          Micro-crops нужны, когда CSS/HTML плохо повторяет сложную форму:
+          гербы, иконки, портреты, tactical field layer, sparkline или tiny glyph.
+          Нельзя использовать micro-crop как финальный способ показать живой
+          текст, проценты, суммы, таблицы или кнопку целиком.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>4. Live-DOM верстка</h2>
+        <p>
+          <code>layout.html</code> каждого блока собирается как будущий UI:
+          используются <code>button</code>, <code>output</code>,
+          <code>time</code>, <code>table</code>, <code>progress</code> или
+          обычные <code>span</code> с понятными <code>data-*</code> hooks.
+        </p>
+        <p>
+          Это может ухудшить raw pixel diff, потому что браузерный текст
+          отличается от запеченного текста в PNG, но именно такой слой можно
+          подключить к game state.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>5. Сводная block-map.html</h2>
+        <p>
+          После декомпозиции полного мокапа обязательно собирается
+          <code>block-map.html</code>: контрольная HTML-карта, где original,
+          global-блоки и detail-блоки показаны на исходных координатах с тонкими
+          цветными рамками и labels.
+        </p>
+        <ul>
+          <li>Crop-блоки вставляются без масштабирования.</li>
+          <li>Координаты должны совпадать с <code>block-map-global.csv/json</code> и <code>block-map-detail.csv/json</code>.</li>
+          <li>Карта должна помогать найти пропуски, дубли и смещения в нарезке экрана.</li>
+          <li>Если есть live-DOM блоки, добавляется <code>Live-DOM Assembly Map</code> с переключателем debug-рамок.</li>
+          <li>Отдельно нужен clean live-DOM screen без рамок, labels и debug-элементов.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>6. Screenshot и pixel diff</h2>
+        <p>
+          Каждый блок рендерится через один и тот же Chrome headless pipeline с
+          <code>--force-device-scale-factor=1</code> и размером окна, равным
+          размеру crop. Затем <code>compare-png.mjs</code> считает:
+        </p>
+        <ul>
+          <li><code>avgRgbDelta</code>: средняя RGB-разница;</li>
+          <li><code>changedPixelsOver24</code>: количество заметно измененных пикселей;</li>
+          <li><code>changedRatio</code>: доля измененных пикселей;</li>
+          <li><code>maxRgbTripletDelta</code>: максимальная RGB-разница одного пикселя.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>7. Итерационная подгонка</h2>
+        <p>
+          Подгонка идет маленькими сериями: сначала внешний контейнер и фон, потом
+          координаты групп, затем иконки, типографика, vertical rhythm,
+          secondary labels и dividers. После каждой итерации сохраняется screenshot
+          и diff-report.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>8. Exact baseline</h2>
+        <p>
+          <code>layout-exact.html</code> показывает original crop как один raster
+          слой. Он нужен не для интеграции, а чтобы понять нижнюю границу
+          Chrome/color pipeline. Если exact тоже дает ненулевой diff, эту ошибку
+          нельзя требовать от live-DOM верстки.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>9. Финальная приемка</h2>
+        <ul>
+          <li><code>layout.html</code> использует live-DOM для изменяемых значений.</li>
+          <li>Raster применяется только там, где он оправдан.</li>
+          <li>Side-by-side визуально читается как тот же UI-блок.</li>
+          <li>Для полного экрана есть <code>block-map.html</code> с original/global/detail картами, цветными рамками и координатами из <code>block-map-*.csv/json</code>.</li>
+          <li>Если блоки уже сверстаны, есть <code>Live-DOM Assembly Map</code> и clean live-DOM screen без debug-рамок.</li>
+          <li>Diff-метрики сохранены и объяснены.</li>
+          <li>Есть DOM hooks для будущей интеграции.</li>
+          <li>Пути валидны, CSS целый, служебных файлов нет.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Главный вывод</h2>
+        <p>
+          Лучший raw pixel diff не всегда означает лучший UI. Если pixel diff
+          толкает к запеканию текста в PNG, нужно выбирать live-DOM и
+          документировать tradeoff. Цель этого процесса - получить верстку,
+          которую можно оживить, а не просто неподвижный скриншот.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

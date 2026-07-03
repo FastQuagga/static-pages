@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=248, initial-scale=1.0" />
+    <title>Match P&amp;L Live DOM</title>
+    <link rel="stylesheet" href="./block.css" />
+  </head>
+  <body>
+    <section class="block-root pnl-card" data-block="match-pnl-card" aria-label="Match profit and loss">
+      <header class="pnl-header">
+        <h2 data-field="title">MATCH P&amp;L</h2>
+        <button class="info-button info-button-left" type="button" data-action="show-pnl-info" aria-label="Show P&L info">
+          <img src="./assets/micro-crops/info-left.png" width="18" height="18" alt="" />
+        </button>
+        <button class="info-button info-button-right" type="button" data-action="show-pnl-help" aria-label="Show P&L help">
+          <img src="./assets/micro-crops/info-right.png" width="18" height="18" alt="" />
+        </button>
+      </header>
+      <table class="pnl-grid" data-table="match-pnl">
+        <thead>
+          <tr>
+            <th scope="col">Tickets</th>
+            <th scope="col">Sponsor</th>
+            <th scope="col">Prize</th>
+            <th scope="col">Salaries</th>
+            <th scope="col">Upkeep</th>
+            <th scope="col">Net</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="icon-row" aria-hidden="true">
+            <td><img src="./assets/micro-crops/icon-tickets.png" width="20" height="20" alt="" /></td>
+            <td><img src="./assets/micro-crops/icon-sponsor.png" width="20" height="20" alt="" /></td>
+            <td><img src="./assets/micro-crops/icon-prize.png" width="21" height="20" alt="" /></td>
+            <td><img src="./assets/micro-crops/icon-salaries.png" width="18" height="20" alt="" /></td>
+            <td><img src="./assets/micro-crops/icon-upkeep.png" width="21" height="20" alt="" /></td>
+            <td><img src="./assets/micro-crops/icon-net.png" width="18" height="20" alt="" /></td>
+          </tr>
+          <tr class="value-row">
+            <td><output data-field="tickets">+750K</output></td>
+            <td><output data-field="sponsor">+420K</output></td>
+            <td><output data-field="prize">+300K</output></td>
+            <td><output data-field="salaries">-620K</output></td>
+            <td><output data-field="upkeep">-180K</output></td>
+            <td><output class="net-value" data-field="net">+670K</output></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="details-button" type="button" data-action="open-pnl-details">
+        <span>DETAILS</span>
+        <img src="./assets/micro-crops/icon-details-external.png" width="15" height="15" alt="" />
+      </button>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>01 Date Compare</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-width: 690px;
+        min-height: 170px;
+        display: grid;
+        place-items: center;
+        background: #101820;
+        color: #d8dde0;
+        font-family: Arial, sans-serif;
+      }
+
+      main {
+        display: grid;
+        gap: 14px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 16px;
+        line-height: 20px;
+      }
+
+      .compare {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+      }
+
+      .sample {
+        display: grid;
+        gap: 8px;
+      }
+
+      .label {
+        color: #8b969d;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .description {
+        max-width: 920px;
+        margin: -4px 0 0;
+        color: #9aa7aa;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      iframe,
+      img {
+        display: block;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>01 Date / 158 x 65</h1>
+      <p class="description">
+        Страница проверки блока: слева live-DOM HTML/CSS-реконструкция, по центру exact raster baseline, справа original PNG crop.
+        Live-DOM вариант нужен для будущей интерактивности: обновления текста, чисел, кнопок и состояний.
+      </p>
+      <section class="compare" aria-label="Сравнение live DOM, exact и original crop">
+        <div class="sample">
+          <div class="label">Live DOM</div>
+          <iframe src="./layout.html" width="158" height="65" title="Date live DOM"></iframe>
+        </div>
+        <div class="sample">
+          <div class="label">Exact Raster</div>
+          <iframe src="./layout-exact.html" width="158" height="65" title="Date exact raster"></iframe>
+        </div>
+        <div class="sample">
+          <div class="label">Original Crop</div>
+          <img src="./reference/original.png" width="158" height="65" alt="Original crop: date block" />
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

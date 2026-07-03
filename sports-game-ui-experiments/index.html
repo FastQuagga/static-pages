@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sports Game UI Experiments</title>
+    <link rel="stylesheet" href="./site.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <h1>Sports Game UI Experiments</h1>
+        <p>
+          Публикуемая сборка HTML-экспериментов по экрану Match Hub. Здесь собраны
+          финальные live-DOM верстки блоков, карта нарезки мокапа, чистая сборка
+          полного экрана и описание pipeline, по которому эти блоки собирались.
+        </p>
+      </header>
+
+      <section class="grid" aria-label="Основные результаты">
+        <a class="card" href="./screen-01-match-hub-v2/original-mockup-blocks/block-map.html">
+          <h2>Карта экрана и сборка</h2>
+          <p>
+            Global/detail cut maps, сборка экрана из live-DOM блоков, toggles для
+            отключения подсветки и отдельный clean-screen без debug overlays.
+          </p>
+          <div class="meta">
+            <span class="pill">1440 x 900</span>
+            <span class="pill">37 crop blocks</span>
+            <span class="pill">31 live-DOM blocks</span>
+          </div>
+        </a>
+
+        <a class="card" href="./detail-blocks-live-dom-v4/compare-all.html">
+          <h2>Все блоки: HTML vs crop</h2>
+          <p>
+            Вертикальная страница сравнения каждого финального блока: слева
+            live-DOM HTML/CSS, справа original PNG crop, в заголовке diff-метрики.
+          </p>
+          <div class="meta">
+            <span class="pill">v4</span>
+            <span class="pill">31 blocks</span>
+            <span class="pill">pixel diff</span>
+          </div>
+        </a>
+
+        <a class="card" href="./pipeline.html">
+          <h2>Pipeline генерации</h2>
+          <p>
+            Полное описание процесса: source crop, semantic decomposition,
+            micro-crops, live-DOM правила, Chrome screenshot, pixel diff,
+            exact baseline и критерии приемки.
+          </p>
+          <div class="meta">
+            <span class="pill">live-DOM</span>
+            <span class="pill">micro-decomposition</span>
+            <span class="pill">QA</span>
+          </div>
+        </a>
+
+        <a class="card" href="./detail-blocks-live-dom-v4/v4-run-summary.md">
+          <h2>Сводка v4</h2>
+          <p>
+            Сводный отчет по финальному проходу: какие группы генерировались,
+            какие метрики получили блоки и почему live-DOM важнее bitmap-heavy
+            совпадения.
+          </p>
+          <div class="meta">
+            <span class="pill">gpt-5.5 xhigh</span>
+            <span class="pill">5 agents</span>
+            <span class="pill">validated</span>
+          </div>
+        </a>
+      </section>
+
+      <section class="section">
+        <h2>Что считается финальным результатом</h2>
+        <p>
+          Финальная верстка в этой сборке не пытается любой ценой сделать PNG
+          поверх PNG. Значения, подписи, кнопки, шкалы, таблицы и CTA оставлены
+          настоящими DOM-элементами, чтобы позже их можно было подключить к
+          игровому состоянию. Raster используется только для иконок, гербов,
+          портретов, tactical field layer и сложных декоративных glyphs.
+        </p>
+        <div class="links">
+          <a class="button-link" href="./screen-01-match-hub-v2/original-mockup-blocks/block-map.html#clean-live-dom-screen">Открыть clean screen</a>
+          <a class="button-link secondary" href="./detail-blocks-live-dom-v4/rendered/compare-all-v4.png">Screenshot compare-all</a>
+          <a class="button-link secondary" href="./docs/live-dom-html-from-mockup-pipeline.md">Pipeline markdown</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
